@@ -18,4 +18,5 @@ exports.login = async (req, res)=>{
 exports.register = async (req, res)=>{
     const db = dbo.connect();
     const user = req.body;
+    
 }
