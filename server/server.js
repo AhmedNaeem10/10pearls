@@ -17,5 +17,7 @@ app.listen(port, () => {
 
 app.post('/adminLogin', adminController.login);
 app.post('/adminRegister', adminController.register);
+app.put('/adminChangePassword/:username/:password', adminController.change_pasword);
+
 app.post('/userLogin', userController.login);
 app.post('/userRegister', userController.register);
