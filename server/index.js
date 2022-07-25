@@ -3,7 +3,7 @@ const cors = require("cors");
 const mysql = require("mysql");
 const bcrypt = require("bcrypt")
 const app = express();
-const db = require('./config/dbConn');
+const db = require('./db/conn');
 const routes = require("./controllers/routes")(app);
 // var corsOptions = {
 //   origin: "http://localhost:8081"

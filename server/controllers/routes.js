@@ -1,5 +1,5 @@
-const db = require('../config/dbConn');
-
+const dbo = require('../db/conn');
+const db = dbo.connect();
 module.exports = function(app){
   
 // routes
