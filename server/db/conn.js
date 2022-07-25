@@ -3,10 +3,10 @@ require("dotenv").config({ path: "./config.env" });
 
 exports.connect = () => {
   let connection = mysql.createConnection({
-    host: process.env.host,
-    user: process.env.user,
-    password: process.env.password,
-    database: process.env.database
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+    database: 'home_services'
   });
   return connection;
 }
