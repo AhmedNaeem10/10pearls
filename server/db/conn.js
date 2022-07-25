@@ -1,5 +1,4 @@
 let mysql = require('mysql');
-require("dotenv").config({ path: "./config.env" });
 
 exports.connect = () => {
   let connection = mysql.createConnection({
