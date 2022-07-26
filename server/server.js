@@ -27,3 +27,6 @@ app.put('/adminChangePassword/:username/:password', adminController.change_paswo
 // customer usecases
 app.post('/userLogin', userController.login);
 app.post('/userRegister', userController.register);
+app.post('/updateAge/:userid', userController.update_age);
+app.post('/updateCNIC/:userid', userController.update_cnic);
+app.post('/updateAddress/:userid', userController.update_address);
