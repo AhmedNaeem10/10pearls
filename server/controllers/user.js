@@ -66,7 +66,6 @@ exports.register = async (req, res)=>{
 exports.update_age = (req, res) => {
     const db = dbo.connect();
     
-
     const user_id = req.params.userid;
     const age = req.body.age;
 
