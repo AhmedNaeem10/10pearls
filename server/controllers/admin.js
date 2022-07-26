@@ -85,3 +85,59 @@ exports.change_pasword = (req, res) => {
         }
     });
 }
+
+exports.register_worker = (req, res) => {
+    const db = dbo.connect();
+    const worker = req.body;
+    const first_name = worker.first_name;
+    const last_name = worker.last_name;
+    const phone = worker.phone;
+    const cnic = worker.cnic;
+    const dob = worker.dob;
+    const address = worker.address;
+    const email = worker.email;
+
+    let sql;
+    if(email){
+        sql = `INSERT INTO WORKER(FIRST_NAME, LAST_NAME, PHONE, CNIC, DOB, ADDRESS, EMAIL) VALUES('${first_name}','${last_name}','${phone}','${cnic}','${dob}','${address}','${email}')`;
+    }else{
+        sql = `INSERT INTO WORKER(FIRST_NAME, LAST_NAME, PHONE, CNIC, DOB, ADDRESS) VALUES('${first_name}','${last_name}','${phone}','${cnic}','${dob}','${address}')`;
+    }
+
+    db.query(sql, (err, result) => {
+        if(err){
+            res.status(400).json({
+                status: 400,
+                message: err.sqlMessage
+            });
+        }else{
+            res.status(200).json({
+                status: 200,
+                messgae: "Worker registered successfully!"
+            });
+        }
+    });
+}
+
+exports.add_skill = (req, res) => {
+    const db = dbo.connect();
+    const skill = req.body;
+    const worker_id = skill.worker_id;
+    const service_name = skill.service_name;
+    const service_charges = skill.service_charges;
+
+    let sql = `INSERT INTO SERVICE_DETAIL(WORKER_ID, SERVICE_NAME, SERVICE_CHARGES) VALUES('${worker_id}', '${service_name}' ,'${service_charges}')`;
+    db.query(sql, (err, result) => {
+        if(err){
+            res.status(400).json({
+                status: 400,
+                message: err.sqlMessage
+            });
+        }else{
+            res.status(200).json({
+                status: 200,
+                messgae: "Skill added successfully!"
+            });
+        }
+    })
+}
