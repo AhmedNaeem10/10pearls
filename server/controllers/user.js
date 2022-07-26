@@ -61,7 +61,7 @@ exports.register = async (req, res)=>{
 }
 
 
-exports.update_cnic = (req, res) => {
+exports.update_customer = (req, res) => {
     const db = dbo.connect();
     
     const user_id = req.params.userid;
@@ -117,4 +117,65 @@ exports.update_cnic = (req, res) => {
             }
         }
     });
+}
+
+exports.get_services = (req, res) => {
+    const db = dbo.connect();
+    let sql = `SELECT * FROM SERVICES`;
+    db.query(sql, (err, results, fields) => {
+        if(err){
+            res.status(400).json({
+                status: 400,
+                message: err.sqlMessage
+            });
+        }else{
+            res.status(200).json({
+                status: 200,
+                data: results
+            });
+        }
+    })
+}
+
+exports.request_service = (req, res) => {
+    const db = dbo.connect();
+    const user = req.body;
+
+    const user_id = req.params.user_id;
+    const date_time = user.date_time;
+
+    let sql = `INSERT INTO REQUEST(CUSTOMER_ID, DATE_TIME, REQUEST_STATUS) VALUES('${user_id}', '${date_time}', "PENDING")`;
+    db.query(sql, (err, results, fields) => {
+        if(err){
+            res.status(400).json({
+                status: 400,
+                message: err.sqlMessage
+            });
+        }else{
+            res.status(200).json({
+                status: 200,
+                message: "Your request has been submitted successfully."
+            });
+        }
+    })
+}
+
+exports.cancel_request = (req, res) => {
+    const db = dbo.connect();
+    const req_id = req.params.requestid;
+
+    let sql = `UPDATE REQUEST SET REQUEST_STATUS = "CANCELLED" WHERE REQUEST_ID = '${req_id}'`;
+    db.query(sql, (err, results, fields) => {
+        if(err){
+            res.status(400).json({
+                status: 400,
+                message: err.sqlMessage
+            });
+        }else{
+            res.status(200).json({
+                status: 200,
+                message: "Your request has been cancelled."
+            });
+        }
+    })
 }

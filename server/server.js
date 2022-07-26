@@ -4,11 +4,15 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });
 const path = require('path');
-const port = 5000;
+const middleware = require('./middleware');
+
+const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.json());
+
+// app.use(middleware.decodeToken);
 
 const db = require("./model");
 db.sequelize.sync();
@@ -34,7 +38,10 @@ app.get('/getRequests', adminController.get_requests);
 // customer usecases
 app.post('/userLogin', userController.login);
 app.post('/userRegister', userController.register);
-app.post('/updateCNIC/:userid', userController.update_cnic);
+app.post('/updateCustomer/:userid', userController.update_customer);
+app.post('/viewServices', userController.get_services);
+app.post('/requestService/:userid', userController.request_service);
+app.post('/cancelRequest/:requestid', userController.cancel_request);
 
 
 // orm testing

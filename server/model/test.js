@@ -1,4 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
+    // define schema for each table
     return TEST = sequelize.define("TESTS", {
         id: {
             type: Sequelize.INTEGER,
