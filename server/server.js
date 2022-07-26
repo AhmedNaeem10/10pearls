@@ -34,13 +34,13 @@ app.get('/getRequests', adminController.get_requests);
 // customer usecases
 app.post('/userLogin', userController.login);
 app.post('/userRegister', userController.register);
-app.post('/updateAge/:userid', userController.update_age);
 app.post('/updateCNIC/:userid', userController.update_cnic);
-app.post('/updateAddress/:userid', userController.update_address);
 
 
+// orm testing
 app.get('/', (req, res)=>{
-  res.send(db.test.findAll)
+  const TEST = require(path.join(__dirname, 'model/test'))(db.sequelize, db.Sequelize)
+  res.send(TEST.findAll)
 })
 
 app.post('/', (req, res)=>{

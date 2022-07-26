@@ -61,55 +61,21 @@ exports.register = async (req, res)=>{
 }
 
 
-// Suggestion: Take DOB as input instead of age, so that age updates automatically with time. 
-// Age won't to be updated.
-exports.update_age = (req, res) => {
-    const db = dbo.connect();
-    
-    const user_id = req.params.userid;
-    const age = req.body.age;
-
-    let sql = `SELECT * FROM CUSTOMER WHERE CUSTOMER_ID = '${user_id}'`;
-    db.query(sql, (err, results, fields) => {
-        if(err){
-            res.status(400).json({
-                status: 400,
-                message: err.sqlMessage
-            })
-        }else{
-            if(results.length){
-                let sql = `UPDATE CUSTOMER SET AGE = '${age}' WHERE CUSTOMER_ID = '${user_id}'`
-                db.query(sql, (err, result) => {
-                    if(err){
-                        res.status(400).json({
-                            status: 400,
-                            message: err.sqlMessage
-                        });
-                    }else{
-                        res.status(200).json({
-                            status: 200,
-                            messgae: "Age updated successfully!"
-                        });
-                    }
-                })
-            }else{
-                res.status(404).json({
-                    status: 404,
-                    message: "Error updating age!"
-                });
-            }
-        }
-    });
-}
-
-
-
 exports.update_cnic = (req, res) => {
     const db = dbo.connect();
     
-
     const user_id = req.params.userid;
-    const cnic = req.body.cnic;
+    const user = req.body;
+
+    const username = user.username;
+    const password = user.password;
+    const first_name = user.first_name;
+    const last_name = user.last_name;
+    const email = user.email;
+    const phone = user.phone;
+    const age = user.age;
+    const cnic = user.cnic;
+    const address = user.address;
 
     let sql = `SELECT * FROM CUSTOMER WHERE CUSTOMER_ID = '${user_id}'`;
     db.query(sql, (err, results, fields) => {
@@ -120,7 +86,16 @@ exports.update_cnic = (req, res) => {
             })
         }else{
             if(results.length){
-                let sql = `UPDATE CUSTOMER SET CNIC = '${cnic}' WHERE CUSTOMER_ID = '${user_id}'`
+                let sql = `UPDATE CUSTOMER SET 
+                USERNAME = '${username}',
+                PASSWORD = '${password}',
+                EMAIL = '${email}',
+                FIRST_NAME = '${first_name}',
+                LAST_NAME = '${last_name}',
+                AGE = '${age}',
+                PHONE = '${phone}',
+                CNIC = '${cnic}', 
+                ADDRESS = '${address}' WHERE CUSTOMER_ID = '${user_id}'`
                 db.query(sql, (err, result) => {
                     if(err){
                         res.status(400).json({
@@ -130,54 +105,14 @@ exports.update_cnic = (req, res) => {
                     }else{
                         res.status(200).json({
                             status: 200,
-                            messgae: "CNIC no. updated successfully!"
+                            messgae: "User details updated successfully!"
                         });
                     }
                 })
             }else{
                 res.status(404).json({
                     status: 404,
-                    message: "Error updating CNIC no.!"
-                });
-            }
-        }
-    });
-}
-
-exports.update_address = (req, res) => {
-    const db = dbo.connect();
-    
-
-    const user_id = req.params.userid;
-    const address = req.body.address;
-
-    let sql = `SELECT * FROM CUSTOMER WHERE CUSTOMER_ID = '${user_id}'`;
-    db.query(sql, (err, results, fields) => {
-        if(err){
-            res.status(400).json({
-                status: 400,
-                message: err.sqlMessage
-            })
-        }else{
-            if(results.length){
-                let sql = `UPDATE CUSTOMER SET ADDRESS = '${address}' WHERE CUSTOMER_ID = '${user_id}'`
-                db.query(sql, (err, result) => {
-                    if(err){
-                        res.status(400).json({
-                            status: 400,
-                            message: err.sqlMessage
-                        });
-                    }else{
-                        res.status(200).json({
-                            status: 200,
-                            messgae: "Address updated successfully!"
-                        });
-                    }
-                })
-            }else{
-                res.status(404).json({
-                    status: 404,
-                    message: "Error updating address!"
+                    message: "Error updating details!"
                 });
             }
         }
