@@ -11,6 +11,7 @@ exports.login = async (req, res)=>{
     const password = admin.password;
     try{
         let found = await ADMIN.findOne({where: {username: username, password: password}});
+        console.log(found)
         if(found){
             res.status(200).json({
                 status: 200,
@@ -90,40 +91,60 @@ exports.register = async (req, res)=>{
     // });
 }
 
-exports.change_pasword = (req, res) => {
-    const db = dbo.connect();
+exports.change_pasword = async (req, res) => {
+    // const db = dbo.connect();
     const {username, password} = req.params;
-    let sql = `SELECT * FROM ADMIN WHERE USERNAME = '${username}'`;
-    db.query(sql, (err, results, fields) => {
-        if(err){
-            res.status(400).json({
-                status: 400,
-                message: err.sqlMessage
+    console.log(username, password)
+    try{
+        let response = await ADMIN.update({PASSWORD: password}, {where: {USERNAME: username}})
+        if(response[0]){
+            res.status(200).json({
+                status: 200,
+                message: "Password changed successfully!"
             })
         }else{
-            if(results.length){
-                let sql = `UPDATE ADMIN SET PASSWORD = '${password}' WHERE USERNAME = '${username}'`
-                db.query(sql, (err, result) => {
-                    if(err){
-                        res.status(400).json({
-                            status: 400,
-                            message: err.sqlMessage
-                        });
-                    }else{
-                        res.status(200).json({
-                            status: 200,
-                            messgae: "Password changed successfully!"
-                        });
-                    }
-                })
-            }else{
-                res.status(404).json({
-                    status: 404,
-                    message: "Invalid username!"
-                });
-            }
+            res.status(400).json({
+                status: 400,
+                message: "There was an error changing the password"
+            });
         }
-    });
+    }catch(err){
+        res.status(400).json({
+            status: 400,
+            message: err.message
+        })
+    }
+    // let sql = `SELECT * FROM ADMIN WHERE USERNAME = '${username}'`;
+    // db.query(sql, (err, results, fields) => {
+    //     if(err){
+    //         res.status(400).json({
+    //             status: 400,
+    //             message: err.sqlMessage
+    //         })
+    //     }else{
+    //         if(results.length){
+    //             let sql = `UPDATE ADMIN SET PASSWORD = '${password}' WHERE USERNAME = '${username}'`
+    //             db.query(sql, (err, result) => {
+    //                 if(err){
+    //                     res.status(400).json({
+    //                         status: 400,
+    //                         message: err.sqlMessage
+    //                     });
+    //                 }else{
+    //                     res.status(200).json({
+    //                         status: 200,
+    //                         messgae: "Password changed successfully!"
+    //                     });
+    //                 }
+    //             })
+    //         }else{
+    //             res.status(404).json({
+    //                 status: 404,
+    //                 message: "Invalid username!"
+    //             });
+    //         }
+    //     }
+    // });
 }
 
 exports.register_worker = (req, res) => {
