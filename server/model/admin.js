@@ -1,15 +1,14 @@
 module.exports = (sequelize, Sequelize) => {
-    return TEST = sequelize.define("ADMINS", {
+    return ADMIN = sequelize.define("ADMINS", {
         id: {
             type: Sequelize.INTEGER,
-            field: "id",             
-            autoIncrement: 1,       
-            primaryKey: 1
+            primaryKey: 1,
+            autoIncrement: 1      
         },
-        TEST: {
-            type: Sequelize.INTEGER
+        USERNAME: {
+            type: Sequelize.TEXT
         },
-        PARA: {
+        PASSWORD: {
             type: Sequelize.TEXT
         }, 
     }, {

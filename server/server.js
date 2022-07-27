@@ -45,15 +45,13 @@ app.post('/cancelRequest/:requestid', userController.cancel_request);
 
 
 // orm testing
-app.get('/', (req, res)=>{
+app.get('/',async (req, res)=>{
   const TEST = require(path.join(__dirname, 'model/test'))(db.sequelize, db.Sequelize)
-  res.send(TEST.findAll)
-})
+  res.send(await TEST.findAll())
+});
 
-app.post('/', (req, res)=>{
-  const TEST = require(path.join(__dirname, 'model/test'))(db.sequelize, db.Sequelize)
-  const test = req.body;
-  console.log(test)
-  TEST.create(test)
-  res.send("done")
-})
+app.post('/', async (req, res)=>{
+  const SD = require(path.join(__dirname, 'model/review'))(db.sequelize, db.Sequelize)
+  let result = await SD.findAll();
+  res.send(result)
+});
