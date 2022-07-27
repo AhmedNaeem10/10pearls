@@ -1,53 +1,93 @@
 const dbo = require("../db/conn");
+const db = require("../model");
+
+
+db.sequelize.sync();
+const ADMIN = require('../model/admin')(db.sequelize, db.Sequelize)
 
 exports.login = async (req, res)=>{
-    const db = dbo.connect();
     const admin = req.body;
     const username = admin.username;
     const password = admin.password;
-    let sql = `SELECT * FROM ADMIN WHERE USERNAME = '${username}' AND PASSWORD = '${password}'`;
-    db.query(sql, (error, results, fields) => {
-        if (error){
-            res.status(400).json({
-                status: 400,
-                message: error.sqlMessage
-            })
+    try{
+        let found = await ADMIN.findOne({where: {username: username, password: password}});
+        if(found){
+            res.status(200).json({
+                status: 200,
+                data: found.dataValues
+            });
+        }else{
+            res.status(404).json({
+                status: 404,
+                message: "Invalid username or password!"
+            });
         }
-        else{
-            if(results.length){
-                res.status(200).json({
-                    status: 200,
-                    data: results[0]
-                });
-            }else{
-                res.status(404).json({
-                    status: 404,
-                    message: "Invalid username or password!"
-                });
-            }
-        }
-    });
+    }catch(err){
+        res.status(400).json({
+            status: 400,
+            message: err.message
+        })
+    }
+    
+
+    // let sql = `SELECT * FROM ADMIN WHERE USERNAME = '${username}' AND PASSWORD = '${password}'`;
+    // db.query(sql, (error, results, fields) => {
+    //     if (error){
+    //         res.status(400).json({
+    //             status: 400,
+    //             message: error.sqlMessage
+    //         })
+    //     }
+    //     else{
+    //         if(results.length){
+    //             res.status(200).json({
+    //                 status: 200,
+    //                 data: results[0]
+    //             });
+    //         }else{
+    //             res.status(404).json({
+    //                 status: 404,
+    //                 message: "Invalid username or password!"
+    //             });
+    //         }
+    //     }
+    // });
 }
 
 exports.register = async (req, res)=>{
-    const db = dbo.connect();
     const admin = req.body;
-    const username = admin.username;
-    const password = admin.password;
-    let sql = `INSERT INTO ADMIN(username, password) VALUES('${username}','${password}')`
-    db.query(sql, (error, result) => {
-        if (error){
-            res.status(400).json({
-                status: 400,
-                message: error.sqlMessage
-            })
-        }else{
+    const USERNAME = admin.username;
+    const PASSWORD = admin.password;
+    try{
+        let response = await ADMIN.create({USERNAME, PASSWORD});
+        if(response){
             res.status(200).json({
                 status: 200,
                 message: "Admin successfully registered!"
             })
         }
-    });
+    }catch(err){
+        res.status(400).json({
+            status: 400,
+            message: err.message
+        })
+    }
+    
+
+    // let sql = `INSERT INTO ADMIN(username, password) VALUES('${username}','${password}')`
+    // db.query(sql, (error, result) => {
+    //     if (error){
+    //         res.status(400).json({
+    //             status: 400,
+    //             message: error.sqlMessage
+    //         })
+    //     }else{
+    //         res.status(200).json({
+    //             status: 200,
+    //             message: "Admin successfully registered!"
+    //         })
+    //     }
+    // });
 }
 
 exports.change_pasword = (req, res) => {
