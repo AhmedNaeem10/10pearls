@@ -1,18 +1,20 @@
 module.exports = (sequelize, Sequelize) => {
-    // define schema for each table
-    return TEST = sequelize.define("TESTS", {
+    return REQUEST = sequelize.define("REQUESTS", {
         id: {
             type: Sequelize.INTEGER,
-            field: "TEST_ID",             
+            field: "REQUEST_ID",
             primaryKey: 1,
-            autoIncrement: 1
+            autoIncrement: 1      
         },
-        TEST: {
+        CUSTOMER_ID: {
             type: Sequelize.INTEGER
         },
-        PARA: {
-            type: Sequelize.TEXT
+        DATE_TIME: {
+            type: Sequelize.DATE
         }, 
+        REQUEST_STATUS: {
+            type: Sequelize.TEXT
+        }
     }, {
         timestamps: false,
 

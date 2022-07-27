@@ -1,18 +1,20 @@
 module.exports = (sequelize, Sequelize) => {
-    // define schema for each table
-    return TEST = sequelize.define("TESTS", {
+    return REVIEW = sequelize.define("REVIEWS", {
         id: {
             type: Sequelize.INTEGER,
-            field: "TEST_ID",             
+            field: "REVIEW_ID",
             primaryKey: 1,
-            autoIncrement: 1
+            autoIncrement: 1      
         },
-        TEST: {
+        SERVICE_ID: {
             type: Sequelize.INTEGER
         },
-        PARA: {
-            type: Sequelize.TEXT
+        RATING: {
+            type: Sequelize.INTEGER
         }, 
+        FEEDBACK: {
+            type: Sequelize.TEXT
+        }
     }, {
         timestamps: false,
 
