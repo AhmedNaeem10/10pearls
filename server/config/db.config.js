@@ -2,10 +2,10 @@ require("dotenv").config({ path: "./config.env" });
 
 // environment variables present in config.env, set up your own!
 module.exports = {
-    HOST: 'localhost',
-    USER: 'root',
-    PASSWORD: 'password',
-    DB: 'home_services',
+    HOST: process.env.host,
+    USER: process.env.user,
+    PASSWORD: process.env.password,
+    DB: process.env.database,
     dialect: "mysql", 
     pool: {
     max: 5,

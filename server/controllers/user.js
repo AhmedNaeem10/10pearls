@@ -1,4 +1,8 @@
 const dbo = require("../db/conn");
+const db = require("../model");
+
+db.sequelize.sync();
+const CUSTOMER = require('../model/customer')(db.sequelize, db.Sequelize)
 
 exports.login = async (req, res)=>{
     const db = dbo.connect();
@@ -40,24 +44,48 @@ exports.register = async (req, res)=>{
     const last_name = user.last_name;
     const email = user.email;
     const phone = user.phone;
-    const age = user.age;
+    const dob = user.dob;
     const cnic = user.cnic;
     const address = user.address;
 
-    let sql = `INSERT INTO CUSTOMER(username, password, first_name, last_name, email, phone, age, cnic, address) VALUES('${username}','${password}','${first_name}','${last_name}','${email}','${phone}','${age}','${cnic}','${address}')`;
-    db.query(sql, (error, result) => {
-        if (error){
-            res.status(400).json({
-                status: 400,
-                message: error.sqlMessage
-            })
-        }else{
+    // let sql = `INSERT INTO CUSTOMER(username, password, first_name, last_name, email, phone, age, cnic, address) VALUES('${username}','${password}','${first_name}','${last_name}','${email}','${phone}','${age}','${cnic}','${address}')`;
+    // db.query(sql, (error, result) => {
+    //     if (error){
+    //         res.status(400).json({
+    //             status: 400,
+    //             message: error.sqlMessage
+    //         })
+    //     }else{
+    //         res.status(200).json({
+    //             status: 200,
+    //             message: "User successfully registered!"
+    //         })
+    //     }
+    // });
+    try{
+        let response = await CUSTOMER.create({
+            USERNAME: username, 
+            PASSWORD: password,
+            FIRST_NAME: first_name,
+            LAST_NAME: last_name,
+            EMAIL: email,
+            PHONE: phone,
+            CNIC: cnic,
+            DOB: dob,
+            ADDRESS: address
+            });
+        if(response){
             res.status(200).json({
                 status: 200,
                 message: "User successfully registered!"
             })
         }
-    });
+    }catch(err){
+        res.status(400).json({
+            status: 400,
+            message: err.message
+        })
+    }
 }
 
 

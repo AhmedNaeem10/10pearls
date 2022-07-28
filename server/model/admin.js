@@ -2,14 +2,17 @@ module.exports = (sequelize, Sequelize) => {
     return ADMIN = sequelize.define("ADMINS", {
         id: {
             type: Sequelize.INTEGER,
-            primaryKey: 1,
-            autoIncrement: 1      
+            primaryKey: true,
+            autoIncrement: true      
         },
         USERNAME: {
-            type: Sequelize.TEXT
+            type: Sequelize.STRING(15),
+            allowNull: false,
+            unique: true
         },
         PASSWORD: {
-            type: Sequelize.TEXT
+            type: Sequelize.STRING(15),
+            allowNull: false
         }, 
     }, {
         timestamps: false,

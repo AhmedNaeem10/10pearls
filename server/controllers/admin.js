@@ -60,7 +60,9 @@ exports.register = async (req, res)=>{
     const USERNAME = admin.username;
     const PASSWORD = admin.password;
     try{
-        let response = await ADMIN.create({USERNAME, PASSWORD});
+        let response = await ADMIN.create({
+            USERNAME: USERNAME, 
+            PASSWORD: PASSWORD});
         if(response){
             res.status(200).json({
                 status: 200,
