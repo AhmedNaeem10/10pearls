@@ -107,7 +107,7 @@ exports.change_pasword = async (req, res) => {
         }else{
             res.status(400).json({
                 status: 400,
-                message: "There was an error changing the password"
+                message: "There was an error changing the password."
             });
         }
     }catch(err){
