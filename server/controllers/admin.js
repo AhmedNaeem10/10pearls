@@ -1,5 +1,6 @@
-const dbo = require("../db/conn");
+// const dbo = require("../db/conn");
 const db = require("../model");
+const worker = require("../model/worker");
 
 
 db.sequelize.sync();
@@ -9,6 +10,7 @@ exports.login = async (req, res)=>{
     const admin = req.body;
     const username = admin.username;
     const password = admin.password;
+    console.log(admin);
     try{
         let found = await ADMIN.findOne({where: {username: username, password: password}});
         console.log(found)
@@ -149,8 +151,8 @@ exports.change_pasword = async (req, res) => {
     // });
 }
 
-exports.register_worker = (req, res) => {
-    const db = dbo.connect();
+exports.register_worker = async (req, res) => {
+    // const db = dbo.connect();
     const worker = req.body;
     const first_name = worker.first_name;
     const last_name = worker.last_name;
@@ -160,66 +162,90 @@ exports.register_worker = (req, res) => {
     const address = worker.address;
     const email = worker.email;
 
-    let sql;
-    if(email){
-        sql = `INSERT INTO WORKER(FIRST_NAME, LAST_NAME, PHONE, CNIC, DOB, ADDRESS, EMAIL) VALUES('${first_name}','${last_name}','${phone}','${cnic}','${dob}','${address}','${email}')`;
-    }else{
-        sql = `INSERT INTO WORKER(FIRST_NAME, LAST_NAME, PHONE, CNIC, DOB, ADDRESS) VALUES('${first_name}','${last_name}','${phone}','${cnic}','${dob}','${address}')`;
-    }
-
-    db.query(sql, (err, result) => {
-        if(err){
-            res.status(400).json({
-                status: 400,
-                message: err.sqlMessage
-            });
-        }else{
+    const WORKER = require('../model/worker')(db.sequelize, db.Sequelize);
+        
+    try{
+        let response = await WORKER.create({
+            FIRST_NAME: first_name,
+            LAST_NAME: last_name,
+            PHONE: phone,
+            CNIC: cnic,
+            DOB: dob,
+            ADDRESS: address,
+            EMAIL: email
+        });
+        if(response){
             res.status(200).json({
                 status: 200,
                 message: "Worker registered successfully!"
             });
         }
-    });
+    }catch(err){
+        res.status(400).json({
+            status: 400,
+            message: err.message
+        });
+    }
+    // let sql;
+    // if(email){
+    //     sql = `INSERT INTO WORKER(FIRST_NAME, LAST_NAME, PHONE, CNIC, DOB, ADDRESS, EMAIL) VALUES('${first_name}','${last_name}','${phone}','${cnic}','${dob}','${address}','${email}')`;
+    // }else{
+    //     sql = `INSERT INTO WORKER(FIRST_NAME, LAST_NAME, PHONE, CNIC, DOB, ADDRESS) VALUES('${first_name}','${last_name}','${phone}','${cnic}','${dob}','${address}')`;
+    // }
+
+    // db.query(sql, (err, result) => {
+    //     if(err){
+    //         res.status(400).json({
+    //             status: 400,
+    //             message: err.sqlMessage
+    //         });
+    //     }else{
+    //         res.status(200).json({
+    //             status: 200,
+    //             message: "Worker registered successfully!"
+    //         });
+    //     }
+    // });
 }
 
-exports.add_skill = (req, res) => {
-    const db = dbo.connect();
+exports.add_skill = async (req, res) => {
+    // const db = dbo.connect();
     const skill = req.body;
     const worker_id = skill.worker_id;
     const service_name = skill.service_name;
     const service_charges = skill.service_charges;
 
-    let sql = `INSERT INTO SERVICE_DETAIL(WORKER_ID, SERVICE_NAME, SERVICE_CHARGES) VALUES('${worker_id}', '${service_name}' ,'${service_charges}')`;
-    db.query(sql, (err, result) => {
-        if(err){
-            res.status(400).json({
-                status: 400,
-                message: err.sqlMessage
-            });
-        }else{
+    const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
+    try{
+        let response = await SERVICE_DETAIL.create({
+            WORKER_ID: worker_id,
+            SERVICE_NAME: service_name,
+            SERVICE_CHARGES: service_charges
+        });
+        if(response){
             res.status(200).json({
                 status: 200,
-                message: "Skill added successfully!"
+                message: "Skill updated successfully!"
             });
         }
-    })
-}
-
-
-exports.get_requests = (req, res) => {
-    const db = dbo.connect();
-    let sql = `SELECT * FROM REQUEST R LEFT OUTER JOIN CUSTOMER C ON R.CUSTOMER_ID = C.CUSTOMER_ID`;
-    db.query(sql, (err, results, fields) => {
-        if(err){
-            res.status(400).json({
-                status: 400,
-                message: err.sqlMessage
-            });
-        }else{
-            res.status(200).json({
-                status: 200,
-                data: results
-            });
-        }
-    })
+    }catch(err){
+        res.status(400).json({
+            status: 400,
+            message: err.message
+        });
+    }
+    // let sql = `INSERT INTO SERVICE_DETAIL(WORKER_ID, SERVICE_NAME, SERVICE_CHARGES) VALUES('${worker_id}', '${service_name}' ,'${service_charges}')`;
+    // db.query(sql, (err, result) => {
+    //     if(err){
+    //         res.status(400).json({
+    //             status: 400,
+    //             message: err.sqlMessage
+    //         });
+    //     }else{
+    //         res.status(200).json({
+    //             status: 200,
+    //             message: "Skill added successfully!"
+    //         });
+    //     }
+    // })
 }

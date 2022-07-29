@@ -21,6 +21,8 @@ db.sequelize.sync();
 // const dbo = require("./db/conn");
 const adminController = require('./controllers/admin');
 const userController = require('./controllers/user')
+const workerController = require('./controllers/worker')
+const requestController = require('./controllers/request')
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
@@ -33,7 +35,6 @@ app.post('/adminRegister', adminController.register);
 app.post('/registerWorker', adminController.register_worker);
 app.post('/addSkill', adminController.add_skill);
 app.put('/adminChangePassword/:username/:password', adminController.change_pasword);
-app.get('/getRequests', adminController.get_requests);
 
 // customer usecases
 app.post('/userLogin', userController.login);
@@ -43,15 +44,13 @@ app.post('/viewServices', userController.get_services);
 app.post('/requestService/:userid', userController.request_service);
 app.post('/cancelRequest/:requestid', userController.cancel_request);
 
+// worker usecases
+app.get('/workers', workerController.get_workers);
+app.get('/worker/:id', workerController.get_worker_by_id)
+app.get('/workersBySkill/:skill', workerController.get_worker_by_skill)
+app.get('/workersByAvailability', workerController.get_worker_by_availability)
+app.get('/workerDetails/:id', workerController.get_worker_details)
+app.put('/switchAvailability/:id', workerController.switch_availability);
 
-// orm testing
-app.get('/',async (req, res)=>{
-  const TEST = require(path.join(__dirname, 'model/test'))(db.sequelize, db.Sequelize)
-  res.send(await TEST.findAll())
-});
-
-app.post('/', async (req, res)=>{
-  const SD = require(path.join(__dirname, 'model/review'))(db.sequelize, db.Sequelize)
-  let result = await SD.findAll();
-  res.send(result)
-});
+// request usecases
+app.get('/requests', requestController.get_requests);
