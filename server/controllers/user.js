@@ -6,8 +6,9 @@ const CUSTOMER = require('../model/customer')(db.sequelize, db.Sequelize)
 const SERVICE = require('../model/services')(db.sequelize, db.Sequelize)
 
 exports.login = async (req, res)=>{
-    const db = dbo.connect();
+    // const db = dbo.connect();
     const user = req.body;
+    console.log(user);
     const username = user.username;
     const password = user.password;
     // let sql = `SELECT * FROM CUSTOMER WHERE USERNAME = '${username}' AND PASSWORD = '${password}'`;
@@ -45,18 +46,18 @@ exports.login = async (req, res)=>{
         let found = await CUSTOMER.findOne({where: {USERNAME: username, PASSWORD: password}});
         console.log(found)
         if(found){
-            res.status(200).json({
+            res.json({
                 status: 200,
                 data: found.dataValues
             });
         }else{
-            res.status(404).json({
+            res.json({
                 status: 404,
                 message: "Invalid username or password!"
             });
         }
     }catch(err){
-        res.status(400).json({
+        res.json({
             status: 400,
             message: err.message
         })
@@ -64,9 +65,9 @@ exports.login = async (req, res)=>{
 }
 
 exports.register = async (req, res)=>{
-    const db = dbo.connect();
+    // const db = dbo.connect();
     const user = req.body;
-
+    console.log(user);
     // setting primary info for now
     const username = user.username;
     const password = user.password;
@@ -104,13 +105,13 @@ exports.register = async (req, res)=>{
             DOB: dob,
             ADDRESS: address});
         if(response){
-            res.status(200).json({
+            res.json({
                 status: 200,
                 message: "User successfully registered!"
             })
         }
     }catch(err){
-        res.status(400).json({
+        res.json({
             status: 400,
             message: err.message
         })
@@ -186,12 +187,12 @@ exports.update_customer = async (req, res) => {
             DOB: dob,
             ADDRESS: address}, {where: {USERNAME: username}})
         if(response[0]){
-            res.status(200).json({
+            res.json({
                 status: 200,
                 message: "User details updated successfully!"
             })
         }else{
-            res.status(400).json({
+            res.json({
                 status: 400,
                 message: "Error updating details!"
             });
@@ -224,18 +225,18 @@ exports.get_services = async(req, res) => {
         let found = await SERVICE.findAll();
         console.log(found)
         if(found){
-            res.status(200).json({
+            res.json({
                 status: 200,
                 data: found.dataValues
             });
         }else{
-            res.status(404).json({
+            res.json({
                 status: 404,
                 message: "Error retrieving services!"
             });
         }
     }catch(err){
-        res.status(400).json({
+        res.json({
             status: 400,
             message: err.message
         })
@@ -270,13 +271,13 @@ exports.request_service = async (req, res) => {
             REQUEST_STATUS: "PENDING"
             });
         if(response){
-            res.status(200).json({
+            res.json({
                 status: 200,
                 message: "Your request has been submitted successfully."
             })
         }
     }catch(err){
-        res.status(400).json({
+        res.json({
             status: 400,
             message: err.message
         })
@@ -304,18 +305,18 @@ exports.cancel_request = async (req, res) => {
     try{
         let response = await REQUEST.update({REQUEST_STATUS: "CANCELLED"}, {where: {REQUEST_ID: req_id}})
         if(response[0]){
-            res.status(200).json({
+            res.json({
                 status: 200,
                 message: "Request cancelled successfully!"
             })
         }else{
-            res.status(400).json({
+            res.json({
                 status: 400,
                 message: "There was an error cancelling the request."
             });
         }
     }catch(err){
-        res.status(400).json({
+        res.json({
             status: 400,
             message: err.message
         })

@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,6 +18,11 @@ function UserSignup() {
     if (!name) alert("Please enter name");
     registerWithEmailAndPassword(name, email, password);
   };
+
+  const signup = async() => {
+    let response = await axios.post("http://localhost:5000/userRegister", {username: name, password, email});
+    alert(response.data.message)
+  }
   useEffect(() => {
     if (loading) return;
     if (user) navigate("/dashboard", { replace: true });
@@ -45,7 +51,8 @@ function UserSignup() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
         />
-        <button className="register__btn" onClick={register}>
+        {/* <button className="register__btn" onClick={register}> */}
+        <button className="register__btn" onClick={signup}>
           Register
         </button>
         <button

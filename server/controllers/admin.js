@@ -15,18 +15,18 @@ exports.login = async (req, res)=>{
         let found = await ADMIN.findOne({where: {username: username, password: password}});
         console.log(found)
         if(found){
-            res.status(200).json({
+            res.json({
                 status: 200,
                 data: found.dataValues
             });
         }else{
-            res.status(404).json({
+            res.json({
                 status: 404,
                 message: "Invalid username or password!"
             });
         }
     }catch(err){
-        res.status(400).json({
+        res.json({
             status: 400,
             message: err.message
         })
@@ -66,13 +66,13 @@ exports.register = async (req, res)=>{
             USERNAME: USERNAME, 
             PASSWORD: PASSWORD});
         if(response){
-            res.status(200).json({
+            res.json({
                 status: 200,
                 message: "Admin successfully registered!"
             })
         }
     }catch(err){
-        res.status(400).json({
+        res.json({
             status: 400,
             message: err.message
         })
@@ -102,7 +102,7 @@ exports.change_pasword = async (req, res) => {
     try{
         let response = await ADMIN.update({PASSWORD: password}, {where: {USERNAME: username}})
         if(response[0]){
-            res.status(200).json({
+            res.json({
                 status: 200,
                 message: "Password changed successfully!"
             })
@@ -113,7 +113,7 @@ exports.change_pasword = async (req, res) => {
             });
         }
     }catch(err){
-        res.status(400).json({
+        res.json({
             status: 400,
             message: err.message
         })
@@ -175,13 +175,13 @@ exports.register_worker = async (req, res) => {
             EMAIL: email
         });
         if(response){
-            res.status(200).json({
+            res.json({
                 status: 200,
                 message: "Worker registered successfully!"
             });
         }
     }catch(err){
-        res.status(400).json({
+        res.json({
             status: 400,
             message: err.message
         });
@@ -223,13 +223,13 @@ exports.add_skill = async (req, res) => {
             SERVICE_CHARGES: service_charges
         });
         if(response){
-            res.status(200).json({
+            res.json({
                 status: 200,
                 message: "Skill updated successfully!"
             });
         }
     }catch(err){
-        res.status(400).json({
+        res.json({
             status: 400,
             message: err.message
         });
