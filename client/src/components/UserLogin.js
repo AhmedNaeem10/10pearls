@@ -12,7 +12,12 @@ function UserLogin() {
     
     const login = async() => {
         let response = await axios.post("http://localhost:5000/userLogin", {username: email, password});
-        alert(response.data.message)
+        if(response.data.status == 200){
+            alert("User logged in successfully!")
+        }else{
+            alert(response.data.message)
+        }
+       
     }
     useEffect(() => {
         if (loading) {
