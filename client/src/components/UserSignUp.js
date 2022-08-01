@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
 import {
   auth,
@@ -12,7 +12,7 @@ function UserSignup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
   const register = () => {
     if (!name) alert("Please enter name");
@@ -23,10 +23,10 @@ function UserSignup() {
     let response = await axios.post("http://localhost:5000/userRegister", {username: name, password, email});
     alert(response.data.message)
   }
-  useEffect(() => {
-    if (loading) return;
-    if (user) navigate("/dashboard", { replace: true });
-  }, [user, loading]);
+  // useEffect(() => {
+  //   if (loading) return;
+  //   if (user) navigate("/dashboard", { replace: true });
+  // }, [user, loading]);
   return (
     <div className="register">
       <div className="register__container">
