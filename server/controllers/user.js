@@ -8,7 +8,6 @@ const SERVICE = require('../model/services')(db.sequelize, db.Sequelize)
 exports.login = async (req, res)=>{
     // const db = dbo.connect();
     const user = req.body;
-    console.log(user);
     const username = user.username;
     const password = user.password;
     // let sql = `SELECT * FROM CUSTOMER WHERE USERNAME = '${username}' AND PASSWORD = '${password}'`;
@@ -67,7 +66,6 @@ exports.login = async (req, res)=>{
 exports.register = async (req, res)=>{
     // const db = dbo.connect();
     const user = req.body;
-    console.log(user);
     // setting primary info for now
     const username = user.username;
     const password = user.password;
