@@ -42,14 +42,14 @@ function UserLogin() {
     const login = async () => {
 		firebase
 			.auth()
-			.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+			.signInWithPopup(new firebase.auth.EmailAuthProvider())
 			.then((userCred) => {
 				if (userCred) {
 					setAutho(true);
 					window.localStorage.setItem('auth', 'true');
 				}
 			});
-        let response = await axios.post("http://localhost:5000/userLogin", {username: email, password, headers:{Authorization: 'Bearer ' + token}});
+        let response = await axios.post("http://localhost:5000/userLogin", {username: email, password}, { headers: {Authorization: 'Bearer ' + token, role:"user" } });
         if(response.data.status == 200){
             alert("User logged in successfully!")
         }else{

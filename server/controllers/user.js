@@ -10,7 +10,7 @@ exports.login = async (req, res)=>{
     const user = req.body;
     const username = user.username;
     const password = user.password;
-    console.log(user.headers);
+    console.log(req.headers);
     // let sql = `SELECT * FROM CUSTOMER WHERE USERNAME = '${username}' AND PASSWORD = '${password}'`;
     // db.query(sql, (error, results, fields)=>{
     //     if (error){
