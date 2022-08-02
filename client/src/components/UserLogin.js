@@ -42,7 +42,7 @@ function UserLogin() {
     const login = async () => {
 		firebase
 			.auth()
-			.signInWithPopup(new firebase.auth.EmailAuthProvider())
+			.signInWithRedirect(new firebase.auth.EmailAuthProvider())
 			.then((userCred) => {
 				if (userCred) {
 					setAutho(true);

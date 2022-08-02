@@ -7,11 +7,17 @@ import {
   registerWithEmailAndPassword,
   signInWithGoogle,
 } from "../firebase";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import "./UserSignup.css";
 function UserSignup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [autho, setAutho] = useState(
+		false || window.localStorage.getItem('auth') === 'true'
+	);
+	const [token, setToken] = useState('');
   // const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
   const register = () => {
@@ -20,9 +26,33 @@ function UserSignup() {
   };
 
   const signup = async() => {
-    let response = await axios.post("http://localhost:5000/userRegister", {username: name, password, email});
-    alert(response.data.message)
+    firebase.auth().signInWithRedirect(new firebase.auth.EmailAuthProvider())
+			.then((userCred) => {
+				if (userCred) {
+					setAutho(true);
+					window.localStorage.setItem('auth', 'true');
+				}
+			});
+    let response = await axios.post("http://localhost:5000/userRegister", {username: name, password, email}, { headers: {Authorization: 'Bearer ' + token, role:"user" } });
+    if(response.data.status == 200){
+      alert("User logged in successfully!")
+    }else{
+        alert(response.data.message)
+    }
   }
+
+  useEffect(() => {
+		firebase.auth().onAuthStateChanged((userCred) => {
+			if (userCred) {
+				setAutho(true);
+				window.localStorage.setItem('auth', 'true');
+				userCred.getIdToken().then((token) => {
+					setToken(token);
+				});
+			}
+		});
+	}, []);
+
   // useEffect(() => {
   //   if (loading) return;
   //   if (user) navigate("/dashboard", { replace: true });
