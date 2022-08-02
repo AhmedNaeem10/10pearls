@@ -4,7 +4,7 @@ import AdminLogin from "./components/AdminLogin";
 import { Route, Routes } from "react-router-dom";
 import UserLogin from "./components/UserLogin";
 import Navbar from "./components/Navbar";
-import UserSignUp from "./components/UserSignup";
+import UserSignUp from "./components/UserSignUp";
 import Dashboard from "./components/Dashboard";
 function App() {
   return (
