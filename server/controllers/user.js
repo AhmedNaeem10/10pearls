@@ -1,60 +1,47 @@
 const dbo = require("../db/conn");
 const db = require("../model");
+const bcrypt = require('bcryptjs');
 
 db.sequelize.sync();
 const CUSTOMER = require('../model/customer')(db.sequelize, db.Sequelize)
 const SERVICE = require('../model/services')(db.sequelize, db.Sequelize)
+const REQUEST = require('../model/request')(db.sequelize, db.Sequelize)
 
 exports.login = async (req, res)=>{
     // const db = dbo.connect();
     const user = req.body;
     const username = user.username;
     const password = user.password;
-    // let sql = `SELECT * FROM CUSTOMER WHERE USERNAME = '${username}' AND PASSWORD = '${password}'`;
-    // db.query(sql, (error, results, fields)=>{
-    //     if (error){
-    //         res.status(400).json({
-    //             status: 400,
-    //             message: error.sqlMessage
-    //         })
-    //     }
-    //     else{
-    //         if(results.length){
-    //             res.status(200).json({
-    //                 status: 200,
-    //                 data: results[0]
-    //             });
-    //         }else{
-    //             res.status(404).json({
-    //                 status: 404,
-    //                 message: "Invalid username or password!"
-    //             });
-    //         }
-    //     }
-    // });
-    // CUSTOMER.findOne({
-    //     where:
-    //         {USERNAME: username, 
-    //         PASSWORD: password}
-    // }).then(res => {
-    //     console.log(res)
-    // }).catch((error) => {
-    //     console.error('Failed to retrieve data : ', error);
-    // });
+    
+
     try{
-        let found = await CUSTOMER.findOne({where: {USERNAME: username, PASSWORD: password}});
-        console.log(found)
+        let found = await CUSTOMER.findOne({where: {USERNAME: username}});
+        // console.log(found)
         if(found){
-            res.json({
-                status: 200,
-                data: found.dataValues
-            });
-        }else{
+            if(await bcrypt.compare(user.password, found.dataValues.PASSWORD)){
+                // creating a JWT token
+                // token = jwt.sign({id:user._id,username:user.email,type:'user'},JWT_SECRET,{ expiresIn: '2h'})
+                res.json({
+                    status: 200,
+                    data: found.dataValues
+                });
+            }
+            else{
+                res.json({
+                    status: 404,
+                    message: "Wrong password!"
+                });
+            }
+
+        }
+        else{
             res.json({
                 status: 404,
-                message: "Invalid username or password!"
+                message: "Username doesn't exist!"
             });
+            
         }
+        
     }catch(err){
         res.json({
             status: 400,
@@ -68,7 +55,9 @@ exports.register = async (req, res)=>{
     const user = req.body;
     // setting primary info for now
     const username = user.username;
-    const password = user.password;
+    // password encryption
+    var salt =10
+    const password = await bcrypt.hash(user.password,salt);
     const first_name = user.first_name;
     const last_name = user.last_name;
     const email = user.email;
@@ -283,7 +272,7 @@ exports.request_service = async (req, res) => {
 }
 
 exports.cancel_request = async (req, res) => {
-    const db = dbo.connect();
+    // const db = dbo.connect();
     const req_id = req.params.requestid;
 
     // let sql = `UPDATE REQUEST SET REQUEST_STATUS = "CANCELLED" WHERE REQUEST_ID = '${req_id}'`;
@@ -311,6 +300,53 @@ exports.cancel_request = async (req, res) => {
             res.json({
                 status: 400,
                 message: "There was an error cancelling the request."
+            });
+        }
+    }catch(err){
+        res.json({
+            status: 400,
+            message: err.message
+        })
+    }
+}
+
+exports.get_usernames = async(req, res) => {
+    try{
+        let found = await CUSTOMER.findAll({attribute: ['USERNAME']});
+        console.log(found)
+        if(found){
+            // console.log(found.dataValues.USERNAME)
+            res.json({
+                status: 200,
+                data: found.dataValues
+            });
+        }else{
+            res.json({
+                status: 404,
+                message: "Error retrieving usernames!"
+            });
+        }
+    }catch(err){
+        res.json({
+            status: 400,
+            message: err.message
+        })
+    }
+}
+
+exports.get_emails = async(req, res) => {
+    try{
+        let found = await CUSTOMER.findAll({attribute: 'EMAIL'});
+        console.log(found)
+        if(found){
+            res.json({
+                status: 200,
+                data: found.dataValues
+            });
+        }else{
+            res.json({
+                status: 404,
+                message: "Error retrieving emails!"
             });
         }
     }catch(err){

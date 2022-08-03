@@ -11,7 +11,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.json());
-app.use(middleware.decodeToken);
+// app.use(middleware.decodeToken);
 
 const db = require("./model");
 db.sequelize.sync();
@@ -42,6 +42,8 @@ app.post('/updateCustomer/:userid', userController.update_customer);
 app.post('/viewServices', userController.get_services);
 app.post('/requestService/:userid', userController.request_service);
 app.post('/cancelRequest/:requestid', userController.cancel_request);
+app.post('/getUsernames', userController.get_usernames);
+app.post('/getEmails', userController.get_emails);
 
 // worker usecases
 app.get('/workers', workerController.get_workers);

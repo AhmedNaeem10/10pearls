@@ -36,3 +36,9 @@
 .register div {
     margin-top: 7px;
 }
+.showError{
+    color: rgb(177, 66, 66);
+    font-size: 13px;
+    width: 270px;
+    
+}

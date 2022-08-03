@@ -52,6 +52,7 @@ function UserLogin() {
         let response = await axios.post("http://localhost:5000/userLogin", {username: email, password}, { headers: {Authorization: 'Bearer ' + token, role:"user" } });
         if(response.data.status == 200){
             alert("User logged in successfully!")
+            // navigate("/dashboard");
         }else{
             alert(response.data.message)
         }
