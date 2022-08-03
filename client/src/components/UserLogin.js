@@ -6,7 +6,10 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import axios from 'axios';
 import "./UserLogin.css";
-
+import {
+    multiFactor, PhoneAuthProvider, PhoneMultiFactorGenerator,
+    RecaptchaVerifier
+} from "firebase/auth";
 function UserLogin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -26,6 +29,17 @@ function UserLogin() {
     //     }
        
     // }
+    const validate = (values) => {
+        const errors = {};
+        if (!values.username) {
+          errors.username = "Username is required!";
+        }
+    
+        if (!values.password) {
+          errors.password = "Password is required!";
+        } 
+        return errors;
+      };
 
     useEffect(() => {
 		firebase.auth().onAuthStateChanged((userCred) => {
@@ -56,6 +70,28 @@ function UserLogin() {
         }else{
             alert(response.data.message)
         }
+
+//         const recaptchaVerifier = new RecaptchaVerifier(container);
+// multiFactor(user).getSession()
+//     .then(function (multiFactorSession) {
+//         // Specify the phone number and pass the MFA session.
+//         const phoneInfoOptions = {
+//             phoneNumber: phoneNumber,
+//             session: multiFactorSession
+//         };
+
+//         const phoneAuthProvider = new PhoneAuthProvider();
+
+//         // Send SMS verification code.
+//         return phoneAuthProvider.verifyPhoneNumber(phoneInfoOptions, recaptchaVerifier);
+//     }).then(function (verificationId) {
+//         // Ask user for the verification code. Then:
+//         const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
+//         const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
+
+//         // Complete enrollment.
+//         return multiFactor(user).enroll(multiFactorAssertion, mfaDisplayName);
+//     });
 	};
 
     // useEffect(() => {
