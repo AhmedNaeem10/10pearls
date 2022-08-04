@@ -11,12 +11,12 @@ function UserLogin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [autho, setAutho] = useState(
-		false || window.localStorage.getItem('auth') === 'true'
-	);
-	const [token, setToken] = useState('');
+        false || window.localStorage.getItem('auth') === 'true'
+    );
+    const [token, setToken] = useState('');
     // const [user, loading, error] = useAuthState(auth);
     const navigate = useNavigate();
-    
+
     // const login = async() => {
     //     let response = await axios.post("http://localhost:5000/userLogin", {username: email, password});
     //     if(response.data.status == 200){
@@ -24,38 +24,38 @@ function UserLogin() {
     //     }else{
     //         alert(response.data.message)
     //     }
-       
+
     // }
 
     useEffect(() => {
-		firebase.auth().onAuthStateChanged((userCred) => {
-			if (userCred) {
-				setAutho(true);
-				window.localStorage.setItem('auth', 'true');
-				userCred.getIdToken().then((token) => {
-					setToken(token);
-				});
-			}
-		});
-	}, []);
+        firebase.auth().onAuthStateChanged((userCred) => {
+            if (userCred) {
+                setAutho(true);
+                window.localStorage.setItem('auth', 'true');
+                userCred.getIdToken().then((token) => {
+                    setToken(token);
+                });
+            }
+        });
+    }, []);
 
     const login = async () => {
-		firebase
-			.auth()
-			.signInWithRedirect(new firebase.auth.EmailAuthProvider())
-			.then((userCred) => {
-				if (userCred) {
-					setAutho(true);
-					window.localStorage.setItem('auth', 'true');
-				}
-			});
-        let response = await axios.post("http://localhost:5000/userLogin", {username: email, password}, { headers: {Authorization: 'Bearer ' + token, role:"user" } });
-        if(response.data.status == 200){
+        firebase
+            .auth()
+            .signInWithRedirect(new firebase.auth.EmailAuthProvider())
+            .then((userCred) => {
+                if (userCred) {
+                    setAutho(true);
+                    window.localStorage.setItem('auth', 'true');
+                }
+            });
+        let response = await axios.post("http://localhost:5000/userLogin", { username: email, password }, { headers: { Authorization: 'Bearer ' + token, role: "user" } });
+        if (response.data.status == 200) {
             alert("User logged in successfully!")
-        }else{
+        } else {
             alert(response.data.message)
         }
-	};
+    };
 
     // useEffect(() => {
     //     if (loading) {
