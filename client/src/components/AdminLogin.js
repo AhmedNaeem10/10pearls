@@ -1,15 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import React, { useState } from 'react'
 import axios from 'axios';
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [autho, setAutho] = useState(
-		false || window.localStorage.getItem('auth') === 'true'
-	);
-  const [token, setToken] = useState('');
   const login = async () => {
     let response = await axios.post("http://localhost:5000/adminLogin", { username, password });
     if (response.data.status === 200) {
@@ -19,17 +13,7 @@ export default function AdminLogin() {
     }
   }
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((userCred) => {
-        if (userCred) {
-            setAutho(true);
-            window.localStorage.setItem('auth', 'true');
-            userCred.getIdToken().then((token) => {
-                setToken(token);
-            });
-        }
-    });
-}, []);
+  
   return (
     // <div className='container' style={{ marginTop: 50 }}>
     //   <div>
@@ -60,7 +44,7 @@ export default function AdminLogin() {
         <input
           type="password"
           className="login__textBox"
-          placeholder='' value={password} onChange={(e) => setPassword(e.target.value)}
+          value={password} onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
         />
         <button
