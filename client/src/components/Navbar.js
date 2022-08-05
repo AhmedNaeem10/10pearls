@@ -17,18 +17,21 @@ export default function Navbar() {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0 nav-links">
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <NavLink className="nav-link" to="/admin" exact>ADMIN</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/" exact>USER</NavLink>
+                                <NavLink className="nav-link" to="/signup" exact>USER</NavLink>
+                            </li> */}
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to="/" exact>HOME</NavLink>
                             </li>
                         </ul>
 
                     </div>
                 </div>
                 {location.pathname != "/admin" && <a href="/signup" class="btn btn-primary mx-2">SignUp</a>}
-                <a href="/" class="btn btn-primary mx-2">Login</a>
+                <a href="/login" class="btn btn-primary mx-2">Login</a>
 
             </nav>
         </div>

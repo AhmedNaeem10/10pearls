@@ -121,50 +121,8 @@ function UserSignup() {
     // ..
     console.log(error);
   });
-    // const user = firebase.auth().currentUser;
     
-   
 
-//     firebase.auth().onAuthStateChanged((user) => {
-//       if (user) {
-//         // User is signed in, see docs for a list of available properties
-//         // https://firebase.google.com/docs/reference/js/firebase.User
-        
-//         var uid = user.uid;
-//         console.log(user);
-//         console.log("User signed in");
-        
-//         var credential = firebase.auth.EmailAuthProvider.credential(formValues.email, formValues.password);
-//         user.reauthenticateWithCredential(credential).then(() => {
-//   // User re-authenticated.
-//         console.log("User reauthenticated");
-//         }).catch((error) => {
-//   // An error occurred
-//         console.log("Error reauthenticating");
-//         console.log(error);
-//   // ...
-// });
-//         user.updateEmail(formValues.email).then(() => {
-//           console.log("Email set to ", formValues.email)
-//           // user.email = formValues.email;
-//           // Update successful
-//           // ...
-//         }).catch((error) => {
-//           // An error occurred
-//           console.log(error);
-//           console.log("Couldn't update email to ", formValues.email);
-//           // ...
-//         });
-//         // ...
-//       } else {
-//         // User is signed out
-//         // ...
-//         console.log("User signed out");
-//       }
-//     });
-
-    
-    
     
   }
 }
@@ -189,6 +147,7 @@ function UserSignup() {
         let response = await axios.post("http://localhost:5000/userRegister", {username: formValues.username, email: formValues.email, password: formValues.password}, { headers: {Authorization: 'Bearer ' + token, role:"user" } });
         if(response.data.status == 200){
           alert("User registered successfully!")
+          navigate('/');
         }else{
             alert(response.data.message);
             alert("Couldn't register user!");

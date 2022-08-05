@@ -39,3 +39,27 @@
 // }
 // export default Dashboard;
 
+import React from 'react'
+import { useSelector } from 'react-redux'
+import classes from './Dashboard.module.css'
+export default function Dashboard() {
+    const services = useSelector((state) => state.allServices.services)
+    console.log(services);
+    return (
+        services.map((services) => {
+            const { id, title } = services;
+            return (
+                <>
+                    <div className={classes['card-container']}>
+                        <div className={classes['image-container']}>
+                            <img src="" alt={title} />
+                        </div>
+                        <div>
+                            <p className={classes['card-title']}>{title}</p>
+                        </div>
+                    </div>
+                </>
+            )
+        })
+    )
+}
