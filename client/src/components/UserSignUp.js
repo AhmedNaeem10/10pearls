@@ -7,9 +7,13 @@ import {
   registerWithEmailAndPassword,
   signInWithGoogle
 } from "../firebase";
+import { reauthenticateWithCredential } from "firebase/auth";
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import "./UserSignup.css";
+// import { getAuth,  onAuthStateChanged } from "firebase/auth";
+
+
 // const [user, loading, error] = useAuthState(auth);
  
 
@@ -31,34 +35,13 @@ function UserSignup() {
   //   if (!name) alert("Please enter name");
   //   registerWithEmailAndPassword(name, email, password);
   // };
+  // const auth = getAuth();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
-  useEffect(() => {
-    if (notInitialRender.current) {
-    console.log(formErrors);
-    // if (Object.keys(formErrors).length === 0 ) {
-    //   console.log(formValues);
-    // }
-    const checkErrors = async() =>{
-      if (Object.keys(formErrors).length === 0) {
-        let response = await axios.post("http://localhost:5000/userRegister", {username: formValues.username, email: formValues.email, password: formValues.password}, { headers: {Authorization: 'Bearer ' + token, role:"user" } });
-        if(response.data.status == 200){
-          alert("User registered successfully!")
-        }else{
-            alert(response.data.message);
-            alert("Couldn't register user!");
-        }}
-
-    }
-    checkErrors()}
-    else
-    notInitialRender.current = true;
-    
-  }, [formErrors]);
-
+  
   const validate = (values) => {
     const errors = {};
     const emailFormat = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
@@ -85,27 +68,106 @@ function UserSignup() {
     return errors;
   };
 
-  const signup = async() => {
-    firebase.auth().signInWithRedirect(new firebase.auth.EmailAuthProvider())
-			.then((userCred) => {
-				if (userCred) {
-					setAutho(true);
-					window.localStorage.setItem('auth', 'true');
-				}
-			});
 
+  // after clicking register
+  const signup = async() => {
     setFormErrors(validate(formValues));
     console.log(formValues)
-    // console.log(formErrors);
-    // if (Object.keys(formErrors).length === 0) {
-    // let response = await axios.post("http://localhost:5000/userRegister", {username: formValues.username, email: formValues.email, password: formValues.password}, { headers: {Authorization: 'Bearer ' + token, role:"user" } });
-    // if(response.data.status == 200){
-    //   alert("User registered successfully!")
-    // }else{
-    //     alert(response.data.message);
-    //     alert("Couldn't register user!");
-    // }}
+
+   // create user on firebase
+    if (Object.keys(formErrors).length === 0) {
+    firebase.auth().createUserWithEmailAndPassword(formValues.email, formValues.password)
+  .then((userCredential) => {
+    // Signed in to the created account
+    var user = userCredential.user;
+    console.log("User created on firebase");
+    console.log(user);
+
+    // reauthenticate into account with the same credentials
+    var credential = firebase.auth.EmailAuthProvider.credential(formValues.email, formValues.password);
+        user.reauthenticateWithCredential(credential).then(() => {
+  // User re-authenticated.
+        console.log("User reauthenticated");
+        }).catch((error) => {
+  // An error occurred
+        console.log("Error reauthenticating");
+        console.log(error);
+});
+
+       // set email on which email has to be sent
+        user.updateEmail(formValues.email).then(() => {
+           // Update successful
+          console.log("Email set to ", formValues.email)
+         
+        }).catch((error) => {
+          // An error occurred
+          console.log(error);
+          console.log("Couldn't update email to ", formValues.email);
+          
+        });
+    
+   // send email verification
+    firebase.auth().currentUser.sendEmailVerification()
+      .then(() => {
+        console.log(user);
+        console.log("Verification email sent!")
+        // Email verification sent!
+        // ...
+      });
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // ..
+    console.log(error);
+  });
+    // const user = firebase.auth().currentUser;
+    
+   
+
+//     firebase.auth().onAuthStateChanged((user) => {
+//       if (user) {
+//         // User is signed in, see docs for a list of available properties
+//         // https://firebase.google.com/docs/reference/js/firebase.User
+        
+//         var uid = user.uid;
+//         console.log(user);
+//         console.log("User signed in");
+        
+//         var credential = firebase.auth.EmailAuthProvider.credential(formValues.email, formValues.password);
+//         user.reauthenticateWithCredential(credential).then(() => {
+//   // User re-authenticated.
+//         console.log("User reauthenticated");
+//         }).catch((error) => {
+//   // An error occurred
+//         console.log("Error reauthenticating");
+//         console.log(error);
+//   // ...
+// });
+//         user.updateEmail(formValues.email).then(() => {
+//           console.log("Email set to ", formValues.email)
+//           // user.email = formValues.email;
+//           // Update successful
+//           // ...
+//         }).catch((error) => {
+//           // An error occurred
+//           console.log(error);
+//           console.log("Couldn't update email to ", formValues.email);
+//           // ...
+//         });
+//         // ...
+//       } else {
+//         // User is signed out
+//         // ...
+//         console.log("User signed out");
+//       }
+//     });
+
+    
+    
+    
   }
+}
 
   useEffect(() => {
 		firebase.auth().onAuthStateChanged((userCred) => {
@@ -118,6 +180,25 @@ function UserSignup() {
 			}
 		});
 	}, []);
+
+  useEffect(() => {
+    if (notInitialRender.current) {
+    console.log(formErrors);
+    const checkErrors = async() =>{
+      if (Object.keys(formErrors).length === 0) {
+        let response = await axios.post("http://localhost:5000/userRegister", {username: formValues.username, email: formValues.email, password: formValues.password}, { headers: {Authorization: 'Bearer ' + token, role:"user" } });
+        if(response.data.status == 200){
+          alert("User registered successfully!")
+        }else{
+            alert(response.data.message);
+            alert("Couldn't register user!");
+        }}
+    }
+    checkErrors()}
+    else
+    notInitialRender.current = true;
+  }, [formErrors]);
+
 
   // useEffect(() => {
   //   console.log(formErrors);
