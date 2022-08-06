@@ -41,7 +41,7 @@
 
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -49,7 +49,7 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import classes from './Dashboard.module.css'
 import { setServices } from '../redux/actions/serviceActions';
-export default function Dashboard() {
+export default function Workers() {
 
     const response = [
         {
@@ -67,6 +67,8 @@ export default function Dashboard() {
             "SERVICE_RATE": 500
         }
     ]
+    const { service } = useParams();
+    console.log(service);
     const fetchServices = () => {
         dispatch(setServices(response))
     }
@@ -113,3 +115,4 @@ export default function Dashboard() {
         </div>
     )
 }
+
