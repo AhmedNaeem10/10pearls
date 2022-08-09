@@ -1,10 +1,25 @@
-import React, { useState } from 'react'
-import axios from 'axios';
+import axios from "axios";
+import React, { useEffect, useState, useRef } from "react";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [autho, setAutho] = useState(
+    false || window.localStorage.getItem('auth') === 'true'
+);
+const [token, setToken] = useState('');
   const login = async () => {
+    firebase
+            .auth()
+            .signInWithRedirect(new firebase.auth.EmailAuthProvider())
+            .then((userCred) => {
+                if (userCred) {
+                    setAutho(true);
+                    window.localStorage.setItem('auth', 'true');
+                }
+            });
     let response = await axios.post("http://localhost:5000/adminLogin", { username, password });
     if (response.data.status === 200) {
       alert("Logged in successfully!");
@@ -12,6 +27,19 @@ export default function AdminLogin() {
       alert(response.data.message);
     }
   }
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((userCred) => {
+        if (userCred) {
+            setAutho(true);
+            window.localStorage.setItem('auth', 'true');
+            userCred.getIdToken().then((token) => {
+              console.log(token);
+                setToken(token);
+            });
+        }
+    });
+}, []);
 
   
   return (
@@ -39,7 +67,7 @@ export default function AdminLogin() {
           type="text"
           className="login__textBox"
           value={username} onChange={(e) => setUsername(e.target.value)}
-          placeholder="E-mail Address"
+          placeholder="Username"
         />
         <input
           type="password"

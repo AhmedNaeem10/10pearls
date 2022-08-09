@@ -10,12 +10,12 @@ const REQUEST = require('../model/request')(db.sequelize, db.Sequelize)
 exports.login = async (req, res)=>{
     // const db = dbo.connect();
     const user = req.body;
-    const username = user.username;
+    const email = user.email;
     const password = user.password;
     
 
     try{
-        let found = await CUSTOMER.findOne({where: {USERNAME: username}});
+        let found = await CUSTOMER.findOne({where: {EMAIL: email}});
         // console.log(found)
         if(found){
             if(await bcrypt.compare(user.password, found.dataValues.PASSWORD)){
@@ -37,7 +37,7 @@ exports.login = async (req, res)=>{
         else{
             res.json({
                 status: 404,
-                message: "Username doesn't exist!"
+                message: "Account with this email doesn't exist!"
             });
             
         }

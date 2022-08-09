@@ -31,6 +31,7 @@ function UserSignup() {
   // const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
   const notInitialRender = useRef(false)
+  var getToken = false;
   // const register = () => {
   //   if (!name) alert("Please enter name");
   //   registerWithEmailAndPassword(name, email, password);
@@ -73,6 +74,27 @@ function UserSignup() {
   const signup = async() => {
     setFormErrors(validate(formValues));
     console.log(formValues)
+
+    // firebase.auth().signInWithRedirect(new firebase.auth.EmailAuthProvider())
+		// 	.then((userCred) => {
+		// 		if (userCred) {
+		// 			setAutho(true);
+		// 			window.localStorage.setItem('auth', 'true');
+		// 		}
+		// 	});
+
+      // firebase.auth().onAuthStateChanged((user) => {
+      //   if (user) {
+      //     // User is signed in, see docs for a list of available properties
+      //     // https://firebase.google.com/docs/reference/js/firebase.User
+      //     var uid = user.uid;
+      //     console.log(user);
+      //     // ...
+      //   } else {
+      //     // User is signed out
+      //     // ...
+      //   }
+      // });
 
    // create user on firebase
     if (Object.keys(formErrors).length === 0) {
@@ -122,18 +144,34 @@ function UserSignup() {
     console.log(error);
   });
     
-
-    
   }
 }
+
+
+// const user = firebase.auth().currentUser;
+//   const emailVerified = user.emailVerified;
+
+
+// useEffect(() => {
+//   if (emailVerified == false) {
+//     console.log("Verify your email")
+//   }
+//   else{
+//     console.log("Email verified!")
+//     navigate('/');
+//   }
+// }, [emailVerified])
 
   useEffect(() => {
 		firebase.auth().onAuthStateChanged((userCred) => {
 			if (userCred) {
 				setAutho(true);
+        console.log(userCred);
 				window.localStorage.setItem('auth', 'true');
 				userCred.getIdToken().then((token) => {  
+          getToken = true;
 					setToken(token);
+          console.log("Token: ", token);
 				});
 			}
 		});
@@ -141,7 +179,7 @@ function UserSignup() {
 
   useEffect(() => {
     if (notInitialRender.current) {
-    console.log(formErrors);
+    // console.log(formErrors);
     const checkErrors = async() =>{
       if (Object.keys(formErrors).length === 0) {
         let response = await axios.post("http://localhost:5000/userRegister", {username: formValues.username, email: formValues.email, password: formValues.password}, { headers: {Authorization: 'Bearer ' + token, role:"user" } });
