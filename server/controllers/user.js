@@ -312,13 +312,13 @@ exports.cancel_request = async (req, res) => {
 
 exports.get_usernames = async(req, res) => {
     try{
-        let found = await CUSTOMER.findAll({attribute: ['USERNAME']});
+        let found = await CUSTOMER.findAll({attributes: ['USERNAME']});
         console.log(found)
         if(found){
             // console.log(found.dataValues.USERNAME)
             res.json({
                 status: 200,
-                data: found.dataValues
+                message: found
             });
         }else{
             res.json({
@@ -336,12 +336,12 @@ exports.get_usernames = async(req, res) => {
 
 exports.get_emails = async(req, res) => {
     try{
-        let found = await CUSTOMER.findAll({attribute: 'EMAIL'});
+        let found = await CUSTOMER.findAll({attributes: ['EMAIL']});
         console.log(found)
         if(found){
             res.json({
                 status: 200,
-                data: found.dataValues
+                message: found
             });
         }else{
             res.json({

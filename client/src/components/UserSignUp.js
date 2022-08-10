@@ -52,13 +52,43 @@ function UserSignup() {
     }else if (values.username.length < 6) {
       errors.username = "Username must be at least 6 characters";
     } else if (values.username.length > 15) {
-      errors.username = "Password cannot exceed 15 characters";
+      errors.username = "Username cannot exceed 15 characters";
+    }
+    else{
+      axios.post(`http://localhost:5000/getUsernames`)
+      .then(res => {
+        console.log(res.data.message);
+        var results = res.data.message;
+        Object.values(results).forEach(val => {
+          if (values.username === val.USERNAME){
+            errors.username = "Username already exists!";
+            console.log("Username already exists");
+          }
+        
+        }
+        );
+      })
     }
 
     if (!values.email) {
       errors.email = "Email is required!";
     } else if (!emailFormat.test(values.email)) {
       errors.email = "This is not a valid email format!";
+    }
+    else{
+      axios.post(`http://localhost:5000/getEmails`)
+      .then(res => {
+        console.log(res.data.message);
+        var results = res.data.message;
+        Object.values(results).forEach(val => {
+          if (values.email === val.EMAIL){
+            console.log("Email is already in use!");
+            errors.email = "Email is already in use!";
+          }
+        
+        }
+        );
+      })
     }
 
     if (!values.password) {
@@ -74,28 +104,9 @@ function UserSignup() {
   const signup = async() => {
     setFormErrors(validate(formValues));
     console.log(formValues)
+    
 
-    // firebase.auth().signInWithRedirect(new firebase.auth.EmailAuthProvider())
-		// 	.then((userCred) => {
-		// 		if (userCred) {
-		// 			setAutho(true);
-		// 			window.localStorage.setItem('auth', 'true');
-		// 		}
-		// 	});
-
-      // firebase.auth().onAuthStateChanged((user) => {
-      //   if (user) {
-      //     // User is signed in, see docs for a list of available properties
-      //     // https://firebase.google.com/docs/reference/js/firebase.User
-      //     var uid = user.uid;
-      //     console.log(user);
-      //     // ...
-      //   } else {
-      //     // User is signed out
-      //     // ...
-      //   }
-      // });
-
+    
    // create user on firebase
     if (Object.keys(formErrors).length === 0) {
     firebase.auth().createUserWithEmailAndPassword(formValues.email, formValues.password)
@@ -149,10 +160,9 @@ function UserSignup() {
 
 
 // const user = firebase.auth().currentUser;
-//   const emailVerified = user.emailVerified;
-
-
+// const emailVerified = user.emailVerified;
 // useEffect(() => {
+
 //   if (emailVerified == false) {
 //     console.log("Verify your email")
 //   }
@@ -180,6 +190,36 @@ function UserSignup() {
   useEffect(() => {
     if (notInitialRender.current) {
     // console.log(formErrors);
+
+    // axios.post(`http://localhost:5000/getUsernames`)
+    //   .then(res => {
+    //     console.log(res.data.message);
+    //     var results = res.data.message;
+    //     Object.values(results).forEach(val => {
+    //       if (formValues.username === val.USERNAME){
+    //         formErrors.username = "Username already exists!";
+    //         console.log("Username already exists");
+    //       }
+        
+    //     }
+    //     );
+    //   })
+
+    //   axios.post(`http://localhost:5000/getEmails`)
+    //   .then(res => {
+    //     console.log(res.data.message);
+    //     var results = res.data.message;
+    //     Object.values(results).forEach(val => {
+    //       if (formValues.email === val.EMAIL){
+    //         console.log("Email is already in use!");
+    //         formErrors.email = "Email is already in use!";
+    //       }
+        
+    //     }
+    //     );
+    //   })
+
+      
     const checkErrors = async() =>{
       if (Object.keys(formErrors).length === 0) {
         let response = await axios.post("http://localhost:5000/userRegister", {username: formValues.username, email: formValues.email, password: formValues.password}, { headers: {Authorization: 'Bearer ' + token, role:"user" } });
@@ -194,6 +234,7 @@ function UserSignup() {
     checkErrors()}
     else
     notInitialRender.current = true;
+    console.log(formErrors)
   }, [formErrors]);
 
 
