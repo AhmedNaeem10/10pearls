@@ -1,6 +1,6 @@
 import { ActionTypes } from "../constants/action-types"
 
-export const setWorker = (workers) => {
+export const setWorkers = (workers) => {
     return {
         type: ActionTypes.SET_WORKER,
         payload: workers,

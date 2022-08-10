@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import UserSignup from "./components/UserSignup";
 import Dashboard from "./components/Dashboard";
 import Workers from "./components/Workers";
+import Worker from "./components/Worker";
 function App() {
   return (
     <div>
@@ -17,6 +18,7 @@ function App() {
         <Route path="/signup" element={<UserSignup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/services/:service" element={<Workers />} />
+        <Route path="/services/:service/:workerId" element={<Worker />} />
       </Routes>
     </div>
   );

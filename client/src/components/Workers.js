@@ -49,35 +49,49 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import classes from './Dashboard.module.css'
 import { setServices } from '../redux/actions/serviceActions';
+import { setWorkers } from '../redux/actions/workerActions';
 export default function Workers() {
+
+    const dispatch = useDispatch()
+    const { service } = useParams()
+
 
     const response = [
         {
-            "id": 1,
-            "SERVICE_TITLE": "Chef",
-            "SERVICE_DESCRIPTION": "This is description",
-            "SERVICE_IMAGE": "image/url",
-            "SERVICE_RATE": 500
+            "WORKER_ID": 1,
+            "FIRST_NAME": "noieji",
+            "LAST_NAME": "irnvoervno",
+            "PHONE": "033323432134",
+            "DOB": "13-23-9000",
+            "CNIC": "42324423224314",
+            "WORKER_IMAGE": "ornognrogir",
+            "ADDRESS": "fiuehroiferire",
+            "EMAIL": "jhnrhueie@gmail.com",
+            "AVAILABLE": true
         },
         {
-            "id": 2,
-            "SERVICE_TITLE": "Maid",
-            "SERVICE_DESCRIPTION": "This is description",
-            "SERVICE_IMAGE": "image/url",
-            "SERVICE_RATE": 500
+            "WORKER_ID": 2,
+            "FIRST_NAME": "noiejitsbsb",
+            "LAST_NAME": "irnvoervnosrgsrg",
+            "PHONE": "031233413434",
+            "DOB": "12-23-4332",
+            "CNIC": "42313223224314",
+            "WORKER_IMAGE": "ornognrogir",
+            "ADDRESS": "fiuehroiferireregerg",
+            "EMAIL": "rferr44r@gmail.com",
+            "AVAILABLE": false
         }
     ]
-    const { service } = useParams();
-    console.log(service);
-    const fetchServices = () => {
-        dispatch(setServices(response))
-    }
-    const dispatch = useDispatch()
-    const services = useSelector((state) => state.allServices.services)
+    const fetchWorkers = () => {
+        dispatch(setWorkers(response))
 
-    console.log(services);
+    }
+    const workers = useSelector((state) => state.allWorkers.workers)
+    console.log(workers);
+
+
     useEffect(() => {
-        fetchServices()
+        fetchWorkers()
     }, [])
     return (
         <div style={{ display: 'flex' }}>
@@ -85,25 +99,25 @@ export default function Workers() {
 
 
 
-            {services.map((services) => {
-                const { id, SERVICE_TITLE, SERVICE_DESCRIPTION, SERVICE_IMAGE, SERVICE_RATE } = services;
+            {workers.map((workers) => {
+                const { WORKER_ID, FIRST_NAME, LAST_NAME, PHONE, DOB, CNIC, WORKER_IMAGE, ADDRESS, EMAIL, AVAILABLE } = workers;
                 return (
-                    <Link to={`/services/${SERVICE_TITLE}`}>
+                    <Link to={`/services/${service}/${WORKER_ID}`}>
                         <div style={{ margin: '1rem' }}>
                             <Card sx={{ maxWidth: 345 }}>
                                 <CardActionArea>
                                     <CardMedia
                                         component="img"
                                         height="140"
-                                        image={SERVICE_IMAGE}
-                                        alt={SERVICE_TITLE}
+                                        image={WORKER_IMAGE}
+                                        alt={FIRST_NAME}
                                     />
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
-                                            {SERVICE_TITLE}
+                                            {FIRST_NAME}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            {SERVICE_DESCRIPTION}
+                                            {AVAILABLE}
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
@@ -114,5 +128,16 @@ export default function Workers() {
             })}
         </div>
     )
+
+    // console.log(worker);
+    // const fetchWorkers = () => {
+    //     dispatch(setServices(response))
+    // }
+    // const workers = useSelector((state) => state.allServices.services)
+
+    // console.log(workers);
+    // useEffect(() => {
+    //     fetchWorkers()
+    // }, [])
 }
 
