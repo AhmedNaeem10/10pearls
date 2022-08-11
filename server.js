@@ -6,7 +6,7 @@ require("dotenv").config({ path: "./config.env" });
 const path = require('path');
 const middleware = require('./middleware');
 
-const port = 5000;
+const port = process.env.SERVER_PORT || 5000;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -30,6 +30,10 @@ app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
 
+
+app.get("/", (req, res)=>{
+  res.json('Server is alive!')
+});
 
 // admin usecases
 app.post('/adminLogin', adminController.login);
