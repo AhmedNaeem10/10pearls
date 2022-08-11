@@ -11,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING(15)
         },
         PASSWORD: {
-            type: Sequelize.STRING(18)
+            type: Sequelize.STRING(100)
         }, 
         EMAIL: {
             type: Sequelize.STRING(50)
@@ -30,7 +30,7 @@ module.exports = (sequelize, Sequelize) => {
             unique: true
         },
         CNIC: {
-            type: Sequelize.STRING(13),
+            type: Sequelize.STRING(15),
             unique: true
         },
         ADDRESS: {
