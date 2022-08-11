@@ -4,6 +4,7 @@ const Sequelize = require("sequelize");
 // create database
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 	host: dbConfig.HOST,
+	port: dbConfig.PORT,
 	dialect: dbConfig.dialect,
 	operationsAliases: false,
 	pool: {
@@ -11,7 +12,13 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 	min: dbConfig.pool.min,
 	acquire: dbConfig.pool.acquire,
 	idle: dbConfig.pool.idle
-	}
+	},
+	// dialectOptions: {
+    //     socketPath: "/var/run/mysqld/mysqld.sock"
+    // },
+    define: {
+        paranoid: true
+    }
 });
 
 const db = {};

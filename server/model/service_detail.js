@@ -3,17 +3,17 @@ module.exports = (sequelize, Sequelize) => {
         id: {
             type: Sequelize.INTEGER,
             field: "SERVICE_DETAIL_ID",
-            primaryKey: 1,
-            autoIncrement: 1      
+            primaryKey: true,
+            autoIncrement: true    
         },
         WORKER_ID: {
             type: Sequelize.INTEGER
         },
-        SERVICE_NAME: {
-            type: Sequelize.TEXT
+        SERVICE_ID: {
+            type: Sequelize.INTEGER
         }, 
         SERVICE_CHARGES: {
-            type: Sequelize.TEXT
+            type: Sequelize.FLOAT
         }
     }, {
         timestamps: false,

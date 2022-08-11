@@ -1,29 +1,27 @@
 module.exports = (sequelize, Sequelize) => {
-    return SERVICE = sequelize.define("SERVICES", {
+    return SERVICE = sequelize.define("SERVICE", {
         id: {
             type: Sequelize.INTEGER,
-            field: "SERVICE_ID",             
-            autoIncrement: true,       
+            field: "SERVICE_ID",
             primaryKey: true,
-            allowNull: false
+            autoIncrement: true      
         },
-        CUSTOMER_ID: {
-            type: Sequelize.INTEGER
+        SERVICE_TITLE: {
+            type: Sequelize.TEXT
         },
-        SERVICE_DETAIL_ID: {
-            type: Sequelize.INTEGER
+        SERVICE_DESCRIPTION: {
+            type: Sequelize.TEXT
         }, 
-        DATE_TIME: {
-            type: Sequelize.DATE,
-            allowNull: false
+        SERVICE_IMAGE: {
+            type: Sequelize.TEXT
         },
-        PAYMENT_METHOD: {
-            type: Sequelize.STRING(15)
+        SERVICE_RATE: {
+            type: Sequelize.FLOAT
         }
     }, {
         timestamps: false,
-        
-        
+
+        // If don't want createdAt
         createdAt: false,
 
         // If don't want updatedAt

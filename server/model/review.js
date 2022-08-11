@@ -3,12 +3,12 @@ module.exports = (sequelize, Sequelize) => {
         id: {
             type: Sequelize.INTEGER,
             field: "REVIEW_ID",
-            primaryKey: 1,
-            autoIncrement: 1      
+            primaryKey: true,
+            autoIncrement: true      
         },
-        SERVICE_ID: {
-            type: Sequelize.INTEGER
-        },
+        // SERVICE_ID: {
+        //     type: Sequelize.INTEGER
+        // },
         RATING: {
             type: Sequelize.INTEGER
         }, 

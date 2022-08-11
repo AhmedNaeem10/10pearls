@@ -2,6 +2,9 @@ const db = require("../model");
 db.sequelize.sync();
 
 const WORKER = require('../model/worker')(db.sequelize, db.Sequelize)
+const REVIEW = require('../model/review')(db.sequelize, db.Sequelize);
+const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
+const JOB = require('../model/job')(db.sequelize, db.Sequelize);
 
 // get all the workers currently present
 exports.get_workers = async (req, res) => {
@@ -40,7 +43,7 @@ exports.get_worker_by_id = async (req, res) => {
 // filter workers on a particular skill
 exports.get_worker_by_skill = async (req, res) => {
     try{
-        const {skill} = req.params;
+        const {id} = req.params;
         const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
         WORKER.hasMany(SERVICE_DETAIL, {
             foreignKey: 'WORKER_ID'
@@ -51,7 +54,7 @@ exports.get_worker_by_skill = async (req, res) => {
         });
 
         SERVICE_DETAIL.findAll({
-            where: {SERVICE_NAME: skill},
+            where: {SERVICE_ID: id},
             include: [{
               model: WORKER,
             }]
@@ -158,3 +161,100 @@ exports.switch_availability = async (req, res) => {
     }
 }
 
+// update worker details
+exports.update_worker = async (req, res) => {
+    try{
+        const {id} = req.params;
+        const worker = req.body;
+
+        const first_name = worker.first_name;
+        const last_name = worker.last_name;
+        const email = worker.email;
+        const phone = worker.phone;
+        const dob = worker.dob;
+        const cnic = worker.cnic;
+        const address = worker.address;
+        let result = await WORKER.findOne({where: {WORKER_ID: id}});
+        if(result){
+            let response = await WORKER.update({FIRST_NAME: first_name,
+                LAST_NAME: last_name,
+                EMAIL: email,
+                PHONE: phone,
+                CNIC: cnic,
+                DOB: dob,
+                ADDRESS: address}, {where: {WORKER_ID: id}});
+            if(response[0]){
+                res.status(200).json({
+                    status: 200,
+                    message: "Worker details updated successfully!"
+                })
+            }else{
+                res.status(400).json({
+                    status: 400,
+                    message: "There was an error updating worker details."
+                });
+            }
+        }
+    }catch(err){
+        res.status(400).json({
+            status: 400,
+            message: err.message
+        });
+    }
+}
+
+exports.get_worker_feedback = async(req , res) => {
+    // const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
+    try{
+        const {id} = req.params;
+        
+        JOB.hasOne(REVIEW, {
+            foreignKey: 'JOB_ID',
+            // sourceKey: 'id'
+        });
+
+        REVIEW.belongsTo(JOB, {
+            foreignKey: 'JOB_ID',
+            // targetKey: 'id'
+        });
+
+        SERVICE_DETAIL.hasOne(JOB, {
+            foreignKey: 'SERVICE_DETAIL_ID'
+            // sourceKey: 'id'
+        });
+
+        JOB.belongsTo(SERVICE_DETAIL, {
+            foreignKey: 'SERVICE_DETAIL_ID'
+            // targetKey: 'id'
+        });
+
+        JOB.findAll(
+            {
+            // where: {WORKER_ID: id},
+            raw: true,
+            include: [
+                {
+              model: SERVICE_DETAIL,
+              required: true,
+              where: {WORKER_ID: id}
+            }
+            ,
+            {
+                model: REVIEW,
+                required: true,
+              }
+            ]
+          }
+          ).then(results => {
+            res.status(200).json({
+                status: 200,
+                message: results
+            });
+        });
+    }catch(err){
+        res.status(400).json({
+            status: 400,
+            message: err.message
+        });
+    }
+}

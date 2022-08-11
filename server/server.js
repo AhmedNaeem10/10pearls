@@ -21,7 +21,10 @@ db.sequelize.sync();
 const adminController = require('./controllers/admin');
 const userController = require('./controllers/user')
 const workerController = require('./controllers/worker')
-const requestController = require('./controllers/request')
+const jobController = require('./controllers/job')
+const serviceController = require('./controllers/service');
+const reviewController = require('./controllers/review')
+const job = require("./model/job");
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
@@ -34,24 +37,30 @@ app.post('/adminRegister', adminController.register);
 app.post('/registerWorker', adminController.register_worker);
 app.post('/addSkill', adminController.add_skill);
 app.put('/adminChangePassword/:username/:password', adminController.change_pasword);
+app.get('/getServices', serviceController.get_services);
+app.get('/checkService/:service', serviceController.check_service);
+app.post('/addService', serviceController.add_service)
+app.put('/updateJobStatus/:id/:status', jobController.update_status);
+app.get('/getJobsByStatus/:status', jobController.get_jobs)
 
 // customer usecases
 app.post('/userLogin', userController.login);
 app.post('/userRegister', userController.register);
 app.post('/updateCustomer/:userid', userController.update_customer);
 app.post('/viewServices', userController.get_services);
-app.post('/requestService/:userid', userController.request_service);
+app.post('/requestJob', jobController.request_job);
 app.post('/cancelRequest/:requestid', userController.cancel_request);
 app.post('/getUsernames', userController.get_usernames);
 app.post('/getEmails', userController.get_emails);
+app.get('/getJobsForCustomer/:id/:status', jobController.get_jobs_for_customer)
+app.post('/review', reviewController.give_review);
 
 // worker usecases
 app.get('/workers', workerController.get_workers);
 app.get('/worker/:id', workerController.get_worker_by_id)
-app.get('/workersBySkill/:skill', workerController.get_worker_by_skill)
+app.get('/getWorkerFeedbacks/:id', workerController.get_worker_feedback)
+app.get('/workersBySkill/:id', workerController.get_worker_by_skill)
 app.get('/workersByAvailability', workerController.get_worker_by_availability)
 app.get('/workerDetails/:id', workerController.get_worker_details)
+app.get('/updateWorker/:id', workerController.update_worker)
 app.put('/switchAvailability/:id', workerController.switch_availability);
-
-// request usecases
-app.get('/requests', requestController.get_requests);

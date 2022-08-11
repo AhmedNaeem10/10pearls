@@ -108,7 +108,7 @@ exports.register = async (req, res)=>{
 
 
 exports.update_customer = async (req, res) => {
-    const db = dbo.connect();
+    // const db = dbo.connect();
     
     const user_id = req.params.userid;
     const user = req.body;
@@ -356,3 +356,4 @@ exports.get_emails = async(req, res) => {
         })
     }
 }
+
