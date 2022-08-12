@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 // import { auth, logInWithEmailAndPassword as signInWithEmailAndPassword, signInWithGoogle } from "../firebase";
 // import { useAuthState } from "react-firebase-hooks/auth";
@@ -13,8 +13,12 @@ import {
   RecaptchaVerifier,
 } from "firebase/auth";
 function UserLogin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  const initialValues = { email: "", password: "" };
+  const [formValues, setFormValues] = useState(initialValues);
+  const [formErrors, setFormErrors] = useState({});
+  const notInitialRender = useRef(false)
   const [autho, setAutho] = useState(
     false || window.localStorage.getItem("auth") === "true"
   );
@@ -23,7 +27,7 @@ function UserLogin() {
   const navigate = useNavigate();
 
   // const login = async() => {
-  //     let response = await axios.post("http://localhost:5000/userLogin", {username: email, password});
+  //     let response = await axios.post("http://localhost:19720/userLogin", {username: email, password});
   //     if(response.data.status == 200){
   //         alert("User logged in successfully!")
   //     }else{
@@ -31,10 +35,18 @@ function UserLogin() {
   //     }
 
   // }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
   const validate = (values) => {
     const errors = {};
-    if (!values.username) {
-      errors.username = "Username is required!";
+    const emailFormat = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
+    if (!values.email) {
+      errors.email = "Email is required!";
+    }else if (!emailFormat.test(values.email)) {
+      errors.email = "This is not a valid email format!";
     }
 
     if (!values.password) {
@@ -56,26 +68,14 @@ function UserLogin() {
   }, []);
 
   const login = async () => {
+    setFormErrors(validate(formValues));
     const user = firebase.auth().currentUser;
     console.log(user);
-    // firebase.auth().onAuthStateChanged((user) => {
-    //     if (user) {
-    //       // User is signed in, see docs for a list of available properties
-    //       // https://firebase.google.com/docs/reference/js/firebase.User
-    //       var uid = user.uid;
-    //       console.log(user);
-    //       console.log(token);
-    //       // ...
-    //     } else {
-    //       // User is signed out
-    //       // ...
-    //     }
-    //   });
 
     // log in to firebase account
     firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(formValues.email, formValues.password)
       .then((userCredential) => {
         // Signed in
         var user = userCredential.user;
@@ -88,41 +88,40 @@ function UserLogin() {
         var errorMessage = error.message;
       });
 
-    let response = await axios.post(
-      "http://localhost:5000/userLogin",
-      { email: email, password },
-      { headers: { Authorization: "Bearer " + token, role: "user" } }
-    );
-    if (response.data.status == 200) {
-      alert("User logged in successfully!");
-      console.log(token);
-      // navigate("/dashboard");
-    } else {
-      alert(response.data.message);
-    }
+    // let response = await axios.post(
+    //   "http://localhost:19720/userLogin",
+    //   { email: formValues.email, password: formValues.password },
+    //   { headers: { Authorization: "Bearer " + token, role: "user" } }
+    // );
+    // if (response.data.status == 200) {
+    //   alert("User logged in successfully!");
+    //   console.log(token);
+    //   navigate('/');
+    //   // navigate("/dashboard");
+    // } else {
+    //   alert(response.data.message);
+    // }
 
-    //         const recaptchaVerifier = new RecaptchaVerifier(container);
-    // multiFactor(user).getSession()
-    //     .then(function (multiFactorSession) {
-    //         // Specify the phone number and pass the MFA session.
-    //         const phoneInfoOptions = {
-    //             phoneNumber: phoneNumber,
-    //             session: multiFactorSession
-    //         };
-
-    //         const phoneAuthProvider = new PhoneAuthProvider();
-
-    //         // Send SMS verification code.
-    //         return phoneAuthProvider.verifyPhoneNumber(phoneInfoOptions, recaptchaVerifier);
-    //     }).then(function (verificationId) {
-    //         // Ask user for the verification code. Then:
-    //         const cred = PhoneAuthProvider.credential(verificationId, verificationCode);
-    //         const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(cred);
-
-    //         // Complete enrollment.
-    //         return multiFactor(user).enroll(multiFactorAssertion, mfaDisplayName);
-    //     });
+    
   };
+
+  function handleFirebase(){
+    // log in to firebase account
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(formValues.email, formValues.password)
+      .then((userCredential) => {
+        // Signed in
+        var user = userCredential.user;
+        console.log(userCredential);
+        console.log(user);
+        // ...
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+      });
+  }
 
   // useEffect(() => {
   //     if (loading) {
@@ -131,23 +130,50 @@ function UserLogin() {
   //     }
   //     if (user) navigate("/dashboard");
   // }, [user, loading]);
+  useEffect(() => {
+    if (notInitialRender.current) {
+    const checkErrors = async() =>{
+      if (Object.keys(formErrors).length === 0) {
+        let response = await axios.post("http://localhost:19720/userLogin", { email: formValues.email, password: formValues.password}, { headers: {Authorization: 'Bearer ' + token, role:"user" } });
+        if(response.data.status == 200){
+          alert("User logged in successfully!");
+          handleFirebase();
+          navigate('/');
+        }else{
+            alert(response.data.message);
+            alert("Couldn't register user!");
+        }}
+    }
+    checkErrors()}
+    else
+    notInitialRender.current = true;
+    console.log(formErrors)
+  }, [formErrors]);
   return (
     <div className="login">
       <div className="login__container">
         <input
           type="text"
           className="login__textBox"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          name="email"
+          value={formValues.email}
+          onChange={handleChange}
           placeholder="E-mail Address"
         />
+        <div className = "showError">
+        <p>{formErrors.email}</p>
+        </div>
         <input
           type="password"
           className="login__textBox"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
+          value={formValues.password}
+          onChange={handleChange}
           placeholder="Password"
         />
+        <div className = "showError">
+        <p>{formErrors.password}</p>
+        </div>
         <button
           className="login__btn"
           // onClick={() => signInWithEmailAndPassword(email, password)}

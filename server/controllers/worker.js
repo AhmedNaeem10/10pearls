@@ -231,6 +231,7 @@ exports.get_worker_feedback = async(req , res) => {
         JOB.findAll(
             {
             // where: {WORKER_ID: id},
+            // attributes: ['FEEDBACK'],
             raw: true,
             include: [
                 {

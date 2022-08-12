@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { Navigate } from "react-router-dom";
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("");
@@ -20,7 +21,7 @@ const [token, setToken] = useState('');
                     window.localStorage.setItem('auth', 'true');
                 }
             });
-    let response = await axios.post("http://localhost:5000/adminLogin", { username, password });
+    let response = await axios.post("http://localhost:19720/adminLogin", { username, password });
     if (response.data.status === 200) {
       alert("Logged in successfully!");
     } else {
