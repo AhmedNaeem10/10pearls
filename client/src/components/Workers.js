@@ -50,40 +50,49 @@ import { CardActionArea } from '@mui/material';
 import classes from './Dashboard.module.css'
 import { setServices } from '../redux/actions/serviceActions';
 import { setWorkers } from '../redux/actions/workerActions';
+import axios from 'axios';
+import Navbar from './Navbar';
 export default function Workers() {
 
     const dispatch = useDispatch()
-    const { service } = useParams()
+    const { serviceId } = useParams()
 
 
-    const response = [
-        {
-            "WORKER_ID": 1,
-            "FIRST_NAME": "noieji",
-            "LAST_NAME": "irnvoervno",
-            "PHONE": "033323432134",
-            "DOB": "13-23-9000",
-            "CNIC": "42324423224314",
-            "WORKER_IMAGE": "ornognrogir",
-            "ADDRESS": "fiuehroiferire",
-            "EMAIL": "jhnrhueie@gmail.com",
-            "AVAILABLE": true
-        },
-        {
-            "WORKER_ID": 2,
-            "FIRST_NAME": "noiejitsbsb",
-            "LAST_NAME": "irnvoervnosrgsrg",
-            "PHONE": "031233413434",
-            "DOB": "12-23-4332",
-            "CNIC": "42313223224314",
-            "WORKER_IMAGE": "ornognrogir",
-            "ADDRESS": "fiuehroiferireregerg",
-            "EMAIL": "rferr44r@gmail.com",
-            "AVAILABLE": false
-        }
-    ]
-    const fetchWorkers = () => {
-        dispatch(setWorkers(response))
+    // const response = [
+    //     {
+    //         "WORKER_ID": 1,
+    //         "FIRST_NAME": "noieji",
+    //         "LAST_NAME": "irnvoervno",
+    //         "PHONE": "033323432134",
+    //         "DOB": "13-23-9000",
+    //         "CNIC": "42324423224314",
+    //         "WORKER_IMAGE": "ornognrogir",
+    //         "ADDRESS": "fiuehroiferire",
+    //         "EMAIL": "jhnrhueie@gmail.com",
+    //         "AVAILABLE": true
+    //     },
+    //     {
+    //         "WORKER_ID": 2,
+    //         "FIRST_NAME": "noiejitsbsb",
+    //         "LAST_NAME": "irnvoervnosrgsrg",
+    //         "PHONE": "031233413434",
+    //         "DOB": "12-23-4332",
+    //         "CNIC": "42313223224314",
+    //         "WORKER_IMAGE": '../images/image.webp',
+    //         "ADDRESS": "fiuehroiferireregerg",
+    //         "EMAIL": "rferr44r@gmail.com",
+    //         "AVAILABLE": false
+    //     }
+    // ]
+    const fetchWorkers = async () => {
+        const response = await axios
+            .get(`https://murmuring-crag-65083.herokuapp.com/workersBySkill/${serviceId}`)
+            .catch((err) => {
+                console.log("Err: ", err);
+            });
+        // dispatch(setServices(response.data));
+        console.log(response.data);
+        dispatch(setWorkers([response.data.message[`${parseInt(serviceId) - 1}`].WORKER]))
 
     }
     const workers = useSelector((state) => state.allWorkers.workers)
@@ -94,39 +103,42 @@ export default function Workers() {
         fetchWorkers()
     }, [])
     return (
-        <div style={{ display: 'flex' }}>
+        <>
+            <Navbar />
+            <div style={{ display: 'flex' }}>
 
 
 
 
-            {workers.map((workers) => {
-                const { WORKER_ID, FIRST_NAME, LAST_NAME, PHONE, DOB, CNIC, WORKER_IMAGE, ADDRESS, EMAIL, AVAILABLE } = workers;
-                return (
-                    <Link to={`/services/${service}/${WORKER_ID}`}>
-                        <div style={{ margin: '1rem' }}>
-                            <Card sx={{ maxWidth: 345 }}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        component="img"
-                                        height="140"
-                                        image={WORKER_IMAGE}
-                                        alt={FIRST_NAME}
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div">
-                                            {FIRST_NAME}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            {AVAILABLE}
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                        </div>
-                    </Link>
-                )
-            })}
-        </div>
+                {workers.map((workers) => {
+                    const { WORKER_ID, FIRST_NAME, LAST_NAME, PHONE, DOB, CNIC, WORKER_IMAGE, ADDRESS, EMAIL, AVAILABLE } = workers;
+                    return (
+                        <Link to={`/services/${serviceId}/${WORKER_ID}`}>
+                            <div style={{ margin: '1rem' }}>
+                                <Card sx={{ maxWidth: 345 }}>
+                                    <CardActionArea>
+                                        <CardMedia
+                                            component="img"
+                                            height="140"
+                                            image={WORKER_IMAGE}
+                                            alt={FIRST_NAME}
+                                        />
+                                        <CardContent>
+                                            <Typography gutterBottom variant="h5" component="div">
+                                                {FIRST_NAME}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                {AVAILABLE}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                            </div>
+                        </Link>
+                    )
+                })}
+            </div>
+        </>
     )
 
     // console.log(worker);

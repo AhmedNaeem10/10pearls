@@ -42,7 +42,7 @@ export default function AdminLogin() {
         <input
           type="password"
           className="login__textBox"
-          placeholder='' value={password} onChange={(e) => setPassword(e.target.value)}
+          value={password} onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
         />
         <button
