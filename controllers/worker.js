@@ -38,7 +38,7 @@ exports.get_worker_by_id = async (req, res) => {
 }
 
 // filter workers on a particular skill
-exports.get_worker_by_skill = async (req, res) => {
+exports.get_workers_full_details_by_skill = async (req, res) => {
     try{
         const {id} = req.params;
         const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
@@ -59,6 +59,41 @@ exports.get_worker_by_skill = async (req, res) => {
             res.status(200).json({
                 status: 200,
                 message: results
+            });
+        });
+    }catch(err){
+        res.status(400).json({
+            status: 400,
+            message: err.message
+        });
+    }
+}
+
+exports.get_workers_basic_details_by_skill = async (req, res) => {
+    try{
+        const {id} = req.params;
+        const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
+        WORKER.hasMany(SERVICE_DETAIL, {
+            foreignKey: 'WORKER_ID'
+        });
+
+        SERVICE_DETAIL.belongsTo(WORKER, {
+            foreignKey: 'WORKER_ID'
+        });
+
+        SERVICE_DETAIL.findAll({
+            where: {SERVICE_ID: id},
+            include: [{
+              model: WORKER,
+            }]
+          }).then(results => {
+            let records = []
+            for(let result of results){
+                records.push(result.WORKER)
+            }
+            res.status(200).json({
+                status: 200,
+                message: records
             });
         });
     }catch(err){
