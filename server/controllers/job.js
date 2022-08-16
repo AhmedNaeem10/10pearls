@@ -1,7 +1,10 @@
 const db = require("../model");
+require("dotenv").config({ path: "./config.env" });
+const transporter = require("./email")
 
 db.sequelize.sync();
 const JOB = require('../model/job')(db.sequelize, db.Sequelize);
+const CUSTOMER = require('../model/customer')(db.sequelize, db.Sequelize);
 
 exports.request_job = async (req, res) => {
 
@@ -25,10 +28,22 @@ exports.update_status = async (req, res) => {
     const {id, status} = req.params;
     try{
         let response = await JOB.update({JOB_STATUS: status}, {where: {JOB_ID: id}});
+        let getCustomer = await JOB.findOne({attributes: ['CUSTOMER_ID']}, {where: {JOB_ID: id}});
+        const customerid = getCustomer.dataValues.CUSTOMER_ID;
+        let getEmail = await CUSTOMER.findOne( {where: {CUSTOMER_ID: customerid}});
+        // console.log(getEmail);
+        const customerEmail = getEmail.dataValues.EMAIL;
+        // console.log("Email is: ", customerEmail);
+        if (customerEmail){
+            text = "Dear customer, \n\n The status of your request is now updated to '" + status + "'. \n\nRegards, \nHome Services";
+            transporter.sendEmail(customerEmail, "Status update", text);
+        }
+        if(response){
         res.json({
             status: 200,
-            message: "Status successfully updated!"
-        })
+            message: "Status successfully updated!",
+            customer_id: customerid
+        })}
     }
     catch(err){
         res.json({
@@ -71,6 +86,9 @@ exports.get_jobs_for_customer = async (req, res) => {
         });
     }
 }
+
+
+
 
 
 

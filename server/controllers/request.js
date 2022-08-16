@@ -1,4 +1,6 @@
 const db = require("../model");
+const transporter = require("./email")
+
 db.sequelize.sync();
 
 const REQUEST = require('../model/request')(db.sequelize, db.Sequelize)

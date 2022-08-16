@@ -232,19 +232,24 @@ exports.get_worker_feedback = async(req , res) => {
             {
             // where: {WORKER_ID: id},
             // attributes: ['FEEDBACK'],
+            // attributes: [''],
             raw: true,
             include: [
                 {
               model: SERVICE_DETAIL,
+            //   attributes: [''],
               required: true,
+              
               where: {WORKER_ID: id}
             }
             ,
             {
                 model: REVIEW,
                 required: true,
+                attributes: ['FEEDBACK']
               }
             ]
+            // attributes: ['FEEDBACK']
           }
           ).then(results => {
             res.status(200).json({

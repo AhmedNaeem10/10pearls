@@ -2,23 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 // import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  auth,
-  registerWithEmailAndPassword,
-  signInWithGoogle,
-} from "../firebase";
 import { reauthenticateWithCredential } from "firebase/auth";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "./UserSignup.css";
 // import { getAuth,  onAuthStateChanged } from "firebase/auth";
 
-// const [user, loading, error] = useAuthState(auth);
-
 function UserSignup() {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [name, setName] = useState("");
   const initialValues = { username: "", email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
@@ -56,7 +46,8 @@ function UserSignup() {
         Object.values(results).forEach((val) => {
           if (values.username === val.USERNAME) {
             errors.username = "Username already exists!";
-            alert("Username already exists!");
+            document.getElementById('usernameError').innerHTML="Username already exists!";
+            // alert("Username already exists!");
             console.log("Username already exists");
           }
         });
@@ -74,7 +65,8 @@ function UserSignup() {
         Object.values(results).forEach((val) => {
           if (values.email === val.EMAIL) {
             console.log("Email is already in use!");
-            alert("Email is already in use!");
+            document.getElementById('emailError').innerHTML="Email is already in use!";
+            // alert("Email is already in use!");
             errors.email = "Email is already in use!";
           }
         });
@@ -94,6 +86,7 @@ function UserSignup() {
   const signup = async () => {
     setFormErrors(validate(formValues));
     console.log(formValues);
+    console.log(formErrors);
   };
 
   function handleFirebase() {
@@ -154,6 +147,15 @@ function UserSignup() {
           // ..
           console.log(error);
         });
+
+        // firebase.auth().onAuthStateChanged(authUser => {
+        //   console.log(authUser)
+        //   if(authUser.emailVerified){ //This will return true or false
+        //     console.log('email is verified')
+        //    }else{
+        //        console.log('email not verified')
+        //    }
+        // })
     }
   }
 
@@ -186,7 +188,7 @@ function UserSignup() {
   }, []);
 
   useEffect(() => {
-    if (notInitialRender.current) {
+     if (notInitialRender.current) {
       const checkErrors = async () => {
         if (Object.keys(formErrors).length === 0) {
           let response = await axios.post(
@@ -223,7 +225,7 @@ function UserSignup() {
   //         if (formValues.username === val.USERNAME && formValues.username!= ""){
   //           console.log(formValues.username, " is equal to ", val.USERNAME);
   //           formErrors.username = "Username already exists!";
-  //           alert("Username already exists!")
+  //           // alert("Username already exists!")
   //           console.log("Username already exists");
   //         }
 
@@ -266,8 +268,8 @@ function UserSignup() {
           onChange={handleChange}
           placeholder="Username"
         />
-        <div className="showError">
-          <p>{formErrors.username}</p>
+        <div className="showError" >
+          <p id="usernameError">{formErrors.username}</p>
         </div>
         <input
           type="text"
@@ -278,7 +280,7 @@ function UserSignup() {
           placeholder="E-mail Address"
         />
         <div className="showError">
-          <p>{formErrors.email}</p>
+          <p id="emailError">{formErrors.email}</p>
         </div>
         <input
           type="password"
@@ -295,12 +297,12 @@ function UserSignup() {
         <button className="register__btn" onClick={signup}>
           Register
         </button>
-        <button
+        {/* <button
           className="register__btn register__google"
           onClick={signInWithGoogle}
         >
           Register with Google
-        </button>
+        </button> */}
         <div>
           Already have an account? <Link to="/">Login</Link> now.
         </div>

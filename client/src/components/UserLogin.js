@@ -140,6 +140,7 @@ function UserLogin() {
           handleFirebase();
           navigate('/');
         }else{
+            
             alert(response.data.message);
             alert("Couldn't register user!");
         }}
@@ -181,9 +182,9 @@ function UserLogin() {
         >
           Login
         </button>
-        <button className="login__btn login__google" onClick={login}>
+        {/* <button className="login__btn login__google" onClick={login}>
           Login with Google
-        </button>
+        </button> */}
         <div>
           <Link to="/reset">Forgot Password</Link>
         </div>

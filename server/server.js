@@ -5,6 +5,7 @@ const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });
 const path = require('path');
 const middleware = require('./middleware');
+// const nodemailer = require('nodemailer');
 
 const port = process.env.PORT || 5000;
 app.use(cors());
@@ -31,6 +32,7 @@ app.listen(port, () => {
 });
 
 
+
 // admin usecases
 app.post('/adminLogin', adminController.login);
 app.post('/adminRegister', adminController.register);
@@ -39,9 +41,12 @@ app.post('/addSkill', adminController.add_skill);
 app.put('/adminChangePassword/:username/:password', adminController.change_pasword);
 app.get('/getServices', serviceController.get_services);
 app.get('/checkService/:service', serviceController.check_service);
+app.put('/editService/:id', serviceController.edit_service)
+app.delete('/deleteService/:id', serviceController.delete_service)
 app.post('/addService', serviceController.add_service)
 app.put('/updateJobStatus/:id/:status', jobController.update_status);
 app.get('/getJobsByStatus/:status', jobController.get_jobs)
+
 
 // customer usecases
 app.post('/userLogin', userController.login);
