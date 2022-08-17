@@ -6,9 +6,9 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             autoIncrement: true      
         },
-        // SERVICE_ID: {
-        //     type: Sequelize.INTEGER
-        // },
+        JOB_ID: {
+            type: Sequelize.INTEGER
+        },
         RATING: {
             type: Sequelize.INTEGER
         }, 

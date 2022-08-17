@@ -38,6 +38,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         AVAILABLE: {
             type: Sequelize.BOOLEAN
+        },
+        RATING: {
+            type: Sequelize.FLOAT
         }
     }, {
         timestamps: false,
