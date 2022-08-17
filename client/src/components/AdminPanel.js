@@ -9,7 +9,9 @@ function AdminPanel() {
     <>
     <div className='AdminPanel'>
     <Sidebar/>
+    <div>
     <h3> HEKLOOOOOOOOOOOOOOOOOPKKKKKKOO</h3>
+    </div>
     
     </div>
 
