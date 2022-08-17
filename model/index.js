@@ -18,10 +18,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     // },
     define: {
         paranoid: true
-    },
-	dialectOptions: {
-		encrypt: true
-	}
+    }
 });
 
 const db = {};

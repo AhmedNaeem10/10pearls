@@ -10,12 +10,12 @@ const REQUEST = require('../model/request')(db.sequelize, db.Sequelize)
 exports.login = async (req, res)=>{
     // const db = dbo.connect();
     const user = req.body;
-    const username = user.username;
+    const email = user.email;
     const password = user.password;
     
 
     try{
-        let found = await CUSTOMER.findOne({where: {USERNAME: username}});
+        let found = await CUSTOMER.findOne({where: {EMAIL: email}});
         // console.log(found)
         if(found){
             if(await bcrypt.compare(user.password, found.dataValues.PASSWORD)){
@@ -37,7 +37,7 @@ exports.login = async (req, res)=>{
         else{
             res.json({
                 status: 404,
-                message: "Username doesn't exist!"
+                message: "Account with this email doesn't exist!"
             });
             
         }
@@ -56,9 +56,8 @@ exports.register = async (req, res)=>{
     // setting primary info for now
     const username = user.username;
     // password encryption
-    var salt =10
+    var salt = 10
     const password = await bcrypt.hash(user.password,salt);
-    console.log(password);
     const first_name = user.first_name;
     const last_name = user.last_name;
     const email = user.email;
@@ -109,7 +108,7 @@ exports.register = async (req, res)=>{
 
 
 exports.update_customer = async (req, res) => {
-    const db = dbo.connect();
+    // const db = dbo.connect();
     
     const user_id = req.params.userid;
     const user = req.body;
@@ -313,13 +312,13 @@ exports.cancel_request = async (req, res) => {
 
 exports.get_usernames = async(req, res) => {
     try{
-        let found = await CUSTOMER.findAll({attribute: ['USERNAME']});
+        let found = await CUSTOMER.findAll({attributes: ['USERNAME']});
         console.log(found)
         if(found){
             // console.log(found.dataValues.USERNAME)
             res.json({
                 status: 200,
-                data: found.dataValues
+                message: found
             });
         }else{
             res.json({
@@ -337,12 +336,12 @@ exports.get_usernames = async(req, res) => {
 
 exports.get_emails = async(req, res) => {
     try{
-        let found = await CUSTOMER.findAll({attribute: 'EMAIL'});
+        let found = await CUSTOMER.findAll({attributes: ['EMAIL']});
         console.log(found)
         if(found){
             res.json({
                 status: 200,
-                data: found.dataValues
+                message: found
             });
         }else{
             res.json({
@@ -357,3 +356,4 @@ exports.get_emails = async(req, res) => {
         })
     }
 }
+

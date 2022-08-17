@@ -28,7 +28,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false
         },
         CNIC: {
-            type: Sequelize.STRING(15),
+            type: Sequelize.STRING(13),
             unique: true,
             allowNull: false
         },
