@@ -1,26 +1,15 @@
 const db = require("../model");
 db.sequelize.sync();
 
-<<<<<<< HEAD
-const SERVICE = require('../model/services')(db.sequelize, db.Sequelize);
+const SERVICE = require('../model/service')(db.sequelize, db.Sequelize);
 
 exports.get_services = async(req, res) => {
-=======
-const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
-
-exports.get_services = async(req, res) => {
-    const SERVICE = require('../model/service')(db.sequelize, db.Sequelize);
->>>>>>> fd2841f (verif)
     let response = await SERVICE.findAll();
     res.json(response);
 }
 
 
 exports.check_service = async (req, res) => {
-<<<<<<< HEAD
-=======
-    const SERVICE = require('../model/service')(db.sequelize, db.Sequelize);
->>>>>>> fd2841f (verif)
     try{
         let {service} = req.params;
         let found = await SERVICE.findOne({where: {SERVICE_TITLE: service}});
@@ -44,13 +33,8 @@ exports.check_service = async (req, res) => {
     }
 }
 
-<<<<<<< HEAD
 // offer a new service
 exports.add_service = async (req, res) => {
-=======
-exports.add_service = async (req, res) => {
-    const SERVICE = require('../model/service')(db.sequelize, db.Sequelize);
->>>>>>> fd2841f (verif)
     try{
         let service = req.body;
         let response = await SERVICE.create(service);
@@ -68,7 +52,6 @@ exports.add_service = async (req, res) => {
         });
     }
 }
-<<<<<<< HEAD
 
 exports.edit_service = async (req, res) => {
     const {id} = req.params;
@@ -105,5 +88,3 @@ exports.delete_service = async (req, res) => {
         });
     }
 }
-=======
->>>>>>> fd2841f (verif)
