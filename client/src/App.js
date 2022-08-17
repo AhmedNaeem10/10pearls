@@ -9,6 +9,7 @@ import Dashboard from "./components/Dashboard";
 import Workers from "./components/Workers";
 import Worker from "./components/Worker";
 import DashboardElements from "./pages/Services";
+import AdminDashboard from "./pages/adminDashboard";
 function App() {
   return (
     <div>
@@ -20,7 +21,8 @@ function App() {
         <Route path="/login" element={<UserLogin />} />
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/services/:serviceId" element={<Workers />} />
-        <Route path="/services/:service/:workerId" element={<Worker />} />
+        <Route path="/worker/:workerId" element={<Worker />} />
+        <Route path="/admin/requests" element={<AdminDashboard />} />
       </Routes>
     </div>
   );

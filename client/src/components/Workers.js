@@ -52,6 +52,8 @@ import { setServices } from '../redux/actions/serviceActions';
 import { setWorkers } from '../redux/actions/workerActions';
 import axios from 'axios';
 import Navbar from './Navbar';
+import './Workers.css'
+import FacebookIcon from '@mui/icons-material/Facebook';
 export default function Workers() {
 
     const dispatch = useDispatch()
@@ -86,17 +88,17 @@ export default function Workers() {
     // ]
     const fetchWorkers = async () => {
         const response = await axios
-            .get(`https://murmuring-crag-65083.herokuapp.com/workersBySkill/${serviceId}`)
+            .get(`https://home-services-backend.azurewebsites.net/workersBasicDetailsBySkill/${serviceId}`)
             .catch((err) => {
                 console.log("Err: ", err);
             });
-        // dispatch(setServices(response.data));
-        console.log(response.data);
-        dispatch(setWorkers([response.data.message[`${parseInt(serviceId) - 1}`].WORKER]))
+        // dispatch(setServices(response.data.message));
+        console.log(response);
+        dispatch(setWorkers(response.data.message))
 
     }
     const workers = useSelector((state) => state.allWorkers.workers)
-    console.log(workers);
+    // console.log(workers);
 
 
     useEffect(() => {
@@ -104,42 +106,50 @@ export default function Workers() {
     }, [])
     return (
         <>
+
             <Navbar />
+
             <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex' }}>
 
 
 
 
-                {workers.map((workers) => {
-                    const { WORKER_ID, FIRST_NAME, LAST_NAME, PHONE, DOB, CNIC, WORKER_IMAGE, ADDRESS, EMAIL, AVAILABLE } = workers;
-                    return (
-                        <Link to={`/services/${serviceId}/${WORKER_ID}`}>
-                            <div style={{ margin: '1rem' }}>
-                                <Card sx={{ maxWidth: 345 }}>
-                                    <CardActionArea>
-                                        <CardMedia
-                                            component="img"
-                                            height="140"
-                                            image={WORKER_IMAGE}
-                                            alt={FIRST_NAME}
-                                        />
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                {FIRST_NAME}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                {AVAILABLE}
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
-                            </div>
-                        </Link>
-                    )
-                })}
+                    {workers.map((workers) => {
+                        console.log(workers);
+                        const { id, FIRST_NAME, LAST_NAME, PHONE, DOB, CNIC, WORKER_IMAGE, ADDRESS, EMAIL, AVAILABLE } = workers;
+                        return (
+                            <Link to={`/worker/${id}`}>
+                                <div class="container">
+                                    <div class="column">
+                                        <div class="card">
+                                            <div class="pro-pic" style={{ "background-image": "url(../images/imagecopy.webp)" }}></div>
+                                            <div class="desciption-wrap">
+                                                <div class="description">
+                                                    <h3>{FIRST_NAME} {LAST_NAME}</h3>
+                                                    <ul>
+                                                        <li><a href="#"><img src={FacebookIcon} /></a></li>
+                                                        <li><a href="#"><img src="images/instagram.png" /></a></li>
+                                                        <li><a href="#"><img src="images/linkedin.png" /></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </Link>
+                        )
+                    })}
+                </div>
+
+
             </div>
         </>
+
     )
+}
 
     // console.log(worker);
     // const fetchWorkers = () => {
@@ -151,5 +161,5 @@ export default function Workers() {
     // useEffect(() => {
     //     fetchWorkers()
     // }, [])
-}
+
 

@@ -71,7 +71,7 @@ export default function Dashboard() {
     // ]
     const fetchServices = async () => {
         const response = await axios
-            .get(`https://murmuring-crag-65083.herokuapp.com/getServices`)
+            .get(`https://home-services-backend.azurewebsites.net/getServices`)
             .catch((err) => {
                 console.log("Err: ", err);
             });
