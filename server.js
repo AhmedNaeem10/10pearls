@@ -2,8 +2,7 @@ const express = require("express");
 var bodyParser = require('body-parser')
 const app = express();
 const cors = require("cors");
-require("dotenv").config({ path: "./config.env" });
-const path = require('path');
+require("dotenv").config({ path: "./config.env" });;
 const middleware = require('./middleware');
 // const nodemailer = require('nodemailer');
 
