@@ -35,7 +35,7 @@ app.listen(port, () => {
 // admin usecases
 app.post('/adminLogin', adminController.login);
 app.post('/adminRegister', adminController.register);
-app.post('/registerWorker', adminController.register_worker);
+app.post('/workerRegister', adminController.register_worker);
 app.post('/addSkill', adminController.add_skill);
 app.put('/adminChangePassword/:username/:password', adminController.change_pasword);
 app.get('/getServices', serviceController.get_services);

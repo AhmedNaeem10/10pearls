@@ -8,15 +8,36 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false
         },
         EMAIL: {
-            type: Sequelize.STRING(50)
+            type: Sequelize.STRING(50),
+            unique: {
+                args: true,
+                msg: 'Email address already in use!'
+            },
+            validate: {
+                isEmail: true
+            }
         },
         FIRST_NAME: {
             type: Sequelize.STRING(15),
-            allowNull: false
+            allowNull: false,
+            validate: {
+                validateName: function(first_name){
+                    if(!(/^[a-zA-Z]+$/.test(first_name))){
+                        throw new Error('Name can only have alphabets!');
+                    }
+                }
+            }
         },
         LAST_NAME: {
             type: Sequelize.STRING(15),
-            allowNull: false
+            allowNull: false,
+            validate: {
+                validateName: function(last_name){
+                    if(!(/^[a-zA-Z]+$/.test(last_name))){
+                        throw new Error('Name can only have alphabets!');
+                    }
+                }
+            }
         },
         DOB: {
             type: Sequelize.DATEONLY,
@@ -24,8 +45,14 @@ module.exports = (sequelize, Sequelize) => {
         },
         PHONE: {
             type: Sequelize.STRING(11),
-            unique: true,
-            allowNull: false
+            allowNull: false,
+            validate: {
+                validatePhone: function(phone) {
+                    if(!(/^[0-9]+$/.test(phone))){
+                        throw new Error('Phone number can only have digits!');
+                    }
+                }
+            }
         },
         CNIC: {
             type: Sequelize.STRING(13),
@@ -34,7 +61,14 @@ module.exports = (sequelize, Sequelize) => {
         },
         ADDRESS: {
             type: Sequelize.STRING(100),
-            allowNull: false
+            allowNull: false,
+            validate: {
+                validateAddress: function(address) {
+                    if(address.length < 10 || address.length > 100){
+                        throw new Error('Invalid address');
+                    }
+                }
+            }
         },
         AVAILABLE: {
             type: Sequelize.BOOLEAN

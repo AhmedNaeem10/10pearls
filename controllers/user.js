@@ -1,6 +1,7 @@
 const dbo = require("../db/conn");
 const db = require("../model");
 const bcrypt = require('bcryptjs');
+const { USER } = require("../config/db.config");
 
 db.sequelize.sync();
 const CUSTOMER = require('../model/customer')(db.sequelize, db.Sequelize)
@@ -52,19 +53,19 @@ exports.login = async (req, res)=>{
 
 exports.register = async (req, res)=>{
     // const db = dbo.connect();
-    const user = req.body;
+    let user = req.body;
     // setting primary info for now
-    const username = user.username;
+    // const username = user.username;
     // password encryption
     var salt = 10
-    const password = user.password;
-    const first_name = user.first_name;
-    const last_name = user.last_name;
-    const email = user.email;
-    const phone = user.phone;
-    const dob = user.dob;
-    const cnic = user.cnic;
-    const address = user.address;
+    // const password = user.password;
+    // const first_name = user.first_name;
+    // const last_name = user.last_name;
+    // const email = user.email;
+    // const phone = user.phone;
+    // const dob = user.dob;
+    // const cnic = user.cnic;
+    // const address = user.address;
 
     // let sql = `INSERT INTO CUSTOMER(username, password, first_name, last_name, email, phone, age, cnic, address) VALUES('${username}','${password}','${first_name}','${last_name}','${email}','${phone}','${age}','${cnic}','${address}')`;
     // db.query(sql, (error, result) => {
@@ -81,16 +82,7 @@ exports.register = async (req, res)=>{
     //     }
     // });
     try{
-        let response = await CUSTOMER.create({
-            USERNAME: username, 
-            PASSWORD: password,
-            FIRST_NAME: first_name,
-            LAST_NAME: last_name,
-            EMAIL: email,
-            PHONE: phone,
-            CNIC: cnic,
-            DOB: dob,
-            ADDRESS: address});
+        let response = await CUSTOMER.create(user);
         if(response){
             res.json({
                 status: 200,

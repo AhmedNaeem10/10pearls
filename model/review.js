@@ -10,10 +10,24 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER
         },
         RATING: {
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            validate: {
+                validateRating: function(rating){
+                    if(rating < 0 || rating > 5){
+                        throw new Error('Invalid rating!');
+                    }
+                }
+            }
         }, 
         FEEDBACK: {
-            type: Sequelize.TEXT
+            type: Sequelize.TEXT,
+            validate: {
+                validateRating: function(feedback){
+                    if(feedback.length < 5 || feedback.length > 100){
+                        throw new Error('Invalid feedback!');
+                    }
+                }
+            }
         }
     }, {
         timestamps: false,

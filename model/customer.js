@@ -70,17 +70,30 @@ module.exports = (sequelize, Sequelize) => {
         PHONE: {
             type: Sequelize.STRING(11),
             unique: true,
+            allowNull: true,
             validate: {
                 validatePhone: function(phone) {
-                    if(!(/^[0-9]+$/.test(str))){
-                        throw new Error('Phone number can only have digits!');
+                    if(phone){
+                        if(!(/^[0-9]{11,}$/.test(phone))){
+                            throw new Error('Phone number must have 11 digits!');
+                        }
                     }
                 }
             }
         },
         CNIC: {
             type: Sequelize.STRING(15),
-            unique: true
+            allowNull: true,
+            unique: true,
+            validate: {
+                validateCnic: function(cnic) {
+                    if(cnic){
+                        if(!(/^[0-9]{5,}-[0-9]{7,}-[0-9]$/.test(cnic))){
+                            throw new Error('Invalid cnic');
+                        }
+                    }
+                }
+            }
         },
         ADDRESS: {
             type: Sequelize.STRING(100)
