@@ -8,29 +8,78 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false
         },
         USERNAME: {
-            type: Sequelize.STRING(15)
+            type: Sequelize.STRING(15),
+            allowNull: false,
+            unique: {
+                args: true,
+                msg: 'Username address already in use!'
+            },
+            validate: {
+                validateUsername: function(username) {
+                    if(username.length < 6 || username.length > 15){
+                        throw new Error('Username must be at least 6 characters and utmost 15 characters long!')
+                    }
+                }
+            }
         },
         PASSWORD: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(15),
+            allowNull: false,
+            validate: {
+                validatePassword: function(password) {
+                    if(!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password))) {
+                        throw new Error('The password must contain at least 8 characters including at least 1 uppercase, 1 lowercase, one number and one special character!');
+                    }
+                }
+            }
         }, 
         EMAIL: {
-            type: Sequelize.STRING(50)
+            type: Sequelize.STRING(50),
+            unique: {
+                args: true,
+                msg: 'Email address already in use!'
+            },
+            allowNull: false,
+            validate: {
+                isEmail: true
+            }
         },
         FIRST_NAME: {
-            type: Sequelize.STRING(15)
+            type: Sequelize.STRING(15),
+            validate: {
+                validateName: function(first_name){
+                    if(!(/^[a-zA-Z]+$/.test(first_name))){
+                        throw new Error('Name can only have alphabets!');
+                    }
+                }
+            }
         },
         LAST_NAME: {
-            type: Sequelize.STRING(15)
+            type: Sequelize.STRING(15),
+            validate: {
+                validateName: function(last_name){
+                    if(!(/^[a-zA-Z]+$/.test(last_name))){
+                        throw new Error('Name can only have alphabets!');
+                    }
+                }
+            }
         },
         DOB: {
             type: Sequelize.DATEONLY
         },
         PHONE: {
             type: Sequelize.STRING(11),
-            unique: true
+            unique: true,
+            validate: {
+                validatePhone: function(phone) {
+                    if(!(/^[0-9]+$/.test(str))){
+                        throw new Error('Phone number can only have digits!');
+                    }
+                }
+            }
         },
         CNIC: {
-            type: Sequelize.STRING(13),
+            type: Sequelize.STRING(15),
             unique: true
         },
         ADDRESS: {

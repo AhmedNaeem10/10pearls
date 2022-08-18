@@ -57,7 +57,7 @@ exports.register = async (req, res)=>{
     const username = user.username;
     // password encryption
     var salt = 10
-    const password = await bcrypt.hash(user.password,salt);
+    const password = user.password;
     const first_name = user.first_name;
     const last_name = user.last_name;
     const email = user.email;

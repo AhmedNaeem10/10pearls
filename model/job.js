@@ -14,7 +14,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER
         }, 
         DATE_TIME: {
-            type: Sequelize.DATE,
+            type: Sequelize.STRING,
             allowNull: false
         },
         PAYMENT_METHOD: {
