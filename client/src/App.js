@@ -5,6 +5,10 @@ import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import AdminPanel from "./components/AdminPanel";
 import UserRoutes from "./UserRoutes"
 import Services from "./components/Services"
+import Requests from "./components/Requests";
+import Staff from "./components/Staff";
+
+
 function App() {
   return (
     <div>
@@ -13,6 +17,8 @@ function App() {
       <Route path="/admin" element={<AdminLogin />} />
       <Route path="/adminpanel" element={<AdminPanel />} />
       <Route path="/viewservices" element={<Services />} />
+      <Route path="/viewrequests" element={<Requests />} />
+      <Route path="/viewstaff" element={<Staff />} />
       <Route path="*" element={<UserRoutes />} />
       </Routes>
       

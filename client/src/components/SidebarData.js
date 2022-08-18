@@ -18,12 +18,12 @@ export const SidebarData = [
 
     {title: "Requests",
     icon: <ListAltIcon/>,
-    link: "/signup"
+    link: "/viewrequests"
     },
 
     {title: "Staff",
     icon: <HailIcon/>,
-    link: "/signup"
+    link: "/viewstaff"
     },
 
     {title: "Settings",
