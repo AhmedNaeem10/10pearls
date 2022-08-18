@@ -52,7 +52,7 @@ import { setServices } from '../redux/actions/serviceActions';
 import Navbar from './Navbar';
 import axios from 'axios';
 export default function Dashboard() {
-
+    const SERVICE_IMAGE = '../images/image.webp'
     // const response = [
     //     {
     //         "id": 1,
@@ -94,7 +94,7 @@ export default function Dashboard() {
 
 
                 {services.map((services) => {
-                    const { id, SERVICE_TITLE, SERVICE_DESCRIPTION, SERVICE_IMAGE, SERVICE_RATE } = services;
+                    const { id, SERVICE_TITLE, SERVICE_DESCRIPTION, SERVICE_RATE } = services;
                     return (
                         <Link to={`/services/${id}`}>
                             <div style={{ margin: '1rem' }}>

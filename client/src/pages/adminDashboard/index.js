@@ -1,5 +1,5 @@
 import React from 'react'
-import Requests from '../../components/Requests'
+import Requests from '../../components/Request'
 
 export default function AdminDashboard() {
     return (

@@ -5,7 +5,6 @@ import Navbar from '../../components/Navbar'
 export default function DashboardElements() {
     return (
         <div>
-            <Navbar />
             <Dashboard />
         </div>
     )

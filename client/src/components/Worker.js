@@ -5,7 +5,7 @@ import { selectedWorker, setWorkers } from '../redux/actions/workerActions'
 import '../App.css'
 import Navbar from './Navbar'
 import axios from 'axios'
-import { Button } from '@mui/material'
+import { Button, CardMedia } from '@mui/material'
 import { addRequest } from '../redux/actions/requestActions'
 export default function Worker() {
     // const response = [
@@ -49,19 +49,22 @@ export default function Worker() {
     const requestHandler = () => {
         dispatch(addRequest({ user: 2, worker: id }))
     }
+    const WORKER_IMAGE = '../images/imagecopy.webp'
 
     return (
         <>
 
-            <Navbar />
             <div className="ui grid container">
                 <div className="ui placeholder segment">
                     <div className="ui two column stackable center aligned grid">
-                        <div className="ui vertical divider">AND</div>
                         <div className="middle aligned row">
                             <div className="column lp">
-                                <img className="ui fluid image" alt={DOB} />
-                            </div>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={WORKER_IMAGE}
+                                    alt={FIRST_NAME}
+                                />                            </div>
                             <div className="column rp">
                                 <h1>{FIRST_NAME}</h1>
                                 <h2>
