@@ -5,10 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { reauthenticateWithCredential } from "firebase/auth";
 import firebase from "firebase/app";
 import "firebase/auth";
-import "./UserSignup.css";
+import "./UserSignUp.css";
 // import { getAuth,  onAuthStateChanged } from "firebase/auth";
 
-function UserSignup() {
+function UserSignUp() {
   const initialValues = { username: "", email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
@@ -310,4 +310,4 @@ function UserSignup() {
     </div>
   );
 }
-export default UserSignup;
+export default UserSignUp;

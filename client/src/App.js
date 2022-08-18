@@ -4,7 +4,6 @@ import AdminLogin from "./components/AdminLogin";
 import { Route, Routes } from "react-router-dom";
 import UserLogin from "./components/UserLogin";
 import Navbar from "./components/Navbar";
-import UserSignup from "./components/UserSignup";
 import Dashboard from "./components/Dashboard";
 import Workers from "./components/Workers";
 import Worker from "./components/Worker";
@@ -15,6 +14,7 @@ import Services from "./components/Services";
 import UserRoutes from "./UserRoutes";
 import Requests from "./components/Requests";
 import Staff from "./components/Staff";
+import WorkerDetails from "./components/WorkerDetails";
 function App() {
   return (
     <div>
@@ -27,6 +27,7 @@ function App() {
         <Route path="/viewservices" element={<Services />} />
         <Route path="/viewrequests" element={<Requests />} />
         <Route path="/viewstaff" element={<Staff />} />
+        <Route path="/workerdetails/:workerId" element={<WorkerDetails />} />
         <Route path="*" element={<UserRoutes />} />
       </Routes>
     </div>

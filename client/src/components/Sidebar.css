@@ -1,0 +1,7 @@
+.row a:hover,
+.row a:active,
+.row a.active {
+    background: gray;
+    border-color: #292929;
+    color: #292929;
+}

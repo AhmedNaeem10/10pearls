@@ -7,17 +7,9 @@ import Navbar from './Navbar'
 import axios from 'axios'
 import { Button, CardMedia, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { addRequest } from '../redux/actions/requestActions'
-export default function RequestWorker() {
+export default function WorkerDetails() {
     const WORKER_IMAGE = '../images/imagecopy.webp'
-    const [time, setTime] = useState('');
 
-    const handleChange = (e) => {
-
-        setTime(e.target.value);
-        console.log(time);
-
-    };
-    const slots = [9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7]
     // const response = [
     //     {
     //         "WORKER_ID": 1,
@@ -56,9 +48,6 @@ export default function RequestWorker() {
         fetchWorkers()
     }, [workerId])
 
-    const requestHandler = () => {
-        dispatch(addRequest({ userId: 2, userName: "hamza", workerId: id, workerName: FIRST_NAME, time: time }))
-    }
 
 
     return (
@@ -82,23 +71,7 @@ export default function RequestWorker() {
                                 </h2>
                                 <h3 className="ui brown block header">{EMAIL}</h3>
                                 <p>{ADDRESS}</p>
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Time</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={time}
-                                        label="Time"
-                                        onChange={handleChange}
-                                    >
-                                        {slots.map((slot) =>
-                                            <MenuItem value={slot}>{slot} : 00</MenuItem>
-                                        )}
 
-
-                                    </Select>
-                                </FormControl>
-                                <Button onClick={requestHandler}>Request</Button>
                             </div>
                         </div>
                     </div>

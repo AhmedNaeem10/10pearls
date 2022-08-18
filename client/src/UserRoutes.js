@@ -1,7 +1,7 @@
 import React from 'react'
 import UserLogin from "./components/UserLogin";
 import Navbar from "./components/Navbar";
-import UserSignup from "./components/UserSignup";
+import UserSignUp from "./components/UserSignUp";
 import Dashboard from "./components/Dashboard";
 import { Route, Routes } from 'react-router-dom';
 import DashboardElements from './pages/Services';
@@ -15,7 +15,7 @@ function UserRoutes() {
             <Navbar />
             <Routes>
                 <Route path="/" element={<DashboardElements />} />
-                <Route path="/signup" element={<UserSignup />} />
+                <Route path="/signup" element={<UserSignUp />} />
                 <Route path="/login" element={<UserLogin />} />
                 {/* <Route path="/dashboard" element={<Dashboard />} /> */}
                 <Route path="/services/:serviceId" element={<Workers />} />

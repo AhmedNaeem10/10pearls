@@ -11,6 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 function Requests() {
     // const [requests, getRequests] = useState([]);
@@ -72,7 +73,6 @@ function Requests() {
                             <StyledTableCell style={{ width: "15%" }}>ID</StyledTableCell>
                             <StyledTableCell style={{ width: "35%" }}>Customer Name</StyledTableCell>
                             <StyledTableCell style={{ width: "25%" }}>Worker Name</StyledTableCell>
-                            <StyledTableCell style={{ width: "25%" }} >Service type</StyledTableCell>
                             <StyledTableCell style={{ width: "15%" }} >Time</StyledTableCell>
                             <StyledTableCell style={{ width: "25%" }}>Status</StyledTableCell>
 
@@ -80,19 +80,25 @@ function Requests() {
                     </TableHead>
                     <TableBody>
                         {requests.map((requests) => {
-                            const { id, worker, user, status } = requests
+                            const { id, workerId, workerName, userId, userName, time, status } = requests
                             return (
                                 <>
 
                                     <StyledTableRow >
                                         <StyledTableCell style={{ width: "15%" }} > {id}  </StyledTableCell>
-                                        <StyledTableCell style={{ width: "25%" }} > {user}  </StyledTableCell>
-                                        <Link style={{ "textDecoration": "none" }} to={`/worker/${worker}`}><StyledTableCell component="th" scope="row" style={{ width: "25%" }}>
-                                            {worker}
-                                        </StyledTableCell></Link>
-                                        <StyledTableCell style={{ width: "15%" }}>  {status}  </StyledTableCell>
-                                        <StyledTableCell style={{ width: "35%" }}>Edit details</StyledTableCell>
-                                        <StyledTableCell style={{ width: "25%" }}>Pending</StyledTableCell>
+                                        <StyledTableCell style={{ width: "25%" }} > {userName}  </StyledTableCell>
+                                        <StyledTableCell component="th" scope="row" style={{ width: "25%" }}><Link style={{ "textDecoration": "none" }} to={`/workerdetails/${workerId}`}>
+                                            {workerName}
+                                        </Link></StyledTableCell>
+                                        <StyledTableCell style={{ width: "15%" }}>  {time}  </StyledTableCell>
+                                        <StyledTableCell style={{ width: "25%" }}>
+                                            <Button style={{ margin: "3px" }} variant="contained" color="success">
+                                                ACCEPT
+                                            </Button>
+                                            <Button style={{ margin: "3px" }} variant="outlined" color="error">
+                                                REJECT
+                                            </Button>
+                                        </StyledTableCell>
 
                                     </StyledTableRow>
                                 </>

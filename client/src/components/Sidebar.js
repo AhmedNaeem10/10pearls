@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom';
 import './AdminPanel.css'
 import { SidebarData } from "./SidebarData"
 
@@ -9,10 +10,9 @@ function Sidebar() {
         <div className="Dashboard">Dashboard</div>
         {SidebarData.map((val, key) => {
           return (
-            <li key={key}
+            <NavLink style={{ textDecoration: "none" }} to={`${val.link}`} key={key}
               className="row"
-              id={window.location.pathname == val.link ? "active" : ""}
-              onClick={() => { window.location.pathname = val.link }}>
+            >
               <div id="icon">
                 {val.icon}
               </div> {" "}
@@ -20,7 +20,7 @@ function Sidebar() {
                 {val.title}
               </div>
 
-            </li>
+            </NavLink>
           );
         })}
 
