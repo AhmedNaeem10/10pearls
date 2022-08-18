@@ -5,6 +5,8 @@ const transporter = require("./email")
 db.sequelize.sync();
 const JOB = require('../model/job')(db.sequelize, db.Sequelize);
 const CUSTOMER = require('../model/customer')(db.sequelize, db.Sequelize);
+const SERVICE = require('../model/services')(db.sequelize, db.Sequelize);
+const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
 
 exports.request_job = async (req, res) => {
 
@@ -83,6 +85,93 @@ exports.get_jobs_for_customer = async (req, res) => {
         res.json({
             status: 400,
             message: "There was an error getting the jobs!."
+        });
+    }
+}
+
+
+// get worker id, customer id, service title, time, customer address, status
+// tables: customer, jobs, service details, service
+// joins: jobs and service details
+exports.get_all_requests  = async (req, res) => {
+    try{
+
+        SERVICE_DETAIL.hasOne(JOB, {
+            foreignKey: 'SERVICE_DETAIL_ID'
+            // sourceKey: 'id'
+        });
+
+        JOB.belongsTo(SERVICE_DETAIL, {
+            foreignKey: 'SERVICE_DETAIL_ID'
+            // targetKey: 'id'
+        });
+
+        CUSTOMER.hasOne(JOB, {
+            foreignKey: 'CUSTOMER_ID'
+            // sourceKey: 'id'
+        });
+
+        JOB.belongsTo(CUSTOMER, {
+            foreignKey: 'CUSTOMER_ID'
+            // targetKey: 'id'
+        });
+
+        SERVICE.hasOne(SERVICE_DETAIL, {
+            foreignKey: 'SERVICE_ID'
+            // sourceKey: 'id'
+        });
+
+        SERVICE_DETAIL.belongsTo(SERVICE, {
+            foreignKey: 'SERVICE_ID'
+            // targetKey: 'id'
+        });
+
+        JOB.findAll(
+            {
+          
+            raw: true,
+            include: [
+                {
+              model: SERVICE_DETAIL,
+              attributes: ['WORKER_ID', 'SERVICE_ID'],
+              required: true,
+              include: [
+                {
+              model: SERVICE,
+              attributes: ['SERVICE_TITLE'],
+              required: true
+
+                }
+                
+
+              ]
+              
+            //   where: {WORKER_ID: id}
+            }, 
+            {
+              model: CUSTOMER,
+              attributes: ['ADDRESS'],
+              required: true,
+            //   where: {CUSTOMER_ID: CUSTOMER_ID}
+
+            }
+
+            ]
+            // attributes: ['FEEDBACK']
+          }
+          ).then(results => {
+            console.log(results);
+            // CUSTOMER.findAll({attributes: ['ADDRESS']}, {where: {CUSTOMER_ID: id}})
+
+            res.status(200).json({
+                status: 200,
+                message: results
+            });
+        });
+    }catch(err){
+        res.status(400).json({
+            status: 400,
+            message: err.message
         });
     }
 }

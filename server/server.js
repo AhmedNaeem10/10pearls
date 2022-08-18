@@ -2,8 +2,7 @@ const express = require("express");
 var bodyParser = require('body-parser')
 const app = express();
 const cors = require("cors");
-require("dotenv").config({ path: "./config.env" });
-const path = require('path');
+require("dotenv").config({ path: "./config.env" });;
 const middleware = require('./middleware');
 // const nodemailer = require('nodemailer');
 
@@ -58,13 +57,15 @@ app.post('/cancelRequest/:requestid', userController.cancel_request);
 app.post('/getUsernames', userController.get_usernames);
 app.post('/getEmails', userController.get_emails);
 app.get('/getJobsForCustomer/:id/:status', jobController.get_jobs_for_customer)
+app.get('/getRequests', jobController.get_all_requests)
 app.post('/review', reviewController.give_review);
 
 // worker usecases
 app.get('/workers', workerController.get_workers);
 app.get('/worker/:id', workerController.get_worker_by_id)
 app.get('/getWorkerFeedbacks/:id', workerController.get_worker_feedback)
-app.get('/workersBySkill/:id', workerController.get_worker_by_skill)
+app.get('/workersFullDetailsBySkill/:id', workerController.get_workers_full_details_by_skill)
+app.get('/workersBasicDetailsBySkill/:id', workerController.get_workers_basic_details_by_skill)
 app.get('/workersByAvailability', workerController.get_worker_by_availability)
 app.get('/workerDetails/:id', workerController.get_worker_details)
 app.get('/updateWorker/:id', workerController.update_worker)
