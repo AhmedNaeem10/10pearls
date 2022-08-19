@@ -58,6 +58,7 @@ app.post('/getUsernames', userController.get_usernames);
 app.post('/getEmails', userController.get_emails);
 app.get('/getJobsForCustomer/:id/:status', jobController.get_jobs_for_customer)
 app.post('/review', reviewController.give_review);
+app.post('/request', jobController.request)
 
 // worker usecases
 app.get('/workers', workerController.get_workers);

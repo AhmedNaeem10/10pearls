@@ -23,6 +23,29 @@ exports.request_job = async (req, res) => {
     }
 }
 
+exports.request = async(req, res) => {
+    let job = req.body;
+    const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
+    try{
+        let response = await SERVICE_DETAIL.findOne({where: {WORKER_ID: job.WORKER_ID, SERVICE_ID: job.SERVICE_ID}});
+        let id = response.id;
+        job.SERVICE_DETAIL_ID = id;
+        job.PAYMENT_METHOD = "COD";
+        job.DATE_TIME = "2022-12-10 15:12:12";
+        job.JOB_STATUS = "pending";
+        await JOB.create(job);
+        res.json({
+            status: 200,
+            message: "Job request successfully submitted!"
+        })
+    }catch(err){
+        res.json({
+            status: 400,
+            message: err.message
+        });
+    }
+}
+
 
 exports.update_status = async (req, res) => {
     const {id, status} = req.params;
@@ -41,8 +64,7 @@ exports.update_status = async (req, res) => {
         if(response){
         res.json({
             status: 200,
-            message: "Status successfully updated!",
-            customer_id: customerid
+            message: "Status successfully updated!"
         })}
     }
     catch(err){
