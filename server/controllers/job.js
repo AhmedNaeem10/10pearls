@@ -142,8 +142,6 @@ exports.get_all_requests  = async (req, res) => {
               required: true
 
                 }
-                
-
               ]
               
             //   where: {WORKER_ID: id}
@@ -151,9 +149,7 @@ exports.get_all_requests  = async (req, res) => {
             {
               model: CUSTOMER,
               attributes: ['ADDRESS'],
-              required: true,
-            //   where: {CUSTOMER_ID: CUSTOMER_ID}
-
+              required: true
             }
 
             ]

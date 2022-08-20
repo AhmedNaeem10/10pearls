@@ -35,7 +35,7 @@ function Requests() {
 
       const getAllRequests = async() =>{
         try{
-          const allRequests = await axios.get("http://localhost:19720/getServices")
+          const allRequests = await axios.get("http://localhost:19720/getRequests")
           // .then((response) => {
           //   const allServices = response.data;
           //   console.log(response)
@@ -66,7 +66,7 @@ function Requests() {
         <TableHead>
         <TableRow>
             <StyledTableCell style={{ width: "15%" }}>Worker ID</StyledTableCell>
-            <StyledTableCell style={{ width: "25%" }}>Worker Name</StyledTableCell>
+            <StyledTableCell style={{ width: "25%" }}>Customer ID</StyledTableCell>
             <StyledTableCell style={{ width: "25%" }} >Service type</StyledTableCell>
             <StyledTableCell style={{ width: "15%" }} >Time</StyledTableCell>
             <StyledTableCell style={{ width: "35%" }}>Customer address</StyledTableCell>

@@ -7,6 +7,8 @@ import UserRoutes from "./UserRoutes"
 import Services from "./components/Services"
 import Requests from "./components/Requests";
 import Staff from "./components/Staff";
+import Settings from "./components/Settings";
+
 
 
 function App() {
@@ -19,6 +21,7 @@ function App() {
       <Route path="/viewservices" element={<Services />} />
       <Route path="/viewrequests" element={<Requests />} />
       <Route path="/viewstaff" element={<Staff />} />
+      <Route path="/settings" element={<Settings />} />
       <Route path="*" element={<UserRoutes />} />
       </Routes>
       

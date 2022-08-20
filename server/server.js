@@ -4,6 +4,11 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });;
 const middleware = require('./middleware');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJSDoc = require("swagger-jsdoc");
+// const swaggerDocument = require('./swagger.json');
+const servicesRouter = require("./routes/routes");
+
 // const nodemailer = require('nodemailer');
 
 const port = process.env.PORT || 5000;
@@ -11,20 +16,49 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.json());
+app.use(servicesRouter)
+// app.use("/services", servicesRouter);
 // app.use(middleware.decodeToken);
+
+
+const options = {
+  explorer: true,
+	definition: {
+		openapi: "3.0.0",
+		info: {
+			title: "Home Services API",
+			version: "1.0.0",
+			description: "A simple Express Home Services API",
+		},
+    basePath: '/',
+		servers: [
+			{
+				url: "http://localhost:19720",
+			},
+		],
+	},
+	apis: ["./routes/*.js", "./model/*.js"],
+};
+// Initialize swagger-jsdoc -> returns validated swagger spec in json format
+const swaggerSpec = swaggerJSDoc(options);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.get("/api-docs/swagger.json", (req, res) => res.json(swaggerDocument));
 
 const db = require("./model");
 db.sequelize.sync();
 
 // get driver connection
 // const dbo = require("./db/conn");
-const adminController = require('./controllers/admin');
-const userController = require('./controllers/user')
-const workerController = require('./controllers/worker')
-const jobController = require('./controllers/job')
-const serviceController = require('./controllers/service');
-const reviewController = require('./controllers/review')
-const job = require("./model/job");
+// const adminController = require('./controllers/admin');
+// const userController = require('./controllers/user')
+// const workerController = require('./controllers/worker')
+// const jobController = require('./controllers/job')
+// const serviceController = require('./controllers/service');
+// const reviewController = require('./controllers/review')
+// const job = require("./model/job");
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
@@ -32,41 +66,42 @@ app.listen(port, () => {
 
 
 
-// admin usecases
-app.post('/adminLogin', adminController.login);
-app.post('/adminRegister', adminController.register);
-app.post('/registerWorker', adminController.register_worker);
-app.post('/addSkill', adminController.add_skill);
-app.put('/adminChangePassword/:username/:password', adminController.change_pasword);
-app.get('/getServices', serviceController.get_services);
-app.get('/checkService/:service', serviceController.check_service);
-app.put('/editService/:id', serviceController.edit_service)
-app.delete('/deleteService/:id', serviceController.delete_service)
-app.post('/addService', serviceController.add_service)
-app.put('/updateJobStatus/:id/:status', jobController.update_status);
-app.get('/getJobsByStatus/:status', jobController.get_jobs)
+// // admin usecases
+// app.post('/adminLogin', adminController.login);
+// app.post('/adminRegister', adminController.register);
+// app.post('/registerWorker', adminController.register_worker);
+// app.post('/addSkill', adminController.add_skill);
+// app.put('/adminChangePassword/:username/:password', adminController.change_pasword);
+// app.get('/getServices', serviceController.get_services);
+// app.get('/checkService/:service', serviceController.check_service);
+// app.put('/editService/:id', serviceController.edit_service)
+// app.delete('/deleteService/:id', serviceController.delete_service)
+// app.post('/addService', serviceController.add_service)
+// app.put('/updateJobStatus/:id/:status', jobController.update_status);
+// app.get('/getJobsByStatus/:status', jobController.get_jobs)
 
 
-// customer usecases
-app.post('/userLogin', userController.login);
-app.post('/userRegister', userController.register);
-app.post('/updateCustomer/:userid', userController.update_customer);
-app.post('/viewServices', userController.get_services);
-app.post('/requestJob', jobController.request_job);
-app.post('/cancelRequest/:requestid', userController.cancel_request);
-app.post('/getUsernames', userController.get_usernames);
-app.post('/getEmails', userController.get_emails);
-app.get('/getJobsForCustomer/:id/:status', jobController.get_jobs_for_customer)
-app.get('/getRequests', jobController.get_all_requests)
-app.post('/review', reviewController.give_review);
+// // customer usecases
+// app.post('/userLogin', userController.login);
+// app.post('/userRegister', userController.register);
+// app.post('/updateCustomer/:userid', userController.update_customer);
+// app.post('/viewServices', userController.get_services);
+// app.post('/requestJob', jobController.request_job);
+// app.post('/cancelRequest/:requestid', userController.cancel_request);
+// app.post('/getUsernames', userController.get_usernames);
+// app.post('/getEmails', userController.get_emails);
+// app.get('/getJobsForCustomer/:id/:status', jobController.get_jobs_for_customer)
+// app.get('/getRequests', jobController.get_all_requests)
+// app.post('/review', reviewController.give_review);
 
-// worker usecases
-app.get('/workers', workerController.get_workers);
-app.get('/worker/:id', workerController.get_worker_by_id)
-app.get('/getWorkerFeedbacks/:id', workerController.get_worker_feedback)
-app.get('/workersFullDetailsBySkill/:id', workerController.get_workers_full_details_by_skill)
-app.get('/workersBasicDetailsBySkill/:id', workerController.get_workers_basic_details_by_skill)
-app.get('/workersByAvailability', workerController.get_worker_by_availability)
-app.get('/workerDetails/:id', workerController.get_worker_details)
-app.get('/updateWorker/:id', workerController.update_worker)
-app.put('/switchAvailability/:id', workerController.switch_availability);
+// // worker usecases
+// app.get('/workers', workerController.get_workers);
+// app.get('/worker/:id', workerController.get_worker_by_id)
+// app.get('/getWorkerFeedbacks/:id', workerController.get_worker_feedback)
+// app.get('/workersFullDetailsBySkill/:id', workerController.get_workers_full_details_by_skill)
+// app.get('/workersBasicDetailsBySkill/:id', workerController.get_workers_basic_details_by_skill)
+// app.get('/workersByAvailability', workerController.get_worker_by_availability)
+// app.get('/workerDetails/:id', workerController.get_worker_details)
+// app.get('/updateWorker/:id', workerController.update_worker)
+// app.get('/getWorkerServices/:id', workerController.get_worker_services)
+// app.put('/switchAvailability/:id', workerController.switch_availability);

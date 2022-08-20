@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import './Navbar.css';
 import { Navigate } from "react-router-dom";
 
 export default function AdminLogin() {
@@ -44,24 +45,30 @@ const [token, setToken] = useState('');
 
   
   return (
-    // <div className='container' style={{ marginTop: 50 }}>
-    //   <div>
-    //     <div className="mb-3">
-    //       <label for="exampleInputEmail1" className="form-label">Username</label>
-    //       <input className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='' value={username} onChange={(e) => setUsername(e.target.value)} />
-    //       {/* <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div> */}
-    //     </div>
-    //     <div className="mb-3">
-    //       <label for="exampleInputPassword1" className="form-label">Password</label>
-    //       <input type="password" className="form-control" id="exampleInputPassword1" placeholder='' value={password} onChange={(e) => setPassword(e.target.value)} />
-    //     </div>
-    //     <div className="mb-3 form-check">
-    //       <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-    //       <label className="form-check-label" for="exampleCheck1">Check me out</label>
-    //     </div>
-    //     <button type="submit" className="btn btn-primary" onClick={login}>Submit</button>
-    //   </div>
-    // </div>
+    
+      <div>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div className="container-fluid">
+                    <a className="navbar-brand" href="/">Home Services</a>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="/navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul className="navbar-nav me-auto mb-2 mb-lg-0 nav-links">
+                          
+                            <li className="nav-item">
+                                {/* <NavLink className="nav-link" to="/" exact>HOME</NavLink> */}
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                {/* {location.pathname != "/admin" && <a href="/signup" class="btn btn-primary mx-2">SignUp</a>}
+                <a href="/login" class="btn btn-primary mx-2">Login</a> */}
+
+            </nav>
+
+
     <div className="login">
       <div className="login__container">
         <input
@@ -84,6 +91,7 @@ const [token, setToken] = useState('');
           Login
         </button>
       </div>
+    </div>
     </div>
   )
 }

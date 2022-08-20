@@ -66,20 +66,6 @@ exports.register = async (req, res)=>{
     const cnic = user.cnic;
     const address = user.address;
 
-    // let sql = `INSERT INTO CUSTOMER(username, password, first_name, last_name, email, phone, age, cnic, address) VALUES('${username}','${password}','${first_name}','${last_name}','${email}','${phone}','${age}','${cnic}','${address}')`;
-    // db.query(sql, (error, result) => {
-    //     if (error){
-    //         res.status(400).json({
-    //             status: 400,
-    //             message: error.sqlMessage
-    //         })
-    //     }else{
-    //         res.status(200).json({
-    //             status: 200,
-    //             message: "User successfully registered!"
-    //         })
-    //     }
-    // });
     try{
         let response = await CUSTOMER.create({
             USERNAME: username, 

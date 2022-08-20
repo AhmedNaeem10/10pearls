@@ -1,3 +1,61 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     WORKERS:
+ *       type: object
+ *       required:
+ *         - FIRST_NAME
+ *         - LAST_NAME
+ *         - PHONE
+ *         - DOB
+ *         - CNIC
+ *         - ADDRESS
+ *       properties:
+ *         WORKER_ID:
+ *           type: int
+ *           description: The auto-generated id of the worker
+ *         FIRST_NAME:
+ *           type: string
+ *           description: The worker's first name
+ *         LAST_NAME:
+ *           type: string
+ *           description: The worker's last name
+ *         DOB:
+ *           type: date
+ *           description: The worker's date of birth
+ *         PHONE:
+ *           type: string
+ *           description: The worker's phone no.
+ *         EMAIL:
+ *           type: string
+ *           description: The worker's email address, if any
+ *         CNIC:
+ *           type: string
+ *           description: The worker's ID no.
+ *         ADDRESS:
+ *           type: string
+ *           description: The worker's residential address
+ *         AVAILABLE:
+ *           type: boolean
+ *           description: The worker's availability status
+ *         RATING:
+ *           type: float
+ *           description: The worker's overall rating
+ *       example:
+ *         WORKER_ID: 6
+ *         FIRST_NAME: Bilal
+ *         LAST_NAME: Khan
+ *         DOB: 
+ *         PHONE: 
+ *         CNIC:
+ *         EMAIL:
+ *         ADDRESS: 
+ *         AVAILABLE:
+ *         RATING: 
+ * 
+ * 
+ */
 module.exports = (sequelize, Sequelize) => {
     return WORKER = sequelize.define("WORKERS", {
         id: {
@@ -40,7 +98,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.BOOLEAN
         },
         RATING: {
-            type: Sequelize.FLOAT
+            type: Sequelize.STRING
         }
     }, {
         timestamps: false,

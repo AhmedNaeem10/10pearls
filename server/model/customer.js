@@ -1,3 +1,60 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     CUSTOMERS:
+ *       type: object
+ *       required:
+ *         - CUSTOMER_ID
+ *         - USERNAME
+ *         - PASSWORD
+ *         - EMAIL
+ *       properties:
+ *         CUSTOMER_ID:
+ *           type: int
+ *           description: The auto-generated id of customer
+ *         USERNAME:
+ *           type: string
+ *           description: The customer's username
+ *         PASSWORD:
+ *           type: string
+ *           description: The customer's password
+ *         EMAIL:
+ *           type: string
+ *           description: The customer's email address
+ *         FIRST_NAME:
+ *           type: float
+ *           description: The customer's first name
+ *         LAST_NAME:
+ *           type: float
+ *           description: The customer's last name
+ *         DOB:
+ *           type: date
+ *           description: The customer's date of birth
+ *         PHONE:
+ *           type: string
+ *           description: The customer's phone no.
+ *         CNIC:
+ *           type: string
+ *           description: The customer's ID no.
+ *         ADDRESS:
+ *           type: string
+ *           description: The customer's address
+ *       example:
+ *         CUSTOMER_ID: 6
+ *         USERNAME: sara.jamal
+ *         EMAIL: sara123@gmail.com
+ *         PASSWORD: Sara@123
+ *         FIRST_NAME: Sara
+ *         LAST_NAME: Jamal
+ *         DOB: 
+ *         PHONE: 
+ *         CNIC:
+ *         ADDRESS: 
+ * 
+ * 
+ */
+
 module.exports = (sequelize, Sequelize) => {
     return CUSTOMER = sequelize.define("CUSTOMERS", {
         id: {

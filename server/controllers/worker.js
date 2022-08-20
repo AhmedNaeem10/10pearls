@@ -5,6 +5,7 @@ const WORKER = require('../model/worker')(db.sequelize, db.Sequelize)
 const REVIEW = require('../model/review')(db.sequelize, db.Sequelize);
 const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
 const JOB = require('../model/job')(db.sequelize, db.Sequelize);
+const SERVICE = require('../model/services')(db.sequelize, db.Sequelize);
 
 // get all the workers currently present
 exports.get_workers = async (req, res) => {
@@ -44,7 +45,7 @@ exports.get_worker_by_id = async (req, res) => {
 exports.get_workers_full_details_by_skill = async (req, res) => {
     try{
         const {id} = req.params;
-        const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
+        
         WORKER.hasMany(SERVICE_DETAIL, {
             foreignKey: 'WORKER_ID'
         });
@@ -55,6 +56,7 @@ exports.get_workers_full_details_by_skill = async (req, res) => {
 
         SERVICE_DETAIL.findAll({
             where: {SERVICE_ID: id},
+            attributes: ['SERVICE_ID'],
             include: [{
               model: WORKER,
             }]
@@ -76,7 +78,6 @@ exports.get_workers_full_details_by_skill = async (req, res) => {
 exports.get_workers_basic_details_by_skill = async (req, res) => {
     try{
         const {id} = req.params;
-        const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
         WORKER.hasMany(SERVICE_DETAIL, {
             foreignKey: 'WORKER_ID'
         });
@@ -132,7 +133,6 @@ exports.get_worker_by_availability = async (req, res) => {
 exports.get_worker_details = async(req , res) => {
     try{
         const {id} = req.params;
-        const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
         WORKER.hasMany(SERVICE_DETAIL, {
             foreignKey: 'WORKER_ID'
         });
@@ -256,24 +256,22 @@ exports.get_worker_feedback = async(req , res) => {
 
         SERVICE_DETAIL.hasOne(JOB, {
             foreignKey: 'SERVICE_DETAIL_ID'
-            // sourceKey: 'id'
         });
 
         JOB.belongsTo(SERVICE_DETAIL, {
             foreignKey: 'SERVICE_DETAIL_ID'
-            // targetKey: 'id'
         });
 
         JOB.findAll(
             {
             // where: {WORKER_ID: id},
             // attributes: ['FEEDBACK'],
-            // attributes: [''],
+            attributes: ['JOB_ID'],
             raw: true,
             include: [
                 {
               model: SERVICE_DETAIL,
-            //   attributes: [''],
+              attributes: ['WORKER_ID'],
               required: true,
               
               where: {WORKER_ID: id}
@@ -293,6 +291,52 @@ exports.get_worker_feedback = async(req , res) => {
                 message: results
             });
         });
+    }catch(err){
+        res.status(400).json({
+            status: 400,
+            message: err.message
+        });
+    }
+}
+
+exports.get_worker_services = async (req, res) => {
+    const {id} = req.params;
+    try{
+        SERVICE.hasMany(SERVICE_DETAIL, {
+            foreignKey: 'SERVICE_ID'
+        });
+
+        SERVICE_DETAIL.hasOne(SERVICE, {
+            sourceKey: 'SERVICE_ID',
+            foreignKey: 'SERVICE_ID'
+        });
+        
+
+        SERVICE.findAll(
+            {
+            // where: {WORKER_ID: id},
+            attributes: ['SERVICE_TITLE'],
+            // attributes: [''],
+            raw: true,
+            include: [
+                {
+              model: SERVICE_DETAIL,
+              attributes: ['WORKER_ID'],
+              required: true,
+              
+              where: {WORKER_ID: id}
+            }
+            ]
+            // attributes: ['FEEDBACK']
+          }
+          ).then(results => {
+            res.status(200).json({
+                status: 200,
+                message: results
+            });
+        });
+        
+        
     }catch(err){
         res.status(400).json({
             status: 400,

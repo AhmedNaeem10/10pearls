@@ -1,3 +1,38 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     SERVICES:
+ *       type: object
+ *       required:
+ *         - SERVICE_TITLE
+ *       properties:
+ *         SERVICE_ID:
+ *           type: integer
+ *           description: The auto-generated id of service
+ *         SERVICE_TITLE:
+ *           type: string
+ *           description: The name of the service
+ *         SERVICE_DESCRIPTION:
+ *           type: string
+ *           description: Service information
+ *         SERVICE_IMAGE:
+ *           type: string
+ *           description: Sample picture of the service
+ *         SERVICE_RATE:
+ *           type: number
+ *           description: Service charges
+ *       example:
+ *         SERVICE_ID: 6
+ *         SERVICE_TITLE: Sofa Cleaning
+ *         SERVICE_DESCRIPTION: Kam Kaj brings you extraordinary sofa cleaning services. We use advanced technology, imported chemicals.
+ *         SERVICE_IMAGE: 
+ *         SERVICE_RATE: 500
+ * 
+ * 
+ */
+
+
 module.exports = (sequelize, Sequelize) => {
     return SERVICE = sequelize.define("SERVICE", {
         id: {

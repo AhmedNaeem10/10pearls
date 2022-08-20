@@ -109,7 +109,7 @@ exports.change_pasword = async (req, res) => {
         }else{
             res.status(400).json({
                 status: 400,
-                message: "There was an error changing the password."
+                message: "User not found!"
             });
         }
     }catch(err){
@@ -118,37 +118,7 @@ exports.change_pasword = async (req, res) => {
             message: err.message
         })
     }
-    // let sql = `SELECT * FROM ADMIN WHERE USERNAME = '${username}'`;
-    // db.query(sql, (err, results, fields) => {
-    //     if(err){
-    //         res.status(400).json({
-    //             status: 400,
-    //             message: err.sqlMessage
-    //         })
-    //     }else{
-    //         if(results.length){
-    //             let sql = `UPDATE ADMIN SET PASSWORD = '${password}' WHERE USERNAME = '${username}'`
-    //             db.query(sql, (err, result) => {
-    //                 if(err){
-    //                     res.status(400).json({
-    //                         status: 400,
-    //                         message: err.sqlMessage
-    //                     });
-    //                 }else{
-    //                     res.status(200).json({
-    //                         status: 200,
-    //                         messgae: "Password changed successfully!"
-    //                     });
-    //                 }
-    //             })
-    //         }else{
-    //             res.status(404).json({
-    //                 status: 404,
-    //                 message: "Invalid username!"
-    //             });
-    //         }
-    //     }
-    // });
+    
 }
 
 exports.register_worker = async (req, res) => {

@@ -28,7 +28,7 @@ export const SidebarData = [
 
     {title: "Settings",
     icon: <SettingsIcon/>,
-    link: "/signup"
+    link: "/settings"
     }
 
 
