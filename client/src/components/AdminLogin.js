@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function AdminLogin() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const login = async () => {
-    let response = await axios.post("http://localhost:5000/adminLogin", { username, password });
+    let response = await axios.post("https://home-services-backend.azurewebsites.net/adminLogin", { username, password });
     if (response.data.status === 200) {
-      alert("Logged in successfully!");
+      // alert("Logged in successfully!");
+      navigate("../adminpanel", { replace: true });
     } else {
       alert(response.data.message);
     }

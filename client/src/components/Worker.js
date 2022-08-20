@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { selectedWorker, setWorkers } from '../redux/actions/workerActions'
+import { removeSelectedWorker, selectedWorker, setWorkers } from '../redux/actions/workerActions'
 import '../App.css'
 import Navbar from './Navbar'
 import axios from 'axios'
@@ -54,10 +54,16 @@ export default function RequestWorker() {
 
     useEffect(() => {
         fetchWorkers()
+        return () => {
+            dispatch(removeSelectedWorker())
+        }
     }, [workerId])
 
     const requestHandler = () => {
-        dispatch(addRequest({ userId: 2, userName: "hamza", workerId: id, workerName: FIRST_NAME, time: time }))
+        dispatch(addRequest({
+            userId: 2, userName: "hamza", workerId: id, workerName: FIRST_NAME, time: time,
+            // serviceId: serviceId 
+        }))
     }
 
 

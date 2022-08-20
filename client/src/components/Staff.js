@@ -55,7 +55,6 @@ function Staff() {
     }, []);
     return (
         <div>
-            <Sidebar />
             <h1>Staff</h1>
             <h6>Add staff</h6>
 

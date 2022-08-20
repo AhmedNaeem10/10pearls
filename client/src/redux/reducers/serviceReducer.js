@@ -17,6 +17,7 @@ export const selectedServiceReducer = (state = {}, { type, payload }) => {
         case ActionTypes.SELECTED_SERVICES:
             return { ...state, ...payload };
 
+
         default:
             return state;
     }

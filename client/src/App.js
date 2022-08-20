@@ -8,24 +8,26 @@ import Dashboard from "./components/Dashboard";
 import Workers from "./components/Workers";
 import Worker from "./components/Worker";
 import DashboardElements from "./pages/Services";
-import AdminDashboard from "./pages/adminDashboard";
+import AdminDashboard from "./pages/adminRequests";
 import AdminPanel from "./components/AdminPanel";
 import Services from "./components/Services";
 import UserRoutes from "./UserRoutes";
 import Requests from "./components/Requests";
 import Staff from "./components/Staff";
 import WorkerDetails from "./components/WorkerDetails";
+import Sidebar from "./components/Sidebar";
+import AdminRequests from "./pages/adminRequests";
 function App() {
   return (
     <div>
       {/* <Navbar /> */}
+      <Sidebar />
       <Routes>
 
-        <Route path="/admin/requests" element={<AdminDashboard />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/adminpanel" element={<AdminPanel />} />
         <Route path="/viewservices" element={<Services />} />
-        <Route path="/viewrequests" element={<Requests />} />
+        <Route path="/viewrequests" element={<AdminRequests />} />
         <Route path="/viewstaff" element={<Staff />} />
         <Route path="/workerdetails/:workerId" element={<WorkerDetails />} />
         <Route path="*" element={<UserRoutes />} />

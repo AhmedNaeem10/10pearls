@@ -12,3 +12,13 @@ export const selectedWorker = (worker) => {
         payload: worker,
     }
 }
+export const removeSelectedWorker = () => {
+    return {
+        type: ActionTypes.REMOVE_WORKER,
+    }
+}
+export const removeAllWorkers = () => {
+    return {
+        type: ActionTypes.REMOVE_WORKERS,
+    }
+}

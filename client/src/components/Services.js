@@ -57,7 +57,6 @@ function Services() {
     }, []);
     return (
         <>
-            <Sidebar />
             <div className='servicecontent'>
 
 

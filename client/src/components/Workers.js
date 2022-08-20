@@ -48,8 +48,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import classes from './Dashboard.module.css'
-import { setServices } from '../redux/actions/serviceActions';
-import { setWorkers } from '../redux/actions/workerActions';
+import { removeSelectedServices, setServices } from '../redux/actions/serviceActions';
+import { removeAllWorkers, setWorkers } from '../redux/actions/workerActions';
 import axios from 'axios';
 import Navbar from './Navbar';
 import './Workers.css'
@@ -103,7 +103,10 @@ export default function Workers() {
 
     useEffect(() => {
         fetchWorkers()
-    }, [])
+        return () => {
+            dispatch(removeAllWorkers())
+        }
+    }, [serviceId])
     return (
         <>
 
