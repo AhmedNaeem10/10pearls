@@ -44,7 +44,8 @@ app.put('/editService/:id', serviceController.edit_service)
 app.delete('/deleteService/:id', serviceController.delete_service)
 app.post('/addService', serviceController.add_service)
 app.put('/updateJobStatus/:id/:status', jobController.update_status);
-app.get('/getJobsByStatus/:status', jobController.get_jobs)
+app.get('/getJobsByStatus/:status', jobController.get_jobs);
+app.get('/getJobsDetailsByStatus/:status', jobController.get_jobs_details);
 
 
 // customer usecases
@@ -58,7 +59,7 @@ app.post('/getUsernames', userController.get_usernames);
 app.post('/getEmails', userController.get_emails);
 app.get('/getJobsForCustomer/:id/:status', jobController.get_jobs_for_customer)
 app.post('/review', reviewController.give_review);
-app.post('/request', jobController.request)
+app.post('/request', jobController.request);
 
 // worker usecases
 app.get('/workers', workerController.get_workers);

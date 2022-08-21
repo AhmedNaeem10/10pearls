@@ -22,6 +22,16 @@ module.exports = (sequelize, Sequelize) => {
         },
         JOB_STATUS: {
             type: Sequelize.STRING(15)
+        },
+        ADDRESS: {
+            type: Sequelize.TEXT,
+            validate:{
+                validateAddress: function(address){
+                    if(address.length < 5 || address.length > 100){
+                        throw new Error('Invalid Address');
+                    }
+                }
+            }
         }
     }, {
         timestamps: false,

@@ -1,4 +1,5 @@
 const db = require("../model");
+const customer = require("../model/customer");
 require("dotenv").config({ path: "./config.env" });
 const transporter = require("./email")
 
@@ -31,7 +32,7 @@ exports.request = async(req, res) => {
         let id = response.id;
         job.SERVICE_DETAIL_ID = id;
         job.PAYMENT_METHOD = "COD";
-        job.DATE_TIME = "2022-12-10 15:12:12";
+        job.DATE_TIME = "2022-1-10 " + job.DATE_TIME;
         job.JOB_STATUS = "pending";
         await JOB.create(job);
         res.json({
@@ -91,6 +92,55 @@ exports.get_jobs = async (req, res) => {
             message: "There was an error getting the jobs!."
         });
     }
+}
+
+get_details = async(response) => {
+    let customer_id = response.CUSTOMER_ID;
+    let worker_id = response.WORKER_ID;
+    let service_detail_id = response.SERVICE_DETAIL_ID;
+    const CUSTOMER = require('../model/customer')(db.sequelize, db.Sequelize);
+    const WORKER = require('../model/worker')(db.sequelize, db.Sequelize);
+    const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
+    const SERVICE = require('../model/service')(db.sequelize, db.Sequelize);
+
+    let customer_name = await CUSTOMER.findOne({attributes: ['FIRST_NAME', 'LAST_NAME']}, {where: {CUSTOMER_ID: customer_id}});
+    let CUSTOMER_NAME = customer_name.FIRST_NAME + " " + customer_name.LAST_NAME;
+
+    let worker_name = await WORKER.findOne({attributes: ['FIRST_NAME', 'LAST_NAME']}, {where: {WORKER_ID: worker_id}});
+    let WORKER_NAME = worker_name.FIRST_NAME + " " + worker_name.LAST_NAME;
+
+    let service_detail = await SERVICE_DETAIL.findAll({where: {SERVICE_DETAIL_ID: service_detail_id}});
+    let service_id = service_detail[0].SERVICE_ID;
+    
+    let service = await SERVICE.findAll({where: {SERVICE_ID: service_id}})
+
+    let JOB_ID = response.id;
+    let DATE_TIME = response.DATE_TIME;
+    let ADDRESS = response.ADDRESS;
+    let JOB_STATUS = response.JOB_STATUS;
+    let SERVICE_NAME = service[0].SERVICE_TITLE;
+    return {JOB_ID, CUSTOMER_NAME, WORKER_NAME, SERVICE_NAME, DATE_TIME, ADDRESS, JOB_STATUS};
+}
+
+exports.get_jobs_details = async (req, res) => {
+    // try{
+        let {status} = req.params;
+        let responses = await JOB.findAll({where: {JOB_STATUS: status}});
+        let results = []
+        for(let response of responses){
+            let result = await get_details(response);
+            results.push(result);
+        }
+        res.json({
+            status: 200,
+            message: results
+        });
+    // }catch(err){
+    //     res.json({
+    //         status: 400,
+    //         message: "There was an error getting the jobs!."
+    //     });
+    // }
 }
 
 exports.get_jobs_for_customer = async (req, res) => {
