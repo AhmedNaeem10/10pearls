@@ -115,11 +115,15 @@ function UserLogin() {
         var user = userCredential.user;
         console.log(userCredential);
         console.log(user);
+        console.log("Login successful");
+        navigate("/");
         // ...
       })
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
+        console.log(error);
+        alert("Couldn't login");
       });
   }
 
@@ -132,24 +136,16 @@ function UserLogin() {
   // }, [user, loading]);
   useEffect(() => {
     if (notInitialRender.current) {
-    const checkErrors = async() =>{
       if (Object.keys(formErrors).length === 0) {
-        let response = await axios.post("http://localhost:19720/userLogin", { email: formValues.email, password: formValues.password}, { headers: {Authorization: 'Bearer ' + token, role:"user" } });
-        if(response.data.status == 200){
-          alert("User logged in successfully!");
-          handleFirebase();
-          navigate('/');
-        }else{
-            
-            alert(response.data.message);
-            alert("Couldn't register user!");
-        }}
+        handleFirebase();
+      }
     }
-    checkErrors()}
     else
     notInitialRender.current = true;
     console.log(formErrors)
   }, [formErrors]);
+
+
   return (
     <div className="login">
       <div className="login__container">

@@ -9,7 +9,7 @@ import "./UserSignup.css";
 // import { getAuth,  onAuthStateChanged } from "firebase/auth";
 
 function UserSignup() {
-  const initialValues = { username: "", email: "", password: "" };
+  const initialValues = { username: "", email: "", password: "", first_name:"", last_name:"", cnic: "", address: "", phone: "", dob: ""};
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [autho, setAutho] = useState(
@@ -33,6 +33,9 @@ function UserSignup() {
     const passwordFormat = new RegExp(
       "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
     );
+    const phoneFormat = new RegExp(
+      "^(\d{4})[- ]?"
+    )
     if (!values.username) {
       errors.username = "Username is required!";
     } else if (values.username.length < 6) {
@@ -40,7 +43,7 @@ function UserSignup() {
     } else if (values.username.length > 15) {
       errors.username = "Username cannot exceed 15 characters";
     } else {
-      axios.post(`http://localhost:19720/getUsernames`).then((res) => {
+      axios.get("http://localhost:19720/getUsernames").then((res) => {
         console.log(res.data.message);
         var results = res.data.message;
         Object.values(results).forEach((val) => {
@@ -59,7 +62,7 @@ function UserSignup() {
     } else if (!emailFormat.test(values.email)) {
       errors.email = "This is not a valid email format!";
     } else {
-      axios.post(`http://localhost:19720/getEmails`).then((res) => {
+      axios.get("http://localhost:19720/getEmails").then((res) => {
         console.log(res.data.message);
         var results = res.data.message;
         Object.values(results).forEach((val) => {
@@ -79,6 +82,21 @@ function UserSignup() {
       errors.password =
         "Password must have at least 1 uppercase letter, 1 special character, 1 number and should be at least 8 characters long. ";
     }
+    if (!values.first_name) {
+      errors.first_name = "First name is required!";
+    } 
+    if (!values.phone) {
+      errors.phone = "Phone number is required!";
+    } 
+    if (!values.dob) {
+      errors.dob = "Date of birth is required!";
+    } 
+    if (!values.cnic) {
+      errors.cnic = "CNIC is required!";
+    } 
+    if (!values.address) {
+      errors.address = "Address is required!";
+    } 
     return errors;
   };
 
@@ -89,7 +107,7 @@ function UserSignup() {
     console.log(formErrors);
   };
 
-  function handleFirebase() {
+  const handleFirebase = () => {
     if (Object.keys(formErrors).length === 0) {
       firebase
         .auth()
@@ -110,6 +128,33 @@ function UserSignup() {
             .then(() => {
               // User re-authenticated.
               console.log("User reauthenticated");
+              const enterDetails = async() =>{
+                let response = await axios.post(
+                  "http://localhost:19720/userRegister",
+                  {
+                    username: formValues.username,
+                    email: formValues.email,
+                    first_name: formValues.first_name,
+                    last_name: formValues.last_name,
+                    phone: formValues.phone,
+                    cnic: formValues.cnic,
+                    dob: formValues.dob,
+                    address: formValues.address
+                  },
+                  { headers: { Authorization: "Bearer " + token, role: "user" } }
+                );
+                if (response.data.status == 200) {
+                  alert("User registered successfully!");
+                  navigate("/");
+                } else {
+                  alert(response.data.message);
+                  alert("Couldn't register user!");
+                }
+                
+              }
+              enterDetails();
+              
+
             })
             .catch((error) => {
               // An error occurred
@@ -146,31 +191,13 @@ function UserSignup() {
           var errorMessage = error.message;
           // ..
           console.log(error);
+          alert(error.message);
         });
 
-        // firebase.auth().onAuthStateChanged(authUser => {
-        //   console.log(authUser)
-        //   if(authUser.emailVerified){ //This will return true or false
-        //     console.log('email is verified')
-        //    }else{
-        //        console.log('email not verified')
-        //    }
-        // })
-    }
-  }
+       
+  }}
 
-  // const user = firebase.auth().currentUser;
-  // const emailVerified = user.emailVerified;
-  // useEffect(() => {
 
-  //   if (emailVerified == false) {
-  //     console.log("Verify your email")
-  //   }
-  //   else{
-  //     console.log("Email verified!")
-  //     navigate('/');
-  //   }
-  // }, [emailVerified])
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((userCred) => {
@@ -191,23 +218,29 @@ function UserSignup() {
      if (notInitialRender.current) {
       const checkErrors = async () => {
         if (Object.keys(formErrors).length === 0) {
-          let response = await axios.post(
-            "http://localhost:19720/userRegister",
-            {
-              username: formValues.username,
-              email: formValues.email,
-              password: formValues.password,
-            },
-            { headers: { Authorization: "Bearer " + token, role: "user" } }
-          );
-          if (response.data.status == 200) {
-            alert("User registered successfully!");
-            handleFirebase();
-            navigate("/");
-          } else {
-            alert(response.data.message);
-            alert("Couldn't register user!");
-          }
+          handleFirebase();
+          // let response = await axios.post(
+          //   "http://localhost:19720/userRegister",
+          //   {
+          //     username: formValues.username,
+          //     email: formValues.email,
+          //     first_name: formValues.first_name,
+          //     last_name: formValues.last_name,
+          //     phone: formValues.phone,
+          //     cnic: formValues.cnic,
+          //     dob: formValues.dob,
+          //     address: formValues.address
+          //   },
+          //   { headers: { Authorization: "Bearer " + token, role: "user" } }
+          // );
+          // if (response.data.status == 200) {
+          //   alert("User registered successfully!");
+          //   handleFirebase();
+          //   navigate("/");
+          // } else {
+          //   alert(response.data.message);
+          //   alert("Couldn't register user!");
+          // }
         }
       };
       checkErrors();
@@ -215,48 +248,7 @@ function UserSignup() {
     console.log(formErrors);
   }, [formErrors]);
 
-  // useEffect(() => {
-  //   axios.post(`http://localhost:19720/getUsernames`)
-  //     .then(res => {
-  //       // console.log(res.data.message);
-  //       var results = res.data.message;
-  //       Object.values(results).forEach(val => {
-  //         console.log(val);
-  //         if (formValues.username === val.USERNAME && formValues.username!= ""){
-  //           console.log(formValues.username, " is equal to ", val.USERNAME);
-  //           formErrors.username = "Username already exists!";
-  //           // alert("Username already exists!")
-  //           console.log("Username already exists");
-  //         }
 
-  //       }
-  //       );
-  //     })
-  // }, [formValues.username]);
-
-  // useEffect(() => {
-  //   axios.post(`http://localhost:19720/getEmails`)
-  //     .then(res => {
-  //       // console.log(res.data.message);
-  //       var results = res.data.message;
-  //       Object.values(results).forEach(val => {
-  //         console.log(val);
-  //         if (formValues.email === val.EMAIL && formValues.email!= ""){
-  //           console.log(formValues.email, " is equal to ", val.EMAIL);
-  //           formErrors.email = "Email already in use!";
-  //           msg = "Email already in use!";
-  //           console.log("Email already in use");
-  //         }
-
-  //       }
-  //       );
-  //     })
-  // }, [formValues.email]);
-
-  // useEffect(() => {
-  //   if (loading) return;
-  //   if (user) navigate("/dashboard", { replace: true });
-  // }, [user, loading]);
   return (
     <div className="register">
       <div className="register__container">
@@ -293,16 +285,79 @@ function UserSignup() {
         <div className="showError">
           <p>{formErrors.password}</p>
         </div>
+        <input
+          type="text"
+          className="register__textBox"
+          name="first_name"
+          value={formValues.first_name}
+          onChange={handleChange}
+          placeholder="First name"
+        />
+        <div className="showError">
+          <p>{formErrors.first_name}</p>
+        </div>
+        <input
+          type="text"
+          className="register__textBox"
+          name="last_name"
+          value={formValues.last_name}
+          onChange={handleChange}
+          placeholder="Last name"
+        />
+          <input
+          type="tel"
+          className="register__textBox"
+          name="phone"
+          value={formValues.phone}
+          onChange={handleChange}
+          placeholder="Phone no."
+        />
+        <div className="showError">
+          <p>{formErrors.phone}</p>
+        </div>
+        
+        <input
+          label = "DOB"
+          type="date"
+          className="register__textBox"
+          name="dob"
+          value={formValues.dob}
+          onChange={handleChange}
+          placeholder="Date of birth"
+        />
+        <div className="showError">
+          <p>{formErrors.dob}</p>
+        </div>
+        <input
+          type="text"
+          className="register__textBox"
+          name="cnic"
+          value={formValues.cnic}
+          onChange={handleChange}
+          placeholder="CNIC"
+        />
+        <div className="showError">
+          <p>{formErrors.cnic}</p>
+        </div>
+        <input
+          type="text"
+          className="register__textBox"
+          name="address"
+          value={formValues.address}
+          onChange={handleChange}
+          placeholder="Home address"
+        />
+        <div className="showError">
+          <p>{formErrors.address}</p>
+        </div>
+
         {/* <button className="register__btn" onClick={register}> */}
         <button className="register__btn" onClick={signup}>
           Register
         </button>
-        {/* <button
-          className="register__btn register__google"
-          onClick={signInWithGoogle}
-        >
-          Register with Google
-        </button> */}
+        <div>
+          <a href="">Forgot password</a>
+        </div>
         <div>
           Already have an account? <Link to="/">Login</Link> now.
         </div>

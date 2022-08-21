@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import UserSignup from "./components/UserSignup";
 import Dashboard from "./components/Dashboard";
 import { Route, Routes } from 'react-router-dom';
+import ResetPassword from './components/ResetPassword';
 
 
 function UserRoutes() {
@@ -14,6 +15,7 @@ function UserRoutes() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/signup" element={<UserSignup />} />
         <Route path="/login" element={<UserLogin />} />
+        <Route path="/resetpass" element={<ResetPassword />} />
         
       </Routes>
     </div>

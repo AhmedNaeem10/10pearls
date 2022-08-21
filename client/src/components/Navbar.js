@@ -21,6 +21,9 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/" exact>HOME</NavLink>
                             </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to="/resetpass" exact>SETTINGS</NavLink>
+                            </li>
                         </ul>
 
                     </div>

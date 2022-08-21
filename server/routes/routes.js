@@ -352,7 +352,7 @@ app.put('/updateJobStatus/:id/:status', jobController.update_status);
  * @swagger
  * /getJobsByStatus/{status}:
  *   get:
- *     summary: Get jobs with the specified status
+ *     summary: Get job with the specified status
  *     tags: [Admin]
  *     consumes:
  *       - application/json
@@ -368,11 +368,75 @@ app.put('/updateJobStatus/:id/:status', jobController.update_status);
  *     responses:
  *       200:
  *         description: Jobs retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties: 
+ *                    id:
+ *                      type: integer
+ *                    CUSTOMER_ID:
+ *                      type: integer
+ *                    SERVICE_DETAIL_ID:
+ *                      type: integer
+ *                    DATE_TIME:
+ *                      type: string
+ *                    PAYMENT_METHOD:
+ *                      type: string
+ *                    JOB_STATUS:
+ *                      type: string
  *       400:
  *         description: Couldn't retrieve jobs
  *        
  */
-app.get('/getJobsByStatus/:status', jobController.get_jobs)
+app.get('/getJobsByStatus/:status', jobController.get_jobs);
+
+/**
+ * @swagger
+ * /getJobsDetailsByStatus/{status}:
+ *   get:
+ *     summary: Get job details with the specified status
+ *     tags: [Admin]
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: status
+ *         schema:
+ *           type: string
+ *         description: Status of the job
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Jobs retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties: 
+ *                    JOB_ID:
+ *                      type: integer
+ *                    CUSTOMER_NAME:
+ *                      type: string
+ *                    WORKER_NAME:
+ *                      type: string
+ *                    SERVICE_NAME:
+ *                      type: string
+ *                    DATE_TIME:
+ *                      type: string
+ *                    JOB_STATUS:
+ *                      type: string
+ *       400:
+ *         description: Couldn't retrieve job details
+ *        
+ */
+app.get('/getJobsDetailsByStatus/:status', jobController.get_jobs_details);
 
 
 // customer usecases
@@ -460,10 +524,13 @@ app.post('/userLogin', userController.login);
  */
 app.post('/userRegister', userController.register);
 
+
+// app.post('/changePassword', userController.reset_password)
+
 /**
  * @swagger
  * /updateCustomer/{userid}:
- *   put:
+ *   post:
  *     summary: Update a customer's details
  *     tags: [User]
  *     consumes:
@@ -511,7 +578,24 @@ app.post('/userRegister', userController.register);
 app.post('/updateCustomer/:userid', userController.update_customer);
 
 // Already done in getServices
-// app.post('/viewServices', userController.get_services);
+
+/**
+ * @swagger
+ * /getServices:
+ *   get:
+ *     summary: Retrieve all offered services
+ *     tags: [User]
+ *     responses:
+ *       200:
+ *         description: Returns services
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/SERVICES'
+ */
+app.post('/viewServices', userController.get_services);
 
 /**
  * @swagger
@@ -718,6 +802,45 @@ app.get('/getRequests', jobController.get_all_requests)
  * 
  */
 app.post('/review', reviewController.give_review);
+
+
+/**
+ * @swagger
+ * /request:
+ *   post:
+ *     tags:
+ *       - User
+ *     name: Request service
+ *     summary: Request a service
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *         in: body
+ *         schema:
+ *           type: object
+ *           properties:
+ *            CUSTOMER_ID:
+ *              type: integer
+ *            SERVICE_ID:
+ *              type: integer
+ *            DATE_TIME:
+ *              type: string
+ *            WORKER_ID:
+ *              type: integer
+ *            ADDRESS:
+ *              type: string
+ *     responses:
+ *       '200':
+ *         description: Request created successfully
+ *       '400':
+ *         description: Couldn't create request
+ *       '404':
+ *         description: "Error: Not Found"
+ */
+app.post('/request', jobController.request);
 
 // worker usecases
 /**

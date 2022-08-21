@@ -1,14 +1,38 @@
 import React, { useState } from 'react'
 import Sidebar from "./Sidebar";
 import "./Settings.css";
+import axios from 'axios';
 
 
-function Settings() {
+
+function Settings  ()  {
     const [username, setUsername] = useState("");
-    const [newpassword, setnewpassword] = useState("");
+    const [currentpassword, setCurrentpassword] = useState("");
+    const [newpassword, setNewpassword] = useState("");
     const [confpassword, setConfpassword] = useState("");
 
-    const checkPassword = () => {
+    const checkPassword = async() => {
+      if(newpassword!==confpassword){
+        alert("Passwords don't match!")
+      }
+      else{
+        let response = await axios.post("http://localhost:19720/adminLogin", { username, password: currentpassword });
+        console.log(response)
+        if (response.data.status === 200) {
+          console.log("Correct admin credentials")
+          let update = await axios.post("http://localhost:19720/adminChangePassword", { params: {username, password: newpassword} });
+          if(update.data.status === 200){
+            console.log(update)
+            console.log("Paswword updated successfully")
+          }
+
+           
+         } else {
+      alert("Wrong credentials!");
+    }
+      }
+      
+
 
     }
     
@@ -28,7 +52,7 @@ function Settings() {
         <input
           type="password"
           className="login__textBox"
-          value={username} onChange={(e) => setUsername(e.target.value)}
+          value={currentpassword} onChange={(e) => setCurrentpassword(e.target.value)}
           placeholder="Current password"
         />
         <br>
@@ -37,7 +61,7 @@ function Settings() {
         <input
           type="newpassword"
           className="login__textBox"
-          value={newpassword} onChange={(e) => setnewpassword(e.target.value)}
+          value={newpassword} onChange={(e) => setNewpassword(e.target.value)}
           placeholder="New Password"
         />
         <input
