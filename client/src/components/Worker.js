@@ -69,49 +69,53 @@ export default function RequestWorker() {
 
     return (
         <>
+            {Object.keys(worker).length === 0 ? (
+                <div>...Loading</div>
+            ) : (
 
-            <div className="ui grid container">
-                <div className="ui placeholder segment">
-                    <div className="ui two column stackable center aligned grid">
-                        <div className="middle aligned row">
-                            <div className="column lp">
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image={WORKER_IMAGE}
-                                    alt={FIRST_NAME}
-                                />                            </div>
-                            <div className="column rp">
-                                <h1>{FIRST_NAME}</h1>
-                                <h2>
-                                    <a className="ui teal tag label">{PHONE}</a>
-                                </h2>
-                                <h3 className="ui brown block header">{EMAIL}</h3>
-                                <p>{ADDRESS}</p>
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Time</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={time}
-                                        label="Time"
-                                        onChange={handleChange}
-                                    >
-                                        {slots.map((slot) =>
-                                            <MenuItem value={slot}>{slot} : 00</MenuItem>
-                                        )}
+                <div className="ui grid container">
+                    <div className="ui placeholder segment">
+                        <div className="ui two column stackable center aligned grid">
+                            <div className="middle aligned row">
+                                <div className="column lp">
+                                    <CardMedia
+                                        component="img"
+                                        height="140"
+                                        image={WORKER_IMAGE}
+                                        alt={FIRST_NAME}
+                                    />                            </div>
+                                <div className="column rp">
+                                    <h1>{FIRST_NAME}</h1>
+                                    <h2>
+                                        <a className="ui teal tag label">{PHONE}</a>
+                                    </h2>
+                                    <h3 className="ui brown block header">{EMAIL}</h3>
+                                    <p>{ADDRESS}</p>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">Time</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={time}
+                                            label="Time"
+                                            onChange={handleChange}
+                                        >
+                                            {slots.map((slot) =>
+                                                <MenuItem value={slot}>{slot} : 00</MenuItem>
+                                            )}
 
 
-                                    </Select>
-                                </FormControl>
-                                <Button onClick={requestHandler}>Request</Button>
+                                        </Select>
+                                    </FormControl>
+                                    <Button onClick={requestHandler}>Request</Button>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+
                 </div>
-
-
-            </div>
+            )}
         </>
 
     )

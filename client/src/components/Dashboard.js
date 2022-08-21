@@ -88,39 +88,43 @@ export default function Dashboard() {
     return (
         <>
             {/* <Navbar /> */}
-            <div style={{ display: 'flex' }}>
+            {Object.keys(services).length === 0 ? (
+                <div>...Loading</div>
+            ) : (
+                <div style={{ display: 'flex' }}>
 
 
 
 
-                {services.map((services) => {
-                    const { id, SERVICE_TITLE, SERVICE_DESCRIPTION, SERVICE_RATE } = services;
-                    return (
-                        <Link to={`/services/${id}`}>
-                            <div style={{ margin: '1rem' }}>
-                                <Card sx={{ maxWidth: 345 }}>
-                                    <CardActionArea>
-                                        <CardMedia
-                                            component="img"
-                                            height="140"
-                                            image={SERVICE_IMAGE}
-                                            alt={SERVICE_TITLE}
-                                        />
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                {SERVICE_TITLE}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                {SERVICE_DESCRIPTION}
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
-                            </div>
-                        </Link>
-                    )
-                })}
-            </div>
+                    {services.map((services) => {
+                        const { id, SERVICE_TITLE, SERVICE_DESCRIPTION, SERVICE_RATE } = services;
+                        return (
+                            <Link to={`/services/${id}`}>
+                                <div style={{ margin: '1rem' }}>
+                                    <Card sx={{ maxWidth: 345 }}>
+                                        <CardActionArea>
+                                            <CardMedia
+                                                component="img"
+                                                height="140"
+                                                image={SERVICE_IMAGE}
+                                                alt={SERVICE_TITLE}
+                                            />
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h5" component="div">
+                                                    {SERVICE_TITLE}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    {SERVICE_DESCRIPTION}
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                </div>
+                            </Link>
+                        )
+                    })}
+                </div>
+            )}
         </>
     )
 }

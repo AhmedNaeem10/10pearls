@@ -42,6 +42,7 @@ function Requests(props) {
 
     let allRequests
     const getAllRequests = async () => {
+        setRequests("")
         try {
             const response = await axios.get(`https://home-services-backend.azurewebsites.net/getJobsByStatus/${props.option}`)
                 .then((response) => {
@@ -91,73 +92,80 @@ function Requests(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {requests.map((requests) => {
-                            const { id, CUSTOMER_ID,
-                                DATE_TIME,
-                                JOB_STATUS,
-                                PAYMENT_METHOD,
-                                SERVICE_DETAIL_ID } = requests
-                            const acceptRequest = async (e) => {
-                                // console.log(id);
+                        {Object.keys(requests).length === 0 ? (
+                            <div>...Loading</div>
+                        ) : (
+                            <>
+                                {requests.map((requests) => {
+                                    const { id, CUSTOMER_ID,
+                                        DATE_TIME,
+                                        JOB_STATUS,
+                                        PAYMENT_METHOD,
+                                        SERVICE_DETAIL_ID } = requests
+                                    const acceptRequest = async (e) => {
+                                        // console.log(id);
 
-                                try {
+                                        try {
 
 
-                                    let response = await axios.put(`https://home-services-backend.azurewebsites.net/updateJobStatus/${id}/accepted`)
+                                            let response = await axios.put(`https://home-services-backend.azurewebsites.net/updateJobStatus/${id}/accepted`)
 
-                                    // alert(response.data.message)
-                                    setClick(!click)
+                                            // alert(response.data.message)
+                                            setClick(!click)
 
-                                } catch (err) {
+                                        } catch (err) {
 
-                                    console.log(err)
+                                            console.log(err)
 
-                                }
+                                        }
 
-                            }
-                            const rejectRequest = async (e) => {
+                                    }
+                                    const rejectRequest = async (e) => {
 
-                                try {
+                                        try {
 
-                                    //   let job_id = requests[index].id;
+                                            //   let job_id = requests[index].id;
 
-                                    let response = await axios.put(`https://home-services-backend.azurewebsites.net/updateJobStatus/${id}/rejected`)
+                                            let response = await axios.put(`https://home-services-backend.azurewebsites.net/updateJobStatus/${id}/rejected`)
 
-                                    // alert(response.data.message)
-                                    setClick(!click)
+                                            // alert(response.data.message)
+                                            setClick(!click)
 
-                                } catch (err) {
+                                        } catch (err) {
 
-                                    console.log(err)
+                                            console.log(err)
 
-                                }
+                                        }
 
-                            }
+                                    }
 
-                            return (
-                                <>
+                                    return (
+                                        <>
 
-                                    <StyledTableRow >
-                                        <StyledTableCell style={{ width: "15%" }} > {CUSTOMER_ID}  </StyledTableCell>
-                                        <StyledTableCell component="th" scope="row" style={{ width: "25%" }}><Link style={{ "textDecoration": "none" }} to={`/workerdetails/${SERVICE_DETAIL_ID}`}>
-                                            {SERVICE_DETAIL_ID}
-                                        </Link></StyledTableCell>
-                                        <StyledTableCell style={{ width: "25%" }} > {DATE_TIME}  </StyledTableCell>
-                                        <StyledTableCell style={{ width: "15%" }}>  {PAYMENT_METHOD}  </StyledTableCell>
-                                        {props.option == "pending" && <StyledTableCell style={{ width: "25%" }}>
-                                            <Button onClick={acceptRequest} style={{ margin: "3px" }} variant="contained" color="success">
-                                                ACCEPT
-                                            </Button>
-                                            <Button onClick={rejectRequest} style={{ margin: "3px" }} variant="outlined" color="error">
-                                                REJECT
-                                            </Button>
-                                        </StyledTableCell>}
+                                            <StyledTableRow >
+                                                <StyledTableCell style={{ width: "15%" }} > {CUSTOMER_ID}  </StyledTableCell>
+                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}><Link style={{ "textDecoration": "none" }} to={`/workerdetails/${SERVICE_DETAIL_ID}`}>
+                                                    {SERVICE_DETAIL_ID}
+                                                </Link></StyledTableCell>
+                                                <StyledTableCell style={{ width: "25%" }} > {DATE_TIME}  </StyledTableCell>
+                                                <StyledTableCell style={{ width: "15%" }}>  {PAYMENT_METHOD}  </StyledTableCell>
+                                                {props.option == "pending" && <StyledTableCell style={{ width: "25%" }}>
+                                                    <Button onClick={acceptRequest} style={{ margin: "3px" }} variant="contained" color="success">
+                                                        ACCEPT
+                                                    </Button>
+                                                    <Button onClick={rejectRequest} style={{ margin: "3px" }} variant="outlined" color="error">
+                                                        REJECT
+                                                    </Button>
+                                                </StyledTableCell>}
 
-                                    </StyledTableRow>
-                                </>
+                                            </StyledTableRow>
 
-                            )
-                        })}
+                                        </>
+
+                                    )
+                                })}
+                            </>
+                        )}
 
 
 

@@ -11,7 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 function Services() {
-    const [services, getServices] = useState([]);
+    const [services, setServices] = useState([]);
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -35,15 +35,12 @@ function Services() {
 
     const getAllServices = async () => {
         try {
-            const allServices = await axios.get("http://localhost:19720/getServices")
-            // .then((response) => {
-            //   const allServices = response.data;
-            //   console.log(response)
-            console.log(allServices);
-            getServices(allServices.data);
-            //   console.log(services);
-            // })
-            // .catch(error => console.error(error));
+            const response = await axios.get("https://home-services-backend.azurewebsites.net/getServices")
+                .then((response) => {
+                    console.log(response)
+                    setServices(response.data);
+                })
+                .catch(error => console.error(error));
 
         }
         catch (error) {

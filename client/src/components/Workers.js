@@ -110,46 +110,49 @@ export default function Workers() {
     return (
         <>
 
-
-            <div style={{ display: 'flex' }}>
+            {Object.keys(workers).length === 0 ? (
+                <div>...Loading</div>
+            ) : (
                 <div style={{ display: 'flex' }}>
+                    <div style={{ display: 'flex' }}>
 
 
 
 
-                    {workers.map((workers) => {
-                        console.log(workers);
-                        const { id, FIRST_NAME, LAST_NAME, PHONE, DOB, CNIC, ADDRESS, EMAIL, AVAILABLE } = workers;
-                        return (
-                            <Link to={`/worker/${id}`}>
-                                <div style={{ margin: '1rem' }}>
-                                    <Card sx={{ maxWidth: 345 }}>
-                                        <CardActionArea>
-                                            <CardMedia
-                                                component="img"
-                                                height="140"
-                                                image={WORKER_IMAGE}
-                                                alt={FIRST_NAME}
-                                            />
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="div">
-                                                    {FIRST_NAME} {LAST_NAME}
-                                                </Typography>
-                                                <Typography variant="body2" color="text.secondary">
-                                                    {AVAILABLE}
-                                                </Typography>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </div>
-                            </Link>
+                        {workers.map((workers) => {
+                            console.log(workers);
+                            const { id, FIRST_NAME, LAST_NAME, PHONE, DOB, CNIC, ADDRESS, EMAIL, AVAILABLE } = workers;
+                            return (
+                                <Link to={`/worker/${id}`}>
+                                    <div style={{ margin: '1rem' }}>
+                                        <Card sx={{ maxWidth: 345 }}>
+                                            <CardActionArea>
+                                                <CardMedia
+                                                    component="img"
+                                                    height="140"
+                                                    image={WORKER_IMAGE}
+                                                    alt={FIRST_NAME}
+                                                />
+                                                <CardContent>
+                                                    <Typography gutterBottom variant="h5" component="div">
+                                                        {FIRST_NAME} {LAST_NAME}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        {AVAILABLE}
+                                                    </Typography>
+                                                </CardContent>
+                                            </CardActionArea>
+                                        </Card>
+                                    </div>
+                                </Link>
 
-                        )
-                    })}
+                            )
+                        })}
+                    </div>
+
+
                 </div>
-
-
-            </div>
+            )}
         </>
 
     )
