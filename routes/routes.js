@@ -54,4 +54,6 @@ router.put('/switchAvailability/:id', workerController.switch_availability);
 //   ****  new  ****
 router.get('/getCustomerId/:email', userController.getId);
 
+router.post('/upload', jobController.check)
+
 module.exports = router;

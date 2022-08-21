@@ -94,6 +94,7 @@ exports.get_jobs = async (req, res) => {
     }
 }
 
+
 get_details = async(response) => {
     let customer_id = response.CUSTOMER_ID;
     let worker_id = response.WORKER_ID;
@@ -103,10 +104,10 @@ get_details = async(response) => {
     const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
     const SERVICE = require('../model/service')(db.sequelize, db.Sequelize);
 
-    let customer_name = await CUSTOMER.findOne({attributes: ['FIRST_NAME', 'LAST_NAME']}, {where: {CUSTOMER_ID: customer_id}});
+    let customer_name = await CUSTOMER.findOne({attributes: ['id', 'FIRST_NAME', 'LAST_NAME']}, {where: {CUSTOMER_ID: customer_id}});
     let CUSTOMER_NAME = customer_name.FIRST_NAME + " " + customer_name.LAST_NAME;
 
-    let worker_name = await WORKER.findOne({attributes: ['FIRST_NAME', 'LAST_NAME']}, {where: {WORKER_ID: worker_id}});
+    let worker_name = await WORKER.findOne({attributes: ['id', 'FIRST_NAME', 'LAST_NAME']}, {where: {WORKER_ID: worker_id}});
     let WORKER_NAME = worker_name.FIRST_NAME + " " + worker_name.LAST_NAME;
 
     let service_detail = await SERVICE_DETAIL.findAll({where: {SERVICE_DETAIL_ID: service_detail_id}});
@@ -119,7 +120,9 @@ get_details = async(response) => {
     let ADDRESS = response.ADDRESS;
     let JOB_STATUS = response.JOB_STATUS;
     let SERVICE_NAME = service[0].SERVICE_TITLE;
-    return {JOB_ID, CUSTOMER_NAME, WORKER_NAME, SERVICE_NAME, DATE_TIME, ADDRESS, JOB_STATUS};
+    let CUSTOMER_ID = customer_name.id;
+    let WORKER_ID = worker_name.id;
+    return {JOB_ID, CUSTOMER_ID, CUSTOMER_NAME, WORKER_ID, WORKER_NAME, SERVICE_NAME, DATE_TIME, ADDRESS, JOB_STATUS};
 }
 
 exports.get_jobs_details = async (req, res) => {
@@ -175,6 +178,9 @@ exports.get_jobs_for_customer_by_id = async (req, res) => {
     }
 }
 
+exports.check = async (req, res) => {
+    console.log(req.body.file);
+}
 
 
 
