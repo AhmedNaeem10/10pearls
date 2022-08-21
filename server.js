@@ -4,7 +4,7 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });;
 const middleware = require('./middleware');
-// const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 
 const port = process.env.PORT || 5000;
 app.use(cors());
