@@ -56,6 +56,6 @@ app.get('/workersByAvailability', workerController.get_worker_by_availability)
 app.get('/workerDetails/:id', workerController.get_worker_details)
 app.get('/updateWorker/:id', workerController.update_worker)
 app.put('/switchAvailability/:id', workerController.switch_availability);
-
+app.get('/getCustomerId/:email', userController.getId);
 
 module.exports = app;

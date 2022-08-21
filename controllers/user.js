@@ -349,3 +349,20 @@ exports.get_emails = async(req, res) => {
     }
 }
 
+
+exports.getId = async(req, res) => {
+    let {email} = req.params;
+    try{
+        let user = await CUSTOMER.findOne({where: {EMAIL: email}})
+        res.json({
+            status: 200,
+            message: user.id
+        });
+    }catch(err){
+        res.json({
+            status: 400,
+            message: err.message
+        })
+    }
+}
+
