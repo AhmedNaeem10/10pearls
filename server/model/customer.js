@@ -11,7 +11,7 @@
  *         - EMAIL
  *       properties:
  *         CUSTOMER_ID:
- *           type: int
+ *           type: integer
  *           description: The auto-generated id of customer
  *         USERNAME:
  *           type: string
@@ -23,13 +23,13 @@
  *           type: string
  *           description: The customer's email address
  *         FIRST_NAME:
- *           type: float
+ *           type: string
  *           description: The customer's first name
  *         LAST_NAME:
- *           type: float
+ *           type: string
  *           description: The customer's last name
  *         DOB:
- *           type: date
+ *           type: string
  *           description: The customer's date of birth
  *         PHONE:
  *           type: string

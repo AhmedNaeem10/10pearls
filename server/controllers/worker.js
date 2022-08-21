@@ -239,6 +239,23 @@ exports.update_worker = async (req, res) => {
     }
 }
 
+exports.delete_worker = async (req, res) => {
+    const {id} = req.params;
+    try{
+        let response = await WORKER.destroy({where: {WORKER_ID: id}});
+        res.json({
+            status: 200,
+            message: "Worker successfully deleted!"
+        })
+    }
+    catch(err){
+        res.json({
+            status: 400,
+            message: "There was an error deleting the worker!"
+        });
+    }
+}
+
 exports.get_worker_feedback = async(req , res) => {
     // const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
     try{

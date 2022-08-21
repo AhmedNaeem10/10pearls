@@ -13,7 +13,7 @@
  *         - ADDRESS
  *       properties:
  *         WORKER_ID:
- *           type: int
+ *           type: integer
  *           description: The auto-generated id of the worker
  *         FIRST_NAME:
  *           type: string
@@ -22,7 +22,7 @@
  *           type: string
  *           description: The worker's last name
  *         DOB:
- *           type: date
+ *           type: string
  *           description: The worker's date of birth
  *         PHONE:
  *           type: string
@@ -40,7 +40,7 @@
  *           type: boolean
  *           description: The worker's availability status
  *         RATING:
- *           type: float
+ *           type: number
  *           description: The worker's overall rating
  *       example:
  *         WORKER_ID: 6

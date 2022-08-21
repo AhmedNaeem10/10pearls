@@ -281,6 +281,8 @@ app.put('/editService/:id', serviceController.edit_service)
  */
 app.delete('/deleteService/:id', serviceController.delete_service)
 
+
+
 /**
  * @swagger
  * /addService:
@@ -552,8 +554,62 @@ app.post('/requestJob', jobController.request_job);
 
 //Requets table being used
 app.post('/cancelRequest/:requestid', userController.cancel_request);
-app.post('/getUsernames', userController.get_usernames);
-app.post('/getEmails', userController.get_emails);
+
+/**
+ * @swagger
+ * /getUsernames:
+ *   get:
+ *     tags:
+ *       - Admin
+ *     summary: Retrieve all customer usernames
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Usernames retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                    USERNAME:
+ *                      type: string
+ *       '400':
+ *         description: Couldn't get usernames
+ *       '404':
+ *         description: "Error: Not Found"
+ */
+app.get('/getUsernames', userController.get_usernames);
+
+/**
+ * @swagger
+ * /getEmails:
+ *   get:
+ *     tags:
+ *       - Admin
+ *     summary: Retrieve all customer emails
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Emails retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                    EMAIL:
+ *                      type: string
+ *       '400':
+ *         description: Couldn't get emails
+ *       '404':
+ *         description: "Error: Not Found"
+ */
+app.get('/getEmails', userController.get_emails);
 
 
 /**
@@ -719,6 +775,30 @@ app.get('/worker/:id', workerController.get_worker_by_id)
 
 /**
  * @swagger
+ * /deleteWorker/{id}:
+ *   delete:
+ *     summary: Delete a worker from the application 
+ *     tags: [Admin]
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         description: Numeric id of the worker
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Worker deleted successfully
+ *       400:
+ *         description: Couldn't delete worker
+ *        
+ */
+ app.delete('/deleteWorker/:id', workerController.delete_worker)
+
+/**
+ * @swagger
  * /getWorkerFeedbacks/{id}:
  *   get:
  *     summary: Retrieve feedbacks by worker ID
@@ -750,6 +830,8 @@ app.get('/worker/:id', workerController.get_worker_by_id)
  *          description: "Error: Request Not Found"
  * 
  */
+
+
 app.get('/getWorkerFeedbacks/:id', workerController.get_worker_feedback)
 
 

@@ -12,16 +12,16 @@
  *         - JOB_STATUS
  *       properties:
  *         JOB_ID:
- *           type: int
+ *           type: integer
  *           description: The auto-generated id of the job
  *         CUSTOMER_ID:
- *           type: int
+ *           type: integer
  *           description: The id of the customer who requested the service
  *         SERVICE_DETAIL_ID:
- *           type: int
+ *           type: integer
  *           description: The corresponding service_detail_id of the request
  *         DATE_TIME:
- *           type: datetime
+ *           type: string
  *           description: Date and time for which request has been made
  *         PAYMENT_METHOD:
  *           type: string

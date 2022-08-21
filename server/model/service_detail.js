@@ -10,16 +10,16 @@
  *         - SERVICE_CHARGES
  *       properties:
  *         SERVICE_DETAIL_ID:
- *           type: int
+ *           type: integer
  *           description: The auto-generated id of the SERVICE_DETAIL
  *         WORKER_ID:
- *           type: int
+ *           type: integer
  *           description: The corresponding id of the worker providing the service
  *         SERVICE_ID:
- *           type: int
+ *           type: integer
  *           description: The corresponding id of the service being provided
  *         SERVICE_CHARGES:
- *           type: datetime
+ *           type: number
  *           description: Service charges
  *       example:
  *         SERVICE_DETAIL_ID: 1

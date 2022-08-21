@@ -10,14 +10,14 @@
  *         - PASSWORD
  *       properties:
  *         id:
- *           type: int
- *           description: The auto-generated id of admin
+ *           type: integer
+ *           description: The auto-generated id of the admin
  *         USERNAME:
  *           type: string
- *           description: The admin username
+ *           description: The admin's username
  *         PASSWORD:
  *           type: string
- *           description: The admin password
+ *           description: The admin's password
  *       example:
  *         id: 6
  *         title: admin6
