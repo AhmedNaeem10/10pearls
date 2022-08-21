@@ -3,8 +3,9 @@ var bodyParser = require('body-parser')
 const app = express();
 const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });;
-const middleware = require('./middleware');
-const nodemailer = require('nodemailer');
+const routes = require('./routes/routes')
+// const middleware = require('./middleware');
+// const nodemailer = require('nodemailer');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require("swagger-jsdoc");
 // const swaggerDocument = require('./swagger.json');
@@ -43,6 +44,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get("/api-docs/swagger.json", (req, res) => res.json(swaggerDocument));
+
 
 
 const db = require("./model");
