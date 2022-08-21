@@ -43,9 +43,11 @@ app.post('/cancelRequest/:requestid', userController.cancel_request);
 app.post('/getUsernames', userController.get_usernames);
 app.post('/getEmails', userController.get_emails);
 app.get('/getJobsForCustomer/:id/:status', jobController.get_jobs_for_customer);
+//   ****  new  ****
 app.get('/getJobsForCustomer/:id', jobController.get_jobs_for_customer_by_id)
 app.post('/review', reviewController.give_review);
 app.post('/request', jobController.request);
+//   ****  new  ****
 app.get('/customer/:id', userController.getCustomer);
 
 // worker usecases
@@ -58,6 +60,7 @@ app.get('/workersByAvailability', workerController.get_worker_by_availability)
 app.get('/workerDetails/:id', workerController.get_worker_details)
 app.get('/updateWorker/:id', workerController.update_worker)
 app.put('/switchAvailability/:id', workerController.switch_availability);
+//   ****  new  ****
 app.get('/getCustomerId/:email', userController.getId);
 
 module.exports = app;
