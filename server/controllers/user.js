@@ -52,33 +52,9 @@ exports.login = async (req, res)=>{
 }
 
 exports.register = async (req, res)=>{
-    // const db = dbo.connect();
-    const user = req.body;
-    // setting primary info for now
-    const username = user.username;
-    // password encryption
-    var salt = 10
-    // const password = await bcrypt.hash(user.password,salt);
-    // const password = user.password;
-
-    const first_name = user.first_name;
-    const last_name = user.last_name;
-    const email = user.email;
-    const phone = user.phone;
-    const dob = user.dob;
-    const cnic = user.cnic;
-    const address = user.address;
-
+    let user = req.body;
     try{
-        let response = await CUSTOMER.create({
-            USERNAME: username, 
-            FIRST_NAME: first_name,
-            LAST_NAME: last_name,
-            EMAIL: email,
-            PHONE: phone,
-            CNIC: cnic,
-            DOB: dob,
-            ADDRESS: address});
+        let response = await CUSTOMER.create(user);
         if(response){
             res.json({
                 status: 200,

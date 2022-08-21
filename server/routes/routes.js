@@ -483,33 +483,12 @@ app.post('/userLogin', userController.login);
  *     summary: Register a new user
  *     consumes:
  *       - application/json
- *     produces:
- *       - application/json
  *     parameters:
  *       - name: body
  *         in: body
  *         schema:
  *           $ref: '#/components/schemas/CUSTOMERS'
  *           type: object
- *         properties:
- *          USERNAME:
- *           type: string
- *          PASSWORD:
- *           type: string
- *          EMAIL:
- *           type: string
- *          FIRST_NAME:
- *           type: float
- *          LAST_NAME:
- *           type: float
- *          DOB:
- *           type: date
- *          PHONE:
- *           type: string
- *          CNIC:
- *           type: string
- *          ADDRESS:
- *           type: string
  *         required:
  *           - USERNAME
  *           - EMAIL
