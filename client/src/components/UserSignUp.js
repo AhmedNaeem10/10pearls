@@ -25,6 +25,8 @@ function UserSignup() {
     setFormValues({ ...formValues, [name]: value });
   };
 
+  
+  
   const validate = (values) => {
     const errors = {};
     const emailFormat = new RegExp(
@@ -34,7 +36,10 @@ function UserSignup() {
       "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
     );
     const phoneFormat = new RegExp(
-      "^(\d{4})[- ]?"
+      "[0-9]{4}-?[0-9]{7}$"
+    )
+    const cnicFormat = new RegExp(
+      "[0-9]{5}-?[0-9]{7}-?[0-9]{1}$"
     )
     if (!values.username) {
       errors.username = "Username is required!";
@@ -87,13 +92,19 @@ function UserSignup() {
     } 
     if (!values.phone) {
       errors.phone = "Phone number is required!";
-    } 
+    } else if (!phoneFormat.test(values.phone)) {
+      errors.phone =
+        "Phone no. format = XXXX-XXXXXXX ";
+    }
     if (!values.dob) {
       errors.dob = "Date of birth is required!";
     } 
     if (!values.cnic) {
       errors.cnic = "CNIC is required!";
-    } 
+    } else if (!cnicFormat.test(values.cnic)) {
+      errors.cnic =
+        "Wrong format!";
+    }
     if (!values.address) {
       errors.address = "Address is required!";
     } 
@@ -355,11 +366,9 @@ function UserSignup() {
         <button className="register__btn" onClick={signup}>
           Register
         </button>
+        
         <div>
-          <a href="">Forgot password</a>
-        </div>
-        <div>
-          Already have an account? <Link to="/">Login</Link> now.
+          Already have an account? <Link to="/login">Login</Link> now.
         </div>
       </div>
     </div>

@@ -6,6 +6,9 @@ function ResetPassword() {
   const resetpass = () => {
     const user = firebase.auth().currentUser;
     console.log(user);
+    if(user==null){
+        alert("Login required!");
+    }
     const email = user.email;
     firebase
       .auth()
@@ -20,9 +23,10 @@ function ResetPassword() {
         var errorCode = error.code;
         var errorMessage = error.message;
         // ..
+        
         console.log(error);
       });
-  };
+  }
 
   const deleteaccount = () => {
     const user = firebase.auth().currentUser;

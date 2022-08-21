@@ -1,13 +1,14 @@
 const express = require("express");
 var bodyParser = require('body-parser')
 const app = express();
+const router = express.Router();
 const cors = require("cors");
 const middleware = require('../middleware');
 
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-app.use(express.json());
+router.use(cors());
+router.use(bodyParser.urlencoded({ extended: false }))
+router.use(bodyParser.json())
+router.use(express.json());
 
 
 const adminController = require('../controllers/admin');
@@ -71,10 +72,10 @@ const reviewController = require('../controllers/review')
  *       404:
  *         description: Invalid username/password
  */
-app.post('/adminLogin', adminController.login);
+router.post('/adminLogin', adminController.login);
 
 
-// app.post('/adminRegister', adminController.register);
+// router.post('/adminRegister', adminController.register);
 
 /**
  * @swagger
@@ -126,7 +127,7 @@ app.post('/adminLogin', adminController.login);
  *        
  *    
  */
-app.post('/registerWorker', adminController.register_worker);
+router.post('/registerWorker', adminController.register_worker);
 
 /**
  * @swagger
@@ -159,7 +160,7 @@ app.post('/registerWorker', adminController.register_worker);
  *    
  */
 
-app.post('/addSkill', adminController.add_skill);
+router.post('/addSkill', adminController.add_skill);
 
 /**
  * @swagger
@@ -191,7 +192,7 @@ app.post('/addSkill', adminController.add_skill);
  */
 
 
-app.put('/adminChangePassword/:username/:password', adminController.change_pasword);
+router.put('/adminChangePassword/:username/:password', adminController.change_pasword);
 
 /**
  * @swagger
@@ -209,12 +210,12 @@ app.put('/adminChangePassword/:username/:password', adminController.change_paswo
  *               items:
  *                 $ref: '#/components/schemas/SERVICES'
  */
-app.get('/getServices', serviceController.get_services);
+router.get('/getServices', serviceController.get_services);
 
 
 
 
-app.get('/checkService/:service', serviceController.check_service);
+router.get('/checkService/:service', serviceController.check_service);
 
 /**
  * @swagger
@@ -253,7 +254,7 @@ app.get('/checkService/:service', serviceController.check_service);
  *         description: Couldn't update service
  *        
  */
-app.put('/editService/:id', serviceController.edit_service)
+router.put('/editService/:id', serviceController.edit_service)
 
 /**
  * @swagger
@@ -279,7 +280,7 @@ app.put('/editService/:id', serviceController.edit_service)
  *         description: Couldn't delete service
  *        
  */
-app.delete('/deleteService/:id', serviceController.delete_service)
+router.delete('/deleteService/:id', serviceController.delete_service)
 
 
 
@@ -314,7 +315,7 @@ app.delete('/deleteService/:id', serviceController.delete_service)
  *         description: Couldn't add service
  *        
  */
-app.post('/addService', serviceController.add_service)
+router.post('/addService', serviceController.add_service)
 
 /**
  * @swagger
@@ -346,7 +347,7 @@ app.post('/addService', serviceController.add_service)
  *         description: Couldn't update status of the job
  *        
  */
-app.put('/updateJobStatus/:id/:status', jobController.update_status);
+router.put('/updateJobStatus/:id/:status', jobController.update_status);
 
 /**
  * @swagger
@@ -391,7 +392,7 @@ app.put('/updateJobStatus/:id/:status', jobController.update_status);
  *         description: Couldn't retrieve jobs
  *        
  */
-app.get('/getJobsByStatus/:status', jobController.get_jobs);
+router.get('/getJobsByStatus/:status', jobController.get_jobs);
 
 /**
  * @swagger
@@ -436,7 +437,7 @@ app.get('/getJobsByStatus/:status', jobController.get_jobs);
  *         description: Couldn't retrieve job details
  *        
  */
-app.get('/getJobsDetailsByStatus/:status', jobController.get_jobs_details);
+router.get('/getJobsDetailsByStatus/:status', jobController.get_jobs_details);
 
 
 // customer usecases
@@ -471,7 +472,43 @@ app.get('/getJobsDetailsByStatus/:status', jobController.get_jobs_details);
  *       404:
  *         description: Invalid email/password
  */
-app.post('/userLogin', userController.login);
+router.post('/userLogin', userController.login);
+
+
+
+/**
+ * @swagger
+ * /getJobsForCustomer/{id}:
+ *   get:
+ *     tags:
+ *       - User
+ *     summary: Retrieve jobs for a specific customer
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         description: Numeric id of the customer
+ *         required: true
+ *     responses:
+ *       '200':
+ *         description: Jobs retrived successfully for customer
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/JOBS'
+ *       '400':
+ *         description: Couldn't retrieve jobs for customer
+ *       '404':
+ *         description: "Error: Not Found"
+ */
+router.get('/getJobsForCustomer/:id', jobController.get_jobs_for_customer_by_id)
 
 /**
  * @swagger
@@ -501,10 +538,63 @@ app.post('/userLogin', userController.login);
  *       '404':
  *         description: "Error: Not Found"
  */
-app.post('/userRegister', userController.register);
+router.post('/userRegister', userController.register);
 
 
-// app.post('/changePassword', userController.reset_password)
+/**
+ * @swagger
+ * /customer/{id}:
+ *   get:
+ *     summary: Get a customer's details by ID
+ *     tags: [User]
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Customer details updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/CUSTOMERS'
+ *       400:
+ *         description: Couldn't update customer details
+ *        
+ */
+router.get('/customer/:id', userController.getCustomer);
+
+
+
+/**
+ * @swagger
+ * /getCustomerId/{email}:
+ *   get:
+ *     summary: Get a customer's ID by email
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         description: Email of the customer
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Customer email found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               name: id
+ *               type: integer
+ *               description: Retrieved ID
+ *       400:
+ *         description: Couldn't find ID
+ *        
+ */
+router.get('/getCustomerId/:email', userController.getId);
+
+
+// router.post('/changePassword', userController.reset_password)
 
 /**
  * @swagger
@@ -554,7 +644,7 @@ app.post('/userRegister', userController.register);
  *         description: Couldn't update customer details
  *        
  */
-app.post('/updateCustomer/:userid', userController.update_customer);
+router.post('/updateCustomer/:userid', userController.update_customer);
 
 // Already done in getServices
 
@@ -574,7 +664,7 @@ app.post('/updateCustomer/:userid', userController.update_customer);
  *               items:
  *                 $ref: '#/components/schemas/SERVICES'
  */
-app.post('/viewServices', userController.get_services);
+router.post('/viewServices', userController.get_services);
 
 /**
  * @swagger
@@ -613,10 +703,10 @@ app.post('/viewServices', userController.get_services);
  *       '404':
  *         description: "Error: Not Found"
  */
-app.post('/requestJob', jobController.request_job);
+router.post('/requestJob', jobController.request_job);
 
 //Requets table being used
-app.post('/cancelRequest/:requestid', userController.cancel_request);
+router.post('/cancelRequest/:requestid', userController.cancel_request);
 
 /**
  * @swagger
@@ -644,7 +734,7 @@ app.post('/cancelRequest/:requestid', userController.cancel_request);
  *       '404':
  *         description: "Error: Not Found"
  */
-app.get('/getUsernames', userController.get_usernames);
+router.get('/getUsernames', userController.get_usernames);
 
 /**
  * @swagger
@@ -672,7 +762,7 @@ app.get('/getUsernames', userController.get_usernames);
  *       '404':
  *         description: "Error: Not Found"
  */
-app.get('/getEmails', userController.get_emails);
+router.get('/getEmails', userController.get_emails);
 
 
 /**
@@ -680,7 +770,7 @@ app.get('/getEmails', userController.get_emails);
  * /getJobsForCustomer/{id}/{status}:
  *   get:
  *     tags:
- *       - Admin
+ *       - User
  *     summary: Retrieve jobs for a specific customer with a specific status
  *     consumes:
  *       - application/json
@@ -713,7 +803,7 @@ app.get('/getEmails', userController.get_emails);
  *       '404':
  *         description: "Error: Not Found"
  */
-app.get('/getJobsForCustomer/:id/:status', jobController.get_jobs_for_customer)
+router.get('/getJobsForCustomer/:id/:status', jobController.get_jobs_for_customer)
 
 /**
  * @swagger
@@ -758,7 +848,7 @@ app.get('/getJobsForCustomer/:id/:status', jobController.get_jobs_for_customer)
  *          description: "Error: Not Found"
  * 
  */
-app.get('/getRequests', jobController.get_all_requests)
+router.get('/getRequests', jobController.get_all_requests)
 
 /**
  * @swagger
@@ -780,7 +870,7 @@ app.get('/getRequests', jobController.get_all_requests)
  *          description: "Error: Not Found"
  * 
  */
-app.post('/review', reviewController.give_review);
+router.post('/review', reviewController.give_review);
 
 
 /**
@@ -819,7 +909,7 @@ app.post('/review', reviewController.give_review);
  *       '404':
  *         description: "Error: Not Found"
  */
-app.post('/request', jobController.request);
+router.post('/request', jobController.request);
 
 // worker usecases
 /**
@@ -843,7 +933,7 @@ app.post('/request', jobController.request);
  *          description: "Error: Not Found"
  * 
  */
-app.get('/workers', workerController.get_workers);
+router.get('/workers', workerController.get_workers);
 
 /**
  * @swagger
@@ -873,7 +963,7 @@ app.get('/workers', workerController.get_workers);
  *          description: "Error: Request Not Found"
  * 
  */
-app.get('/worker/:id', workerController.get_worker_by_id)
+router.get('/worker/:id', workerController.get_worker_by_id)
 
 /**
  * @swagger
@@ -897,7 +987,7 @@ app.get('/worker/:id', workerController.get_worker_by_id)
  *         description: Couldn't delete worker
  *        
  */
- app.delete('/deleteWorker/:id', workerController.delete_worker)
+ router.delete('/deleteWorker/:id', workerController.delete_worker)
 
 /**
  * @swagger
@@ -934,7 +1024,7 @@ app.get('/worker/:id', workerController.get_worker_by_id)
  */
 
 
-app.get('/getWorkerFeedbacks/:id', workerController.get_worker_feedback)
+router.get('/getWorkerFeedbacks/:id', workerController.get_worker_feedback)
 
 
 /**
@@ -990,7 +1080,7 @@ app.get('/getWorkerFeedbacks/:id', workerController.get_worker_feedback)
  *          description: "Error: Request Not Found"
  * 
  */
-app.get('/workersFullDetailsBySkill/:id', workerController.get_workers_full_details_by_skill)
+router.get('/workersFullDetailsBySkill/:id', workerController.get_workers_full_details_by_skill)
 
 /**
  * @swagger
@@ -1042,7 +1132,7 @@ app.get('/workersFullDetailsBySkill/:id', workerController.get_workers_full_deta
  *          description: "Error: Request Not Found"
  * 
  */
-app.get('/workersBasicDetailsBySkill/:id', workerController.get_workers_basic_details_by_skill)
+router.get('/workersBasicDetailsBySkill/:id', workerController.get_workers_basic_details_by_skill)
 
 /**
  * @swagger
@@ -1087,7 +1177,7 @@ app.get('/workersBasicDetailsBySkill/:id', workerController.get_workers_basic_de
  *          description: "Error: Request Not Found"
  * 
  */
-app.get('/workersByAvailability', workerController.get_worker_by_availability)
+router.get('/workersByAvailability', workerController.get_worker_by_availability)
 
 // {
 //     "id": 1,
@@ -1106,7 +1196,7 @@ app.get('/workersByAvailability', workerController.get_worker_by_availability)
 //     "SERVICE_DETAILs.SERVICE_ID": 1,
 //     "SERVICE_DETAILs.SERVICE_CHARGES": 500
 //   },
-app.get('/workerDetails/:id', workerController.get_worker_details)
+router.get('/workerDetails/:id', workerController.get_worker_details)
 
 /**
  * @swagger
@@ -1153,7 +1243,7 @@ app.get('/workerDetails/:id', workerController.get_worker_details)
  *         description: "Error: Request Not Found"
  * 
  */
-app.put('/updateWorker/:id', workerController.update_worker)
+router.put('/updateWorker/:id', workerController.update_worker)
 
 /**
  * @swagger
@@ -1188,7 +1278,7 @@ app.put('/updateWorker/:id', workerController.update_worker)
  *          description: "Error: Request Not Found"
  * 
  */
-app.get('/getWorkerServices/:id', workerController.get_worker_services)
+router.get('/getWorkerServices/:id', workerController.get_worker_services)
 
 /**
  * @swagger
@@ -1216,6 +1306,6 @@ app.get('/getWorkerServices/:id', workerController.get_worker_services)
  *          description: "Error: Request Not Found"
  * 
  */
-app.put('/switchAvailability/:id', workerController.switch_availability);
+router.put('/switchAvailability/:id', workerController.switch_availability);
 
-module.exports = app;
+module.exports = router;

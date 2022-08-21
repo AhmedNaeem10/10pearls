@@ -161,6 +161,22 @@ exports.get_jobs_for_customer = async (req, res) => {
     }
 }
 
+exports.get_jobs_for_customer_by_id = async (req, res) => {
+    try{
+        let {id} = req.params;
+        let response = await JOB.findAll({where: {CUSTOMER_ID: id}});
+        res.json({
+            status: 200,
+            message: response
+        });
+    }catch(err){
+        res.json({
+            status: 400,
+            message: "There was an error getting the jobs!."
+        });
+    }
+}
+
 
 // get worker id, customer id, service title, time, customer address, status
 // tables: customer, jobs, service details, service

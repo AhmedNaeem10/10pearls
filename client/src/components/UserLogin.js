@@ -40,6 +40,31 @@ function UserLogin() {
     setFormValues({ ...formValues, [name]: value });
   };
 
+  const resetpass = () => {
+    // const user = firebase.auth().currentUser;
+    // console.log(user);
+    // if(user==null){
+    //     alert("Login required!");
+    // }
+    const email = formValues.email;
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        console.log("Password reset email sent!");
+        alert("Reset password email sent!");
+        // Password reset email sent!
+        // ..
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ..
+        alert(error.message);
+        console.log(error);
+      });
+  }
+
   const validate = (values) => {
     const errors = {};
     const emailFormat = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
@@ -181,9 +206,11 @@ function UserLogin() {
         {/* <button className="login__btn login__google" onClick={login}>
           Login with Google
         </button> */}
+        
         <div>
-          <Link to="/reset">Forgot Password</Link>
+          <a href="#" onClick={resetpass}>Forgot password</a>
         </div>
+        
         <div>
           Don't have an account? <Link to="/signup">Register</Link> now.
         </div>

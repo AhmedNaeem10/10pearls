@@ -33,7 +33,8 @@ const options = {
     basePath: '/',
 		servers: [
 			{
-				url: "http://localhost:19720",
+				 url: "http://localhost:19720", 
+				//  url: "https://home-services-backend.azurewebsites.net/"
 			},
 		],
 	},
