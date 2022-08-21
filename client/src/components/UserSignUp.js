@@ -143,14 +143,14 @@ function UserSignup() {
                 let response = await axios.post(
                   "http://localhost:19720/userRegister",
                   {
-                    username: formValues.username,
-                    email: formValues.email,
-                    first_name: formValues.first_name,
-                    last_name: formValues.last_name,
-                    phone: formValues.phone,
-                    cnic: formValues.cnic,
-                    dob: formValues.dob,
-                    address: formValues.address
+                    USERNAME: formValues.username,
+                    EMAIL: formValues.email,
+                    FIRST_NAME: formValues.first_name,
+                    LAST_NAME: formValues.last_name,
+                    PHONE: formValues.phone,
+                    CNIC: formValues.cnic,
+                    DOB: formValues.dob,
+                    ADDRESS: formValues.address
                   },
                   { headers: { Authorization: "Bearer " + token, role: "user" } }
                 );
