@@ -366,3 +366,18 @@ exports.getId = async(req, res) => {
     }
 }
 
+exports.getCustomer = async (req, res) => {
+    const {id} = req.params;
+    try{
+        let user = await CUSTOMER.findOne({where: {CUSTOMER_ID: id}})
+        res.json({
+            status: 200,
+            message: user
+        });
+    }catch(err){
+        res.json({
+            status: 400,
+            message: err.message
+        })
+    }
+}
