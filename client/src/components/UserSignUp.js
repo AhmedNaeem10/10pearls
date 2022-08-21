@@ -148,29 +148,10 @@ function UserSignUp() {
           console.log(error);
         });
 
-      // firebase.auth().onAuthStateChanged(authUser => {
-      //   console.log(authUser)
-      //   if(authUser.emailVerified){ //This will return true or false
-      //     console.log('email is verified')
-      //    }else{
-      //        console.log('email not verified')
-      //    }
-      // })
+
     }
   }
 
-  // const user = firebase.auth().currentUser;
-  // const emailVerified = user.emailVerified;
-  // useEffect(() => {
-
-  //   if (emailVerified == false) {
-  //     console.log("Verify your email")
-  //   }
-  //   else{
-  //     console.log("Email verified!")
-  //     navigate('/');
-  //   }
-  // }, [emailVerified])
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((userCred) => {
@@ -215,48 +196,7 @@ function UserSignUp() {
     console.log(formErrors);
   }, [formErrors]);
 
-  // useEffect(() => {
-  //   axios.post(`http://localhost:19720/getUsernames`)
-  //     .then(res => {
-  //       // console.log(res.data.message);
-  //       var results = res.data.message;
-  //       Object.values(results).forEach(val => {
-  //         console.log(val);
-  //         if (formValues.username === val.USERNAME && formValues.username!= ""){
-  //           console.log(formValues.username, " is equal to ", val.USERNAME);
-  //           formErrors.username = "Username already exists!";
-  //           // alert("Username already exists!")
-  //           console.log("Username already exists");
-  //         }
 
-  //       }
-  //       );
-  //     })
-  // }, [formValues.username]);
-
-  // useEffect(() => {
-  //   axios.post(`http://localhost:19720/getEmails`)
-  //     .then(res => {
-  //       // console.log(res.data.message);
-  //       var results = res.data.message;
-  //       Object.values(results).forEach(val => {
-  //         console.log(val);
-  //         if (formValues.email === val.EMAIL && formValues.email!= ""){
-  //           console.log(formValues.email, " is equal to ", val.EMAIL);
-  //           formErrors.email = "Email already in use!";
-  //           msg = "Email already in use!";
-  //           console.log("Email already in use");
-  //         }
-
-  //       }
-  //       );
-  //     })
-  // }, [formValues.email]);
-
-  // useEffect(() => {
-  //   if (loading) return;
-  //   if (user) navigate("/dashboard", { replace: true });
-  // }, [user, loading]);
   return (
     <div className="register">
       <div className="register__container">

@@ -4,9 +4,9 @@ import Navbar from "./components/Navbar";
 import UserSignUp from "./components/UserSignUp";
 import Dashboard from "./components/Dashboard";
 import { Route, Routes } from 'react-router-dom';
-import DashboardElements from './pages/Services';
 import Workers from './components/Workers';
 import Worker from './components/Worker';
+import UserServicesDashboard from './pages/userServicesDashboard';
 
 
 function UserRoutes() {
@@ -14,7 +14,7 @@ function UserRoutes() {
         <div>
             <Navbar />
             <Routes>
-                <Route path="/" element={<DashboardElements />} />
+                <Route path="/" element={<UserServicesDashboard />} />
                 <Route path="/signup" element={<UserSignUp />} />
                 <Route path="/login" element={<UserLogin />} />
                 {/* <Route path="/dashboard" element={<Dashboard />} /> */}

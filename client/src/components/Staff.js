@@ -9,9 +9,17 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Button } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Link } from 'react-router-dom';
 
-function Staff() {
-    const [workers, getWorkers] = useState([]);
+
+function Services() {
+    const [workers, setWorkers] = useState([]);
+    // const deleteService=()=>{
+
+    // }
+    const [click, setClick] = useState(true);
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -35,69 +43,105 @@ function Staff() {
 
     const getAllWorkers = async () => {
         try {
-            const allWorkers = await axios.get("http://localhost:19720/workers")
-            // .then((response) => {
-            //   const allServices = response.data;
-            //   console.log(response)
-            console.log(allWorkers.data.message);
-            getWorkers(allWorkers.data.message);
-            //   console.log(services);
-            // })
-            // .catch(error => console.error(error));
+            const response = await axios.get("https://home-services-backend.azurewebsites.net/workers")
+                .then((response) => {
+                    console.log(response)
+                    setWorkers(response.data.message);
+                })
+                .catch(error => console.error(error));
 
         }
         catch (error) {
             console.log(error);
         }
     }
+
+
     useEffect(() => {
         getAllWorkers();
-    }, []);
+    }, [click]);
     return (
-        <div>
-            <h1>Staff</h1>
-            <h6>Add staff</h6>
-
-            <TableContainer className="servicetable" style={{ width: "65%" }} component={Paper}>
-                <Table sx={{ minWidth: 100 }} aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell style={{ width: "25%" }}>Worker ID</StyledTableCell>
-                            <StyledTableCell style={{ width: "25%" }}>Worker Name</StyledTableCell>
-                            <StyledTableCell style={{ width: "25%" }}>Contact no.</StyledTableCell>
-                            <StyledTableCell style={{ width: "25%" }} >Services</StyledTableCell>
-                            <StyledTableCell style={{ width: "25%" }}>Actions</StyledTableCell>
-
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {workers.map(item => {
-                            return (
-                                <>
-
-                                    <StyledTableRow key={item.id}>
-                                        <StyledTableCell style={{ width: "25%" }} >{item.id}</StyledTableCell>
-                                        <StyledTableCell component="th" scope="row" style={{ width: "25%" }}>
-                                            {item.FIRST_NAME + " " + item.LAST_NAME}
-                                        </StyledTableCell>
-                                        <StyledTableCell style={{ width: "25%" }} >{item.PHONE}</StyledTableCell>
-                                        <StyledTableCell style={{ width: "25%" }}>{item.SERVICE_RATE}</StyledTableCell>
-                                        <StyledTableCell style={{ width: "25%" }}>Edit details</StyledTableCell>
-
-                                    </StyledTableRow>
-                                </>
-
-                            );
-                        })}
+        <>
+            <div className='servicecontent'>
 
 
+                <h1>Services</h1>
+                <Button variant="outlined" >
+                    <Link style={{ "textDecoration": "none" }} to={`/addservice`}>ADD A NEW WORKER</Link>
+                </Button>
 
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                {/* {services.map(item => {
+      return (
+        <>
+        <p>{item.SERVICE_TITLE}</p>
+        <p>{item.SERVICE_DESCRIPTION}</p>
+        <p>{item.SERVICE_CHARGES}</p>
+        </>
+        
+      );
+    })} */}
+                <TableContainer className="servicetable" style={{ width: "65%" }} component={Paper}>
+                    <Table sx={{ minWidth: 100 }} aria-label="customized table">
+                        <TableHead>
+                            <TableRow>
+                                <StyledTableCell style={{ width: "25%" }}>Service title</StyledTableCell>
+                                <StyledTableCell style={{ width: "25%" }}>Description</StyledTableCell>
+                                <StyledTableCell style={{ width: "25%" }} >Charges</StyledTableCell>
+                                <StyledTableCell style={{ width: "25%" }}>Actions</StyledTableCell>
 
-        </div>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {Object.keys(services).length === 0 ? (
+                                <div>...Loading</div>
+                            ) : (
+
+                                services.map(item => {
+                                    const deleteService = async () => {
+                                        try {
+
+                                            //   let job_id = requests[index].id;
+
+                                            let response = await axios.delete(`https://home-services-backend.azurewebsites.net/deleteService/${item.id}`)
+
+                                            // alert(response.data.message)
+                                            setClick(!click)
+
+                                        } catch (err) {
+
+                                            console.log(err)
+
+                                        }
+                                    }
+                                    return (
+                                        <>
+
+                                            <StyledTableRow key={item.id}>
+                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}>
+                                                    {item.SERVICE_TITLE}
+                                                </StyledTableCell>
+                                                <StyledTableCell style={{ width: "25%" }} >{item.SERVICE_DESCRIPTION}</StyledTableCell>
+                                                <StyledTableCell style={{ width: "25%" }}>{item.SERVICE_RATE}</StyledTableCell>
+                                                <Button onClick={deleteService} variant="outlined" startIcon={<DeleteIcon />}>
+                                                    Delete
+                                                </Button>
+                                            </StyledTableRow>
+                                        </>
+
+                                    );
+                                })
+
+                            )}
+
+
+
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
+
+        </>
     )
 }
 
-export default Staff 
+export default Services

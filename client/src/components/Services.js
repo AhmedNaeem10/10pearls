@@ -9,9 +9,17 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Button } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Link } from 'react-router-dom';
+
 
 function Services() {
     const [services, setServices] = useState([]);
+    // const deleteService=()=>{
+
+    // }
+    const [click, setClick] = useState(true);
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -51,14 +59,16 @@ function Services() {
 
     useEffect(() => {
         getAllServices();
-    }, []);
+    }, [click]);
     return (
         <>
             <div className='servicecontent'>
 
 
                 <h1>Services</h1>
-                <h6>Add a service</h6>
+                <Button variant="outlined" >
+                    <Link style={{ "textDecoration": "none" }} to={`/addservice`}>ADD A NEW SERVICE</Link>
+                </Button>
 
                 {/* {services.map(item => {
       return (
@@ -82,23 +92,46 @@ function Services() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {services.map(item => {
-                                return (
-                                    <>
+                            {Object.keys(services).length === 0 ? (
+                                <div>...Loading</div>
+                            ) : (
 
-                                        <StyledTableRow key={item.id}>
-                                            <StyledTableCell component="th" scope="row" style={{ width: "25%" }}>
-                                                {item.SERVICE_TITLE}
-                                            </StyledTableCell>
-                                            <StyledTableCell style={{ width: "25%" }} >{item.SERVICE_DESCRIPTION}</StyledTableCell>
-                                            <StyledTableCell style={{ width: "25%" }}>{item.SERVICE_RATE}</StyledTableCell>
-                                            <StyledTableCell style={{ width: "25%" }}>Edit Delete</StyledTableCell>
+                                services.map(item => {
+                                    const deleteService = async () => {
+                                        try {
 
-                                        </StyledTableRow>
-                                    </>
+                                            //   let job_id = requests[index].id;
 
-                                );
-                            })}
+                                            let response = await axios.delete(`https://home-services-backend.azurewebsites.net/deleteService/${item.id}`)
+
+                                            // alert(response.data.message)
+                                            setClick(!click)
+
+                                        } catch (err) {
+
+                                            console.log(err)
+
+                                        }
+                                    }
+                                    return (
+                                        <>
+
+                                            <StyledTableRow key={item.id}>
+                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}>
+                                                    {item.SERVICE_TITLE}
+                                                </StyledTableCell>
+                                                <StyledTableCell style={{ width: "25%" }} >{item.SERVICE_DESCRIPTION}</StyledTableCell>
+                                                <StyledTableCell style={{ width: "25%" }}>{item.SERVICE_RATE}</StyledTableCell>
+                                                <Button onClick={deleteService} variant="outlined" startIcon={<DeleteIcon />}>
+                                                    Delete
+                                                </Button>
+                                            </StyledTableRow>
+                                        </>
+
+                                    );
+                                })
+
+                            )}
 
 
 

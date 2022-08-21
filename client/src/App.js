@@ -7,7 +7,6 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
 import Workers from "./components/Workers";
 import Worker from "./components/Worker";
-import DashboardElements from "./pages/Services";
 import AdminDashboard from "./pages/adminRequests";
 import AdminPanel from "./components/AdminPanel";
 import Services from "./components/Services";
@@ -17,6 +16,8 @@ import Staff from "./components/Staff";
 import WorkerDetails from "./components/WorkerDetails";
 import Sidebar from "./components/Sidebar";
 import AdminRequests from "./pages/adminRequests";
+import AdminServicesPanel from "./pages/adminServicesPanel";
+import NewServiceForm from "./pages/newServiceForm";
 function App() {
   return (
     <div>
@@ -26,9 +27,10 @@ function App() {
 
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/adminpanel" element={<AdminPanel />} />
-        <Route path="/viewservices" element={<Services />} />
+        <Route path="/viewservices" element={<AdminServicesPanel />} />
         <Route path="/viewrequests" element={<AdminRequests />} />
         <Route path="/viewstaff" element={<Staff />} />
+        <Route path="/addservice" element={<NewServiceForm />} />
         <Route path="/workerdetails/:workerId" element={<WorkerDetails />} />
         <Route path="*" element={<UserRoutes />} />
       </Routes>

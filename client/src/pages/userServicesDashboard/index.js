@@ -1,11 +1,10 @@
 import React from 'react'
 import Dashboard from '../../components/Dashboard'
-import Navbar from '../../components/Navbar'
 
-export default function DashboardElements() {
+export default function UserServicesDashboard() {
     return (
-        <div>
+        <>
             <Dashboard />
-        </div>
+        </>
     )
 }
