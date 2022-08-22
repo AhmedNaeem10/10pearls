@@ -9,7 +9,7 @@ export const SidebarData = [
     {
         title: "Home",
         icon: <HomeIcon />,
-        link: "/adminpanel"
+        link: "/admin/adminpanel"
     },
 
     {

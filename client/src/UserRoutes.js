@@ -19,7 +19,7 @@ function UserRoutes() {
                 <Route path="/login" element={<UserLogin />} />
                 {/* <Route path="/dashboard" element={<Dashboard />} /> */}
                 <Route path="/services/:serviceId" element={<Workers />} />
-                <Route path="/worker/:workerId" element={<Worker />} />
+                <Route path="/services/:serviceId/:workerId" element={<Worker />} />
 
             </Routes>
         </div>

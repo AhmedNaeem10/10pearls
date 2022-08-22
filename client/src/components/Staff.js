@@ -14,7 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 
 
-function Services() {
+function Staff() {
     const [workers, setWorkers] = useState([]);
     // const deleteService=()=>{
 
@@ -67,7 +67,7 @@ function Services() {
 
                 <h1>Services</h1>
                 <Button variant="outlined" >
-                    <Link style={{ "textDecoration": "none" }} to={`/addservice`}>ADD A NEW WORKER</Link>
+                    <Link style={{ "textDecoration": "none" }} to={`/addstaff`}>ADD A NEW WORKER</Link>
                 </Button>
 
                 {/* {services.map(item => {
@@ -84,19 +84,23 @@ function Services() {
                     <Table sx={{ minWidth: 100 }} aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell style={{ width: "25%" }}>Service title</StyledTableCell>
-                                <StyledTableCell style={{ width: "25%" }}>Description</StyledTableCell>
-                                <StyledTableCell style={{ width: "25%" }} >Charges</StyledTableCell>
-                                <StyledTableCell style={{ width: "25%" }}>Actions</StyledTableCell>
+                                <StyledTableCell style={{ width: "25%" }}>WORKER NAME</StyledTableCell>
+                                <StyledTableCell style={{ width: "25%" }}>EMAIL</StyledTableCell>
+                                <StyledTableCell style={{ width: "25%" }} >Date of birth</StyledTableCell>
+                                <StyledTableCell style={{ width: "25%" }}>Phone</StyledTableCell>
+                                <StyledTableCell style={{ width: "25%" }}>CNIC</StyledTableCell>
+                                <StyledTableCell style={{ width: "25%" }}>ADDRESS</StyledTableCell>
+                                <StyledTableCell style={{ width: "25%" }}>RATING</StyledTableCell>
 
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {Object.keys(services).length === 0 ? (
+                            {Object.keys(workers).length === 0 ? (
                                 <div>...Loading</div>
                             ) : (
 
-                                services.map(item => {
+                                workers.map(item => {
+                                    const { id, EMAIL, FIRST_NAME, LAST_NAME, DOB, PHONE, CNIC, ADDRESS, AVAILABLE, RATING } = item
                                     const deleteService = async () => {
                                         try {
 
@@ -118,13 +122,17 @@ function Services() {
 
                                             <StyledTableRow key={item.id}>
                                                 <StyledTableCell component="th" scope="row" style={{ width: "25%" }}>
-                                                    {item.SERVICE_TITLE}
+                                                    {FIRST_NAME} {LAST_NAME}
                                                 </StyledTableCell>
-                                                <StyledTableCell style={{ width: "25%" }} >{item.SERVICE_DESCRIPTION}</StyledTableCell>
-                                                <StyledTableCell style={{ width: "25%" }}>{item.SERVICE_RATE}</StyledTableCell>
-                                                <Button onClick={deleteService} variant="outlined" startIcon={<DeleteIcon />}>
+                                                <StyledTableCell style={{ width: "25%" }} >{EMAIL}</StyledTableCell>
+                                                <StyledTableCell style={{ width: "25%" }}>{DOB}</StyledTableCell>
+                                                <StyledTableCell style={{ width: "25%" }}>{PHONE}</StyledTableCell>
+                                                <StyledTableCell style={{ width: "25%" }}>{CNIC}</StyledTableCell>
+                                                <StyledTableCell style={{ width: "25%" }}>{ADDRESS}</StyledTableCell>
+                                                <StyledTableCell style={{ width: "25%" }}>{RATING}</StyledTableCell>
+                                                {/* <Button onClick={deleteService} variant="outlined" startIcon={<DeleteIcon />}>
                                                     Delete
-                                                </Button>
+                                                </Button> */}
                                             </StyledTableRow>
                                         </>
 
@@ -144,4 +152,4 @@ function Services() {
     )
 }
 
-export default Services
+export default Staff

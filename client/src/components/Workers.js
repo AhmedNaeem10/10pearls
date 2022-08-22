@@ -123,7 +123,7 @@ export default function Workers() {
                             console.log(workers);
                             const { id, FIRST_NAME, LAST_NAME, PHONE, DOB, CNIC, ADDRESS, EMAIL, AVAILABLE } = workers;
                             return (
-                                <Link to={`/worker/${id}`}>
+                                <Link to={`/services/${serviceId}/${id}`}>
                                     <div style={{ margin: '1rem' }}>
                                         <Card sx={{ maxWidth: 345 }}>
                                             <CardActionArea>

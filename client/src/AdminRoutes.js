@@ -19,20 +19,26 @@ import AdminRequests from "./pages/adminRequests";
 import AdminServicesPanel from "./pages/adminServicesPanel";
 import NewServiceForm from "./pages/newServiceForm";
 import NewWorkerForm from "./pages/newWorkerForm";
-import AdminRoutes from "./AdminRoutes";
-function App() {
-  return (
-    <div>
-      {/* <Navbar /> */}
-      {/* <Sidebar /> */}
-      <Routes>
 
-        <Route path="/admin/*" element={<AdminRoutes />} />
 
-        <Route path="*" element={<UserRoutes />} />
-      </Routes>
-    </div>
-  );
+function AdminRoutes() {
+    return (
+        <>
+            <Sidebar />
+            <Routes>
+                <Route path="/" element={<AdminLogin />} />
+                <Route path="/admin/adminpanel" element={<AdminPanel />} />
+                <Route path="/viewservices" element={<AdminServicesPanel />} />
+                <Route path="/viewrequests" element={<AdminRequests />} />
+                <Route path="/viewstaff" element={<Staff />} />
+                <Route path="/addservice" element={<NewServiceForm />} />
+                <Route path="/addstaff" element={<NewWorkerForm />} />
+                <Route path="/workerdetails/:workerId" element={<WorkerDetails />} />
+                <Route path="*" element={<UserRoutes />} />
+
+            </Routes>
+        </>
+    )
 }
 
-export default App;
+export default AdminRoutes

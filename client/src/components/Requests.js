@@ -44,7 +44,7 @@ function Requests(props) {
     const getAllRequests = async () => {
         setRequests("")
         try {
-            const response = await axios.get(`https://home-services-backend.azurewebsites.net/getJobsByStatus/${props.option}`)
+            const response = await axios.get(`https://home-services-backend.azurewebsites.net/getJobsDetailsByStatus/${props.option}`)
                 .then((response) => {
                     //   const allServices = response.data;
                     console.log(response)
@@ -79,10 +79,11 @@ function Requests(props) {
                     <TableHead>
                         <TableRow>
                             {/* <StyledTableCell style={{ width: "15%" }}>ID</StyledTableCell> */}
-                            <StyledTableCell style={{ width: "35%" }}>Customer ID</StyledTableCell>
-                            <StyledTableCell style={{ width: "25%" }}>Worker ID</StyledTableCell>
+                            <StyledTableCell style={{ width: "35%" }}>Customer Name</StyledTableCell>
+                            <StyledTableCell style={{ width: "25%" }}>Worker Name</StyledTableCell>
+                            <StyledTableCell style={{ width: "25%" }}>Service Name</StyledTableCell>
                             <StyledTableCell style={{ width: "15%" }} >DATE/TIME</StyledTableCell>
-                            <StyledTableCell style={{ width: "25%" }}>PAYMENT METHOD</StyledTableCell>
+                            <StyledTableCell style={{ width: "15%" }} >ADDRESS</StyledTableCell>
                             {props.option == "pending" &&
                                 <StyledTableCell style={{ width: "25%" }}>OPTION</StyledTableCell>
                             }
@@ -97,18 +98,20 @@ function Requests(props) {
                         ) : (
                             <>
                                 {requests.map((requests) => {
-                                    const { id, CUSTOMER_ID,
+                                    const { JOB_ID,
+                                        CUSTOMER_NAME,
+                                        WORKER_NAME,
+                                        SERVICE_NAME,
                                         DATE_TIME,
-                                        JOB_STATUS,
-                                        PAYMENT_METHOD,
-                                        SERVICE_DETAIL_ID } = requests
+                                        ADDRESS,
+                                        JOB_STATUS } = requests
                                     const acceptRequest = async (e) => {
                                         // console.log(id);
 
                                         try {
 
 
-                                            let response = await axios.put(`https://home-services-backend.azurewebsites.net/updateJobStatus/${id}/accepted`)
+                                            let response = await axios.put(`https://home-services-backend.azurewebsites.net/updateJobStatus/${JOB_ID}/accepted`)
 
                                             // alert(response.data.message)
                                             setClick(!click)
@@ -126,7 +129,7 @@ function Requests(props) {
 
                                             //   let job_id = requests[index].id;
 
-                                            let response = await axios.put(`https://home-services-backend.azurewebsites.net/updateJobStatus/${id}/rejected`)
+                                            let response = await axios.put(`https://home-services-backend.azurewebsites.net/updateJobStatus/${JOB_ID}/rejected`)
 
                                             // alert(response.data.message)
                                             setClick(!click)
@@ -143,12 +146,15 @@ function Requests(props) {
                                         <>
 
                                             <StyledTableRow >
-                                                <StyledTableCell style={{ width: "15%" }} > {CUSTOMER_ID}  </StyledTableCell>
-                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}><Link style={{ "textDecoration": "none" }} to={`/workerdetails/${SERVICE_DETAIL_ID}`}>
-                                                    {SERVICE_DETAIL_ID}
+                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}><Link style={{ "textDecoration": "none" }} to={`/workerdetails/${JOB_ID}`}>
+                                                    {CUSTOMER_NAME}
                                                 </Link></StyledTableCell>
+                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}><Link style={{ "textDecoration": "none" }} to={`/workerdetails/${JOB_ID}`}>
+                                                    {WORKER_NAME}
+                                                </Link></StyledTableCell>
+                                                <StyledTableCell style={{ width: "15%" }} > {SERVICE_NAME}  </StyledTableCell>
                                                 <StyledTableCell style={{ width: "25%" }} > {DATE_TIME}  </StyledTableCell>
-                                                <StyledTableCell style={{ width: "15%" }}>  {PAYMENT_METHOD}  </StyledTableCell>
+                                                <StyledTableCell style={{ width: "15%" }}>  {ADDRESS}  </StyledTableCell>
                                                 {props.option == "pending" && <StyledTableCell style={{ width: "25%" }}>
                                                     <Button onClick={acceptRequest} style={{ margin: "3px" }} variant="contained" color="success">
                                                         ACCEPT

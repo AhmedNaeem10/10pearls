@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { removeSelectedWorker, selectedWorker, setWorkers } from '../redux/actions/workerActions'
 import '../App.css'
 import Navbar from './Navbar'
 import axios from 'axios'
-import { Button, CardMedia, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { Button, CardMedia, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import { addRequest } from '../redux/actions/requestActions'
 export default function RequestWorker() {
+    const navigate = useNavigate()
+    const userId = useSelector((state) => state.user.userId)
+
     const WORKER_IMAGE = '../images/imagecopy.webp'
-    const [time, setTime] = useState('');
+    const [serviceDetails, setServiceDetails] = useState({
+        time: "",
+        address: ""
+    })
 
-    const handleChange = (e) => {
-
-        setTime(e.target.value);
-        console.log(time);
-
+    const inputEvent = (e) => {
+        const { name, value } = e.target;
+        setServiceDetails({ ...serviceDetails, [name]: value });
     };
     const slots = [9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7]
     // const response = [
@@ -33,7 +37,7 @@ export default function RequestWorker() {
     //     }
     // ]
     const dispatch = useDispatch()
-    const { workerId } = useParams()
+    const { workerId, serviceId } = useParams()
 
     const fetchWorkers = async () => {
         const response = await axios
@@ -59,12 +63,42 @@ export default function RequestWorker() {
         }
     }, [workerId])
 
-    const requestHandler = () => {
-        dispatch(addRequest({
-            userId: 2, userName: "hamza", workerId: id, workerName: FIRST_NAME, time: time,
-            // serviceId: serviceId 
-        }))
-    }
+    const submitService = async (e) => {
+        e.preventDefault()
+        // setFormErrors(validate(serviceDetails));
+        console.log(serviceDetails);
+        // if (Object.keys(formErrors).length === 0) {
+        let response = await axios.post(
+            "https://home-services-backend.azurewebsites.net/request",
+
+            {
+                CUSTOMER_ID: userId,
+                SERVICE_ID: serviceId,
+                WORKER_ID: workerId,
+                DATE_TIME: String(serviceDetails.time) + ":00",
+                ADDRESS: serviceDetails.address
+            }
+
+        );
+        console.log(userId,
+            serviceId,
+            workerId,
+            String(serviceDetails.time) + ":00",
+            serviceDetails.address);
+        if (response.data.status == 200) {
+            alert("request submitted successfully!");
+            // Navigate("/viewservices");
+            navigate("../", { replace: true });
+        } else {
+            alert(response.data.message);
+            alert("Couldn't add request!");
+        }
+        // }
+        // else {
+        //     alert({ formErrors })
+        // }
+    };
+
 
 
     return (
@@ -91,23 +125,29 @@ export default function RequestWorker() {
                                     </h2>
                                     <h3 className="ui brown block header">{EMAIL}</h3>
                                     <p>{ADDRESS}</p>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label">Time</InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={time}
-                                            label="Time"
-                                            onChange={handleChange}
-                                        >
-                                            {slots.map((slot) =>
-                                                <MenuItem value={slot}>{slot} : 00</MenuItem>
-                                            )}
+                                    <form onSubmit={submitService}>
+                                        <FormControl fullWidth>
+                                            <InputLabel id="demo-simple-select-label">Time</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                value={serviceDetails.time}
+                                                label="Time"
+                                                onChange={inputEvent}
+                                                name="time"
+                                            >
+                                                {slots.map((slot) =>
+                                                    <MenuItem value={slot}>{slot} : 00</MenuItem>
+                                                )}
 
 
-                                        </Select>
-                                    </FormControl>
-                                    <Button onClick={requestHandler}>Request</Button>
+                                            </Select>
+
+                                            <TextField name="address" type="text" multiline value={serviceDetails.address} onChange={inputEvent} label="Address" rows={4} variant="outlined" fullWidth required />
+
+                                        </FormControl>
+                                        <Button type='submit'>Request</Button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
