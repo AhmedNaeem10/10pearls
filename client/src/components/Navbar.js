@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux';
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import './Navbar.css';
 export default function Navbar() {
+    const userId = useSelector((state) => state.user)
+
     let location = useLocation();
 
     useEffect(() => {
@@ -27,8 +30,13 @@ export default function Navbar() {
 
                     </div>
                 </div>
-                {location.pathname != "/admin" && <Link to="/signup" class="btn btn-primary mx-2">SignUp</Link>}
-                <Link to="/login" class="btn btn-primary mx-2">Login</Link>
+                {Object.keys(userId).length === 0 && <><Link to="/signup" class="btn btn-primary mx-2">SignUp</Link>
+                    <Link to="/login" class="btn btn-primary mx-2">Login</Link></>
+                }
+                {Object.keys(userId).length != 0 && <><Link to="" class="btn btn-primary mx-2">My Requests</Link>
+                </>
+                }
+
 
             </nav>
         </div>

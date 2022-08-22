@@ -15,19 +15,19 @@ export const SidebarData = [
     {
         title: "Services",
         icon: <CleaningServicesIcon />,
-        link: "/viewservices"
+        link: "/admin/viewservices"
     },
 
     {
         title: "Requests",
         icon: <ListAltIcon />,
-        link: "/viewrequests"
+        link: "/admin/viewrequests"
     },
 
     {
         title: "Staff",
         icon: <HailIcon />,
-        link: "/viewstaff"
+        link: "/admin/viewstaff"
     },
 
     {

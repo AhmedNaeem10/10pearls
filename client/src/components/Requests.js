@@ -146,10 +146,10 @@ function Requests(props) {
                                         <>
 
                                             <StyledTableRow >
-                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}><Link style={{ "textDecoration": "none" }} to={`/workerdetails/${JOB_ID}`}>
+                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}><Link style={{ "textDecoration": "none" }} to={`/admin/workerdetails/${JOB_ID}`}>
                                                     {CUSTOMER_NAME}
                                                 </Link></StyledTableCell>
-                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}><Link style={{ "textDecoration": "none" }} to={`/workerdetails/${JOB_ID}`}>
+                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}><Link style={{ "textDecoration": "none" }} to={`/admin/workerdetails/${JOB_ID}`}>
                                                     {WORKER_NAME}
                                                 </Link></StyledTableCell>
                                                 <StyledTableCell style={{ width: "15%" }} > {SERVICE_NAME}  </StyledTableCell>

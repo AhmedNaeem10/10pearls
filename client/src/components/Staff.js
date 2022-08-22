@@ -67,7 +67,7 @@ function Staff() {
 
                 <h1>Services</h1>
                 <Button variant="outlined" >
-                    <Link style={{ "textDecoration": "none" }} to={`/addstaff`}>ADD A NEW WORKER</Link>
+                    <Link style={{ "textDecoration": "none" }} to={`/admin/addstaff`}>ADD A NEW WORKER</Link>
                 </Button>
 
                 {/* {services.map(item => {

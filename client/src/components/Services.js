@@ -67,7 +67,7 @@ function Services() {
 
                 <h1>Services</h1>
                 <Button variant="outlined" >
-                    <Link style={{ "textDecoration": "none" }} to={`/addservice`}>ADD A NEW SERVICE</Link>
+                    <Link style={{ "textDecoration": "none" }} to={`/admin/addservice`}>ADD A NEW SERVICE</Link>
                 </Button>
 
                 {/* {services.map(item => {

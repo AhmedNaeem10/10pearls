@@ -53,6 +53,7 @@ import Navbar from './Navbar';
 import axios from 'axios';
 export default function Dashboard() {
     const SERVICE_IMAGE = '../images/image.webp'
+    const userId = useSelector((state) => state.user)
     // const response = [
     //     {
     //         "id": 1,
@@ -98,8 +99,12 @@ export default function Dashboard() {
 
                     {services.map((services) => {
                         const { id, SERVICE_TITLE, SERVICE_DESCRIPTION, SERVICE_RATE } = services;
+                        let link = `/services/${id}`
+                        if (Object.keys(userId).length === 0) {
+                            link = `/login`
+                        }
                         return (
-                            <Link to={`/services/${id}`}>
+                            <Link to={link}>
                                 <div style={{ margin: '1rem' }}>
                                     <Card sx={{ maxWidth: 345 }}>
                                         <CardActionArea>

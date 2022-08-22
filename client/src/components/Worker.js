@@ -87,7 +87,7 @@ export default function RequestWorker() {
             serviceDetails.address);
         if (response.data.status == 200) {
             alert("request submitted successfully!");
-            // Navigate("/viewservices");
+            // Navigate("/admin/viewservices");
             navigate("../", { replace: true });
         } else {
             alert(response.data.message);

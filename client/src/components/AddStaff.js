@@ -41,8 +41,8 @@ export default function AddStaff() {
         );
         if (response.data.status == 200) {
             alert("Worker added successfully!");
-            // Navigate("/viewservices");
-            navigate("../viewstaff", { replace: true });
+            // Navigate("/admin/viewservices");
+            navigate("../admin/viewstaff", { replace: true });
         } else {
             alert(response.data.message);
             alert("Couldn't add worker!");

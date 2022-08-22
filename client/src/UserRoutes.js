@@ -11,7 +11,7 @@ import UserServicesDashboard from './pages/userServicesDashboard';
 
 function UserRoutes() {
     return (
-        <div>
+        <>
             <Navbar />
             <Routes>
                 <Route path="/" element={<UserServicesDashboard />} />
@@ -22,7 +22,7 @@ function UserRoutes() {
                 <Route path="/services/:serviceId/:workerId" element={<Worker />} />
 
             </Routes>
-        </div>
+        </>
     )
 }
 

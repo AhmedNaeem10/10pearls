@@ -27,14 +27,13 @@ function AdminRoutes() {
             <Sidebar />
             <Routes>
                 <Route path="/" element={<AdminLogin />} />
-                <Route path="/admin/adminpanel" element={<AdminPanel />} />
+                <Route path="/adminpanel" element={<AdminPanel />} />
                 <Route path="/viewservices" element={<AdminServicesPanel />} />
                 <Route path="/viewrequests" element={<AdminRequests />} />
                 <Route path="/viewstaff" element={<Staff />} />
                 <Route path="/addservice" element={<NewServiceForm />} />
                 <Route path="/addstaff" element={<NewWorkerForm />} />
                 <Route path="/workerdetails/:workerId" element={<WorkerDetails />} />
-                <Route path="*" element={<UserRoutes />} />
 
             </Routes>
         </>

@@ -35,8 +35,8 @@ export default function AddService() {
         );
         if (response.data.status == 200) {
             alert("Service added successfully!");
-            // Navigate("/viewservices");
-            navigate("../viewservices", { replace: true });
+            // Navigate("/admin/viewservices");
+            navigate("../admin/viewservices", { replace: true });
         } else {
             alert(response.data.message);
             alert("Couldn't add service!");
