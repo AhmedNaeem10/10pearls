@@ -109,11 +109,11 @@ get_details = async(response) => {
     let service_detail = await SERVICE_DETAIL.findAll({where: {SERVICE_DETAIL_ID: service_detail_id}});
     let service_id = service_detail[0].SERVICE_ID;
     let worker_id = service_detail[0].WORKER_ID;
-    console.log(worker_id);
-    let worker_name = await WORKER.findOne({attributes: ['id', 'FIRST_NAME', 'LAST_NAME']}, {where: {WORKER_ID: worker_id}});
-    let WORKER_NAME = worker_name.FIRST_NAME + " " + worker_name.LAST_NAME;
+    // console.log(worker_id);
+    const worker_name = await WORKER.findOne({where: {WORKER_ID: worker_id}});
+    const WORKER_NAME = worker_name.FIRST_NAME + " " + worker_name.LAST_NAME;
     
-    console.log(WORKER_NAME);
+    // console.log(WORKER_NAME);
     let service = await SERVICE.findAll({where: {SERVICE_ID: service_id}})
 
     let JOB_ID = response.id;
@@ -122,7 +122,7 @@ get_details = async(response) => {
     let JOB_STATUS = response.JOB_STATUS;
     let SERVICE_NAME = service[0].SERVICE_TITLE;
     let CUSTOMER_ID = customer_name.id;
-    let WORKER_ID = worker_name.id;
+    let WORKER_ID = worker_id;
     return {JOB_ID, CUSTOMER_ID, CUSTOMER_NAME, WORKER_ID, WORKER_NAME, SERVICE_NAME, DATE_TIME, ADDRESS, JOB_STATUS};
 }
 
