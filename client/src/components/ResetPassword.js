@@ -1,6 +1,7 @@
 import React from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
+import axios from "axios";
 
 function ResetPassword() {
   const resetpass = () => {
@@ -28,20 +29,36 @@ function ResetPassword() {
       });
   }
 
-  const deleteaccount = () => {
+  const deleteaccount = async() => {
     const user = firebase.auth().currentUser;
+    if(user==null){
+      alert("Login required!");
+  }
+  const email = user.email;
+  console.log(email);
 
-    user.delete().then(() => {
+  const remove = async() =>{
+    let response =  await axios.delete("http://localhost:19720/deleteUser/{email}");
+    if(response.status === 200){
+      console.log("User deleted successfully")
+    }
+    console.log(response);
+  }
+
+
+    user.delete().then(async() => {
         // User deleted.
-        console.log("User deleted")
-        alert("User deleted")
+
+      //  let response =  await axios.delete("/deleteUser/{email}", {email});
+        remove();
+       console.log("Firebase user deleted");
       })
       .catch((error) => {
         console.log(error)
         // An error ocurred
         // ...
       });
-  };
+  }
 
   return (
     <>

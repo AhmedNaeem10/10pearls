@@ -163,6 +163,23 @@ exports.get_services = async(req, res) => {
     }
 }
 
+exports.delete_user = async (req, res) => {
+    const {email} = req.params;
+    try{
+        let response = await CUSTOMER.destroy({where: {EMAIL: email}});
+        res.json({
+            status: 200,
+            message: "User successfully deleted!"
+        })
+    }
+    catch(err){
+        res.json({
+            status: 400,
+            message: "There was an error deleting the user!"
+        });
+    }
+}
+
 exports.request_service = async (req, res) => {
     const db = dbo.connect();
     const user = req.body;

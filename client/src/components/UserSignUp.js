@@ -155,6 +155,8 @@ function UserSignup() {
                   { headers: { Authorization: "Bearer " + token, role: "user" } }
                 );
                 if (response.data.status == 200) {
+
+
                   alert("User registered successfully!");
                   navigate("/");
                 } else {

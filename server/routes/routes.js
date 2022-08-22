@@ -646,6 +646,30 @@ router.get('/getCustomerId/:email', userController.getId);
  */
 router.post('/updateCustomer/:userid', userController.update_customer);
 
+/**
+ * @swagger
+ * /deleteUser/{email}:
+ *   delete:
+ *     summary: Delete a user from the application 
+ *     tags: [User]
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         schema:
+ *           type: string
+ *         description: Email of the user
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       400:
+ *         description: Couldn't delete user
+ *        
+ */
+router.delete('/deleteUser/:email', userController.delete_user)
+
 // Already done in getServices
 
 /**

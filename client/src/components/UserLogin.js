@@ -18,6 +18,7 @@ function UserLogin() {
   const initialValues = { email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
+  const [userProfile, setUserProfile] = useState();
   const notInitialRender = useRef(false)
   const [autho, setAutho] = useState(
     false || window.localStorage.getItem("auth") === "true"
@@ -57,11 +58,13 @@ function UserLogin() {
         // ..
       })
       .catch((error) => {
-        var errorCode = error.code;
         var errorMessage = error.message;
         // ..
         alert(error.message);
-        console.log(error);
+        formErrors.password = errorMessage;
+        // setFormErrors({password: errorMessage})
+        // console.log(error);
+        // console.log(formErrors)
       });
   }
 
@@ -90,13 +93,32 @@ function UserLogin() {
         });
       }
     });
+
+    // firebase
+    //     .auth()
+    //     .signInWithEmailAndPassword("sherlockholmes575@gmail.com", "9026040An!")
+    //     .then((userCredential) => {
+    //       // Signed in to the created account
+    //       var user = userCredential.user;
+    //       setUserProfile(user)
+    //     })
   }, []);
 
   const login = async () => {
     setFormErrors(validate(formValues));
-    const user = firebase.auth().currentUser;
-    console.log(user);
-
+    // if(user.emailVerified){
+    //   alert("Please verify your account!");
+    //   firebase
+    //         .auth()
+    //         .currentUser.sendEmailVerification()
+    //         .then(() => {
+    //           // console.log(user);
+    //           console.log("Verification email sent!");
+    //           // Email verification sent!
+    //           // ...
+    //         });
+    //   return;
+    // }
     // log in to firebase account
     firebase
       .auth()
@@ -105,7 +127,7 @@ function UserLogin() {
         // Signed in
         var user = userCredential.user;
         console.log(userCredential);
-        console.log(user);
+        // console.log(user);
         // ...
       })
       .catch((error) => {
@@ -132,6 +154,7 @@ function UserLogin() {
 
   function handleFirebase(){
     // log in to firebase account
+
     firebase
       .auth()
       .signInWithEmailAndPassword(formValues.email, formValues.password)
@@ -140,15 +163,42 @@ function UserLogin() {
         var user = userCredential.user;
         console.log(userCredential);
         console.log(user);
-        console.log("Login successful");
-        navigate("/");
+        user
+        .updateEmail(formValues.email)
+        .then(() => {
+        // Update successful
+        console.log("Email set to ", formValues.email);
+        })
+        .catch((error) => {
+        // An error occurred
+        console.log(error);
+        console.log("Couldn't update email to ", formValues.email);
+        });
+        if(!user.emailVerified){
+          alert("Please verify your email!");
+          firebase
+          .auth()
+          .currentUser.sendEmailVerification()
+          .then(() => {
+            // console.log(user);
+            console.log("Verification email sent!");
+            // Email verification sent!
+            // ...
+          });
+        }else{
+          console.log("Login successful");
+          navigate("/");
+        }
         // ...
       })
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
         console.log(error);
-        alert("Couldn't login");
+        alert(errorMessage);
+        // alert(error.message);
+        formErrors.password = errorMessage;
+        console.log(formErrors);
       });
   }
 
@@ -167,7 +217,7 @@ function UserLogin() {
     }
     else
     notInitialRender.current = true;
-    console.log(formErrors)
+    console.log(formErrors);
   }, [formErrors]);
 
 
