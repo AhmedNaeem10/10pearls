@@ -97,7 +97,6 @@ exports.get_jobs = async (req, res) => {
 
 get_details = async(response) => {
     let customer_id = response.CUSTOMER_ID;
-    let worker_id = response.WORKER_ID;
     let service_detail_id = response.SERVICE_DETAIL_ID;
     const CUSTOMER = require('../model/customer')(db.sequelize, db.Sequelize);
     const WORKER = require('../model/worker')(db.sequelize, db.Sequelize);
@@ -107,12 +106,14 @@ get_details = async(response) => {
     let customer_name = await CUSTOMER.findOne({attributes: ['id', 'FIRST_NAME', 'LAST_NAME']}, {where: {CUSTOMER_ID: customer_id}});
     let CUSTOMER_NAME = customer_name.FIRST_NAME + " " + customer_name.LAST_NAME;
 
-    let worker_name = await WORKER.findOne({attributes: ['id', 'FIRST_NAME', 'LAST_NAME']}, {where: {WORKER_ID: worker_id}});
-    let WORKER_NAME = worker_name.FIRST_NAME + " " + worker_name.LAST_NAME;
-
     let service_detail = await SERVICE_DETAIL.findAll({where: {SERVICE_DETAIL_ID: service_detail_id}});
     let service_id = service_detail[0].SERVICE_ID;
+    let worker_id = service_detail[0].WORKER_ID;
+    console.log(worker_id);
+    let worker_name = await WORKER.findOne({attributes: ['id', 'FIRST_NAME', 'LAST_NAME']}, {where: {WORKER_ID: worker_id}});
+    let WORKER_NAME = worker_name.FIRST_NAME + " " + worker_name.LAST_NAME;
     
+    console.log(WORKER_NAME);
     let service = await SERVICE.findAll({where: {SERVICE_ID: service_id}})
 
     let JOB_ID = response.id;
@@ -165,10 +166,16 @@ exports.get_jobs_for_customer = async (req, res) => {
 exports.get_jobs_for_customer_by_id = async (req, res) => {
     try{
         let {id} = req.params;
-        let response = await JOB.findAll({where: {CUSTOMER_ID: id}});
+        let responses = await JOB.findAll({where: {CUSTOMER_ID: id}});
+        let results = []
+        for(let response of responses){
+            let result = await get_details(response);
+            results.push(result)
+        }
+        
         res.json({
             status: 200,
-            message: response
+            message: results
         });
     }catch(err){
         res.json({
@@ -177,11 +184,6 @@ exports.get_jobs_for_customer_by_id = async (req, res) => {
         });
     }
 }
-
-exports.check = async (req, res) => {
-    console.log(req.body.file);
-}
-
 
 
 
