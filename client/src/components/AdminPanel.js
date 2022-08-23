@@ -5,20 +5,17 @@ import Sidebar from "./Sidebar";
 
 
 function AdminPanel() {
-  return (
-    <>
-    <div className='AdminPanel'>
-    <Sidebar/>
-    <div>
-    <h3> HEKLOOOOOOOOOOOOOOOOOPKKKKKKOO</h3>
-    </div>
-    
-    </div>
+    return (
+        <>
+            <div className='AdminPanel'>
+                <h3> HEKLOOOOOOOOOOOOOOOOOPKKKKKKOO</h3>
 
-    
-    
-    </>
-  )
+            </div>
+
+
+
+        </>
+    )
 }
 
 export default AdminPanel

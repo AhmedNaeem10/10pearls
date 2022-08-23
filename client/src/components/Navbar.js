@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux';
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import './Navbar.css';
 export default function Navbar() {
+    const userId = useSelector((state) => state.user)
+
     let location = useLocation();
 
     useEffect(() => {
@@ -16,20 +19,24 @@ export default function Navbar() {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0 nav-links">
-                          
+                        {/* <ul className="navbar-nav me-auto mb-2 mb-lg-0 nav-links">
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/" exact>HOME</NavLink>
+                                <NavLink className="nav-link" to="/admin" exact>ADMIN</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/resetpass" exact>SETTINGS</NavLink>
+                                <NavLink className="nav-link" to="/" exact>USER</NavLink>
                             </li>
-                        </ul>
+                        </ul> */}
 
                     </div>
                 </div>
-                {location.pathname != "/admin" && <a href="/signup" class="btn btn-primary mx-2">SignUp</a>}
-                <a href="/login" class="btn btn-primary mx-2">Login</a>
+                {Object.keys(userId).length === 0 && <><Link to="/signup" class="btn btn-primary mx-2">SignUp</Link>
+                    <Link to="/login" class="btn btn-primary mx-2">Login</Link></>
+                }
+                {Object.keys(userId).length != 0 && <><Link to="" class="btn btn-primary mx-2">My Requests</Link>
+                </>
+                }
+
 
             </nav>
         </div>

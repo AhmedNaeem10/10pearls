@@ -31,7 +31,8 @@
     padding: 10px;
     font-size: 18px;
     margin-bottom: 10px;
-    width: 30vw;;
+    width: 30vw;
+    ;
     border: none;
     color: white;
     background-color: black;
@@ -44,9 +45,9 @@
 /* .register div {
     margin-top: 2px;
 } */
-.showError{
+.showError {
     color: rgb(177, 66, 66);
     font-size: 13px;
     width: 270px;
-    
+
 }
