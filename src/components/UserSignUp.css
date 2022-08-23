@@ -1,0 +1,53 @@
+.register {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register__container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: #dcdcdc;
+    padding: 20px;
+    width: 55vw;
+    align-items: center;
+    margin-top: 357px;
+    padding-top: 1.5cm;
+    height: 900px;
+}
+
+.register__textBox {
+    padding: 5px;
+    font-size: 18px;
+    margin-bottom: 10px;
+    width: 40vw;
+    /* margin-left: 3.5cm; */
+}
+
+.register__btn {
+    padding: 10px;
+    font-size: 18px;
+    margin-bottom: 10px;
+    width: 30vw;
+    ;
+    border: none;
+    color: white;
+    background-color: black;
+}
+
+.register__google {
+    background-color: #4285f4;
+}
+
+/* .register div {
+    margin-top: 2px;
+} */
+.showError {
+    color: rgb(177, 66, 66);
+    font-size: 13px;
+    width: 270px;
+
+}
