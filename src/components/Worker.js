@@ -41,7 +41,7 @@ export default function RequestWorker() {
 
     const fetchWorkers = async () => {
         const response = await axios
-            .get(`https://home-services-backend.azurewebsites.net/worker/${workerId}`)
+            .get(`https://home-services-new.azurewebsites.net/worker/${workerId}`)
             .catch((err) => {
                 console.log("Err: ", err);
             });

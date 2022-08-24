@@ -44,7 +44,7 @@ function Requests(props) {
     const getAllRequests = async () => {
         setRequests("")
         try {
-            const response = await axios.get(`https://home-services-backend.azurewebsites.net/getJobsDetailsByStatus/${props.option}`)
+            const response = await axios.get(`https://home-services-new.azurewebsites.net/getJobsDetailsByStatus/${props.option}`)
                 .then((response) => {
                     //   const allServices = response.data;
                     console.log(response)

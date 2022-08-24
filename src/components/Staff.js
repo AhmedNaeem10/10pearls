@@ -43,7 +43,7 @@ function Staff() {
 
     const getAllWorkers = async () => {
         try {
-            const response = await axios.get("https://home-services-backend.azurewebsites.net/workers")
+            const response = await axios.get("https://home-services-new.azurewebsites.net/workers")
                 .then((response) => {
                     console.log(response)
                     setWorkers(response.data.message);

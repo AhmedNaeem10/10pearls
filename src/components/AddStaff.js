@@ -26,7 +26,7 @@ export default function AddStaff() {
         console.log(serviceDetails);
         // if (Object.keys(formErrors).length === 0) {
         let response = await axios.post(
-            "https://home-services-backend.azurewebsites.net/registerWorker",
+            "https://home-services-new.azurewebsites.net/registerWorker",
 
             {
                 email: serviceDetails.EMAIL,

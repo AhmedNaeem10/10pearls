@@ -43,7 +43,7 @@ function Services() {
 
     const getAllServices = async () => {
         try {
-            const response = await axios.get("https://home-services-backend.azurewebsites.net/getServices")
+            const response = await axios.get("https://home-services-new.azurewebsites.net/getServices")
                 .then((response) => {
                     console.log(response)
                     setServices(response.data);
