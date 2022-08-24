@@ -9,8 +9,14 @@ const CUSTOMER = require('../model/customer')(db.sequelize, db.Sequelize);
 
 exports.request_job = async (req, res) => {
 
-    const job = req.body;
+    let job = req.body;
     try{
+        var currentdate = new Date();
+        var datetime = currentdate.getFullYear() + "-" + String(parseInt(currentdate.getMonth()) + 1)
+        + "-" + currentdate.getDay() + " "
+        + currentdate.getHours() + ":" 
+        + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+        job.DATE_TIME_REQUEST = datetime;
         let response = await JOB.create(job);
         res.json({
             status: 200,
@@ -118,12 +124,13 @@ get_details = async(response) => {
 
     let JOB_ID = response.id;
     let DATE_TIME = response.DATE_TIME;
+    let DATE_TIME_REQUEST = response.DATE_TIME_REQUEST;
     let ADDRESS = response.ADDRESS;
     let JOB_STATUS = response.JOB_STATUS;
     let SERVICE_NAME = service[0].SERVICE_TITLE;
     let CUSTOMER_ID = customer_name.id;
     let WORKER_ID = worker_id;
-    return {JOB_ID, CUSTOMER_ID, CUSTOMER_NAME, WORKER_ID, WORKER_NAME, SERVICE_NAME, DATE_TIME, ADDRESS, JOB_STATUS};
+    return {JOB_ID, CUSTOMER_ID, CUSTOMER_NAME, WORKER_ID, WORKER_NAME, SERVICE_NAME, DATE_TIME, DATE_TIME_REQUEST, ADDRESS, JOB_STATUS};
 }
 
 exports.get_jobs_details = async (req, res) => {

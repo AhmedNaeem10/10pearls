@@ -17,6 +17,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
+        DATE_TIME_REQUEST: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
         PAYMENT_METHOD: {
             type: Sequelize.STRING(15)
         },
