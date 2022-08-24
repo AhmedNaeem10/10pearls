@@ -1,6 +1,6 @@
 .AdminPanel {
     /* width: 100vw; */
-    height: 100vh;
+    height: 100%;
 
 }
 
@@ -9,6 +9,7 @@
     height: 100vh;
     width: 270px;
     background-color: #2F4050;
+    position: fixed;
 
 }
 

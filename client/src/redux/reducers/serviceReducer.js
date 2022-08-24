@@ -1,20 +1,22 @@
 import { ActionTypes } from '../constants/action-types';
 const initialState = {
-    services: [
-        {
-            id: 1,
-            title: "maid"
-        },
-        {
-            id: 2,
-            title: "chef"
-        }
-    ]
+    services: []
 }
 export const serviceReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case ActionTypes.SET_SERVICES:
+            return { ...state, services: payload };
+
+
+        default:
             return state;
+    }
+}
+export const selectedServiceReducer = (state = {}, { type, payload }) => {
+    switch (type) {
+        case ActionTypes.SELECTED_SERVICES:
+            return { ...state, ...payload };
+
 
         default:
             return state;

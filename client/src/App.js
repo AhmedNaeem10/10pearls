@@ -9,7 +9,7 @@ function App() {
       {/* <Navbar /> */}
       {/* <Sidebar /> */}
       <Routes>
-
+        
         <Route path="/admin/*" element={<AdminRoutes />} />
 
         <Route path="*" element={<UserRoutes />} />

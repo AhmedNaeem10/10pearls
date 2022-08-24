@@ -19,7 +19,7 @@ module.exports = (sequelize, Sequelize) => {
         timestamps: false,
 
         // If don't want createdAt
-        createdAt: false,
+        createdAt: true,
 
         // If don't want updatedAt
         updatedAt: false,

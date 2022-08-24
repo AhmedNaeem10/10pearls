@@ -38,7 +38,7 @@ function ResetPassword() {
   console.log(email);
 
   const remove = async() =>{
-    let response =  await axios.delete("http://localhost:19720/deleteUser/{email}");
+    let response =  await axios.delete(`https://home-services-backend.azurewebsites.net/deleteService/${email}`);
     if(response.status === 200){
       console.log("User deleted successfully")
     }

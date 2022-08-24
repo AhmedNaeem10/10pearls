@@ -5,11 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { reauthenticateWithCredential } from "firebase/auth";
 import firebase from "firebase/app";
 import "firebase/auth";
-import "./UserSignup.css";
+import "./UserSignUp.css";
 // import { getAuth,  onAuthStateChanged } from "firebase/auth";
 
-function UserSignup() {
-  const initialValues = { username: "", email: "", password: "", first_name:"", last_name:"", cnic: "", address: "", phone: "", dob: ""};
+function UserSignUp() {
+  const initialValues = { username: "", email: "", password: "", first_name: "", last_name: "", cnic: "", address: "", phone: "", dob: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [autho, setAutho] = useState(
@@ -25,8 +25,8 @@ function UserSignup() {
     setFormValues({ ...formValues, [name]: value });
   };
 
-  
-  
+
+
   const validate = (values) => {
     const errors = {};
     const emailFormat = new RegExp(
@@ -48,13 +48,13 @@ function UserSignup() {
     } else if (values.username.length > 15) {
       errors.username = "Username cannot exceed 15 characters";
     } else {
-      axios.get("http://localhost:19720/getUsernames").then((res) => {
+      axios.get("https://home-services-new.azurewebsites.net/getUsernames").then((res) => {
         console.log(res.data.message);
         var results = res.data.message;
         Object.values(results).forEach((val) => {
           if (values.username === val.USERNAME) {
             errors.username = "Username already exists!";
-            document.getElementById('usernameError').innerHTML="Username already exists!";
+            document.getElementById('usernameError').innerHTML = "Username already exists!";
             // alert("Username already exists!");
             console.log("Username already exists");
           }
@@ -67,13 +67,13 @@ function UserSignup() {
     } else if (!emailFormat.test(values.email)) {
       errors.email = "This is not a valid email format!";
     } else {
-      axios.get("http://localhost:19720/getEmails").then((res) => {
+      axios.get("https://home-services-new.azurewebsites.net/getEmails").then((res) => {
         console.log(res.data.message);
         var results = res.data.message;
         Object.values(results).forEach((val) => {
           if (values.email === val.EMAIL) {
             console.log("Email is already in use!");
-            document.getElementById('emailError').innerHTML="Email is already in use!";
+            document.getElementById('emailError').innerHTML = "Email is already in use!";
             // alert("Email is already in use!");
             errors.email = "Email is already in use!";
           }
@@ -89,16 +89,16 @@ function UserSignup() {
     }
     if (!values.first_name) {
       errors.first_name = "First name is required!";
-    } 
+    }
     if (!values.phone) {
       errors.phone = "Phone number is required!";
     } else if (!phoneFormat.test(values.phone)) {
       errors.phone =
-        "Phone no. format = XXXX-XXXXXXX ";
+        "Phone no. format = XXXXXXXXXXX ";
     }
     if (!values.dob) {
       errors.dob = "Date of birth is required!";
-    } 
+    }
     if (!values.cnic) {
       errors.cnic = "CNIC is required!";
     } else if (!cnicFormat.test(values.cnic)) {
@@ -107,7 +107,7 @@ function UserSignup() {
     }
     if (!values.address) {
       errors.address = "Address is required!";
-    } 
+    }
     return errors;
   };
 
@@ -121,12 +121,13 @@ function UserSignup() {
   const handleFirebase = () => {
     if (Object.keys(formErrors).length === 0) {
 
-      const enterDetails = async() =>{
+      const enterDetails = async () => {
         let response = await axios.post(
-          "http://localhost:19720/userRegister",
+          "https://home-services-new.azurewebsites.net/userRegister",
           {
             USERNAME: formValues.username,
             EMAIL: formValues.email,
+            PASSWORD: formValues.password,
             FIRST_NAME: formValues.first_name,
             LAST_NAME: formValues.last_name,
             PHONE: formValues.phone,
@@ -138,91 +139,91 @@ function UserSignup() {
         );
         if (response.data.status == 200) {
           firebase
-        .auth()
-        .createUserWithEmailAndPassword(formValues.email, formValues.password)
-        .then((userCredential) => {
-          // Signed in to the created account
-          var user = userCredential.user;
-          console.log("User created on firebase");
-          console.log(user);
-
-          // reauthenticate into account with the same credentials
-          var credential = firebase.auth.EmailAuthProvider.credential(
-            formValues.email,
-            formValues.password
-          );
-          user
-            .reauthenticateWithCredential(credential)
-            .then(() => {
-              // User re-authenticated.
-              console.log("User reauthenticated");
-              // const enterDetails = async() =>{
-              //   let response = await axios.post(
-              //     "http://localhost:19720/userRegister",
-              //     {
-              //       USERNAME: formValues.username,
-              //       EMAIL: formValues.email,
-              //       FIRST_NAME: formValues.first_name,
-              //       LAST_NAME: formValues.last_name,
-              //       PHONE: formValues.phone,
-              //       CNIC: formValues.cnic,
-              //       DOB: formValues.dob,
-              //       ADDRESS: formValues.address
-              //     },
-              //     { headers: { Authorization: "Bearer " + token, role: "user" } }
-              //   );
-              //   if (response.data.status == 200) {
-
-
-              //     alert("User registered successfully!");
-              //     navigate("/");
-              //   } else {
-              //     alert(response.data.message);
-              //     alert("Couldn't register user!");
-              //   }
-                
-              // }
-              // enterDetails();
-              
-
-            })
-            .catch((error) => {
-              // An error occurred
-              console.log("Error reauthenticating");
-              console.log(error);
-            });
-
-          // set email on which email has to be sent
-          user
-            .updateEmail(formValues.email)
-            .then(() => {
-              // Update successful
-              console.log("Email set to ", formValues.email);
-            })
-            .catch((error) => {
-              // An error occurred
-              console.log(error);
-              console.log("Couldn't update email to ", formValues.email);
-            });
-
-          // send email verification
-          firebase
             .auth()
-            .currentUser.sendEmailVerification()
-            .then(() => {
+            .createUserWithEmailAndPassword(formValues.email, formValues.password)
+            .then((userCredential) => {
+              // Signed in to the created account
+              var user = userCredential.user;
+              console.log("User created on firebase");
               console.log(user);
-              console.log("Verification email sent!");
-              // Email verification sent!
-              // ...
+
+              // reauthenticate into account with the same credentials
+              var credential = firebase.auth.EmailAuthProvider.credential(
+                formValues.email,
+                formValues.password
+              );
+              user
+                .reauthenticateWithCredential(credential)
+                .then(() => {
+                  // User re-authenticated.
+                  console.log("User reauthenticated");
+                  // const enterDetails = async() =>{
+                  //   let response = await axios.post(
+                  //     "https://home-services-new.azurewebsites.net/userRegister",
+                  //     {
+                  //       USERNAME: formValues.username,
+                  //       EMAIL: formValues.email,
+                  //       FIRST_NAME: formValues.first_name,
+                  //       LAST_NAME: formValues.last_name,
+                  //       PHONE: formValues.phone,
+                  //       CNIC: formValues.cnic,
+                  //       DOB: formValues.dob,
+                  //       ADDRESS: formValues.address
+                  //     },
+                  //     { headers: { Authorization: "Bearer " + token, role: "user" } }
+                  //   );
+                  //   if (response.data.status == 200) {
+
+
+                  //     alert("User registered successfully!");
+                  //     navigate("/");
+                  //   } else {
+                  //     alert(response.data.message);
+                  //     alert("Couldn't register user!");
+                  //   }
+
+                  // }
+                  // enterDetails();
+
+
+                })
+                .catch((error) => {
+                  // An error occurred
+                  console.log("Error reauthenticating");
+                  console.log(error);
+                });
+
+              // set email on which email has to be sent
+              user
+                .updateEmail(formValues.email)
+                .then(() => {
+                  // Update successful
+                  console.log("Email set to ", formValues.email);
+                })
+                .catch((error) => {
+                  // An error occurred
+                  console.log(error);
+                  console.log("Couldn't update email to ", formValues.email);
+                });
+
+              // send email verification
+              firebase
+                .auth()
+                .currentUser.sendEmailVerification()
+                .then(() => {
+                  console.log(user);
+                  console.log("Verification email sent!");
+                  // Email verification sent!
+                  // ...
+                });
+            })
+            .catch((error) => {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // ..
+              console.log(error);
+              alert(error.message);
             });
-        })
-        .catch((error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // ..
-          console.log(error);
-          alert(error.message);
-        });
 
 
           alert("User registered successfully!");
@@ -231,7 +232,7 @@ function UserSignup() {
           alert(response.data.message);
           alert("Couldn't register user!");
         }
-        
+
       }
       // firebase
       //   .auth()
@@ -254,7 +255,7 @@ function UserSignup() {
       //         console.log("User reauthenticated");
       //         // const enterDetails = async() =>{
       //         //   let response = await axios.post(
-      //         //     "http://localhost:19720/userRegister",
+      //         //     "https://home-services-new.azurewebsites.net/userRegister",
       //         //     {
       //         //       USERNAME: formValues.username,
       //         //       EMAIL: formValues.email,
@@ -276,10 +277,10 @@ function UserSignup() {
       //         //     alert(response.data.message);
       //         //     alert("Couldn't register user!");
       //         //   }
-                
+
       //         // }
       //         // enterDetails();
-              
+
 
       //       })
       //       .catch((error) => {
@@ -320,8 +321,9 @@ function UserSignup() {
       //     alert(error.message);
       //   });
 
-       enterDetails();
-  }}
+      enterDetails();
+    }
+  }
 
 
 
@@ -341,12 +343,12 @@ function UserSignup() {
   }, []);
 
   useEffect(() => {
-     if (notInitialRender.current) {
+    if (notInitialRender.current) {
       const checkErrors = async () => {
         if (Object.keys(formErrors).length === 0) {
           handleFirebase();
           // let response = await axios.post(
-          //   "http://localhost:19720/userRegister",
+          //   "https://home-services-new.azurewebsites.net/userRegister",
           //   {
           //     username: formValues.username,
           //     email: formValues.email,
@@ -430,7 +432,7 @@ function UserSignup() {
           onChange={handleChange}
           placeholder="Last name"
         />
-          <input
+        <input
           type="tel"
           className="register__textBox"
           name="phone"
@@ -441,9 +443,9 @@ function UserSignup() {
         <div className="showError">
           <p>{formErrors.phone}</p>
         </div>
-        
+
         <input
-          label = "DOB"
+          label="DOB"
           type="date"
           className="register__textBox"
           name="dob"
@@ -481,7 +483,7 @@ function UserSignup() {
         <button className="register__btn" onClick={signup}>
           Register
         </button>
-        
+
         <div>
           Already have an account? <Link to="/login">Login</Link> now.
         </div>
@@ -489,4 +491,4 @@ function UserSignup() {
     </div>
   );
 }
-export default UserSignup;
+export default UserSignUp;

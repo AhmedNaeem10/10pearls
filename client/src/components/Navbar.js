@@ -2,10 +2,27 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import './Navbar.css';
+import { setUser } from '../redux/actions/userActions';
+import firebase from "firebase/app";
 export default function Navbar() {
     const userId = useSelector((state) => state.user)
 
     let location = useLocation();
+
+    const signout = () => {
+        
+        firebase.auth().signOut().then(() => {
+            // Sign-out successful.
+            // dispatch(setUser({}))
+            // console.log(userId)
+            // console.log(Object.keys(userId).length)
+            console.log("Sign-out successful.")
+            // navigate("/");
+          }).catch((error) => {
+            // An error happened.
+          });
+        
+    }
 
     useEffect(() => {
         console.log(location);
@@ -33,7 +50,8 @@ export default function Navbar() {
                 {Object.keys(userId).length === 0 && <><Link to="/signup" class="btn btn-primary mx-2">SignUp</Link>
                     <Link to="/login" class="btn btn-primary mx-2">Login</Link></>
                 }
-                {Object.keys(userId).length != 0 && <><Link to="" class="btn btn-primary mx-2">My Requests</Link>
+                {Object.keys(userId).length != 0 && <><Link to="/viewrequests" class="btn btn-primary mx-2">Requests</Link>
+                <Link to="/" onClick={signout} class="btn btn-primary mx-2">Sign out</Link>
                 </>
                 }
 
