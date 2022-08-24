@@ -10,7 +10,7 @@ export default function AdminLogin() {
     let response = await axios.post("https://home-services-new.azurewebsites.net/adminLogin", { username, password });
     if (response.data.status === 200) {
       // alert("Logged in successfully!");
-      navigate("../admin/adminpanel", { replace: true });
+      navigate("../admin/viewservices", { replace: true });
     } else {
       alert(response.data.message);
     }
