@@ -75,7 +75,7 @@ export default function Workers() {
                 <Oval 
   height={50}
   width={80}
-  color="#4fa94d"
+  color="black"
   wrapperStyle={{flex: 1,
     justifyContent: 'center',
     alignItems:'center',
@@ -83,7 +83,7 @@ export default function Workers() {
   wrapperClass=""
   visible={true}
   ariaLabel='oval-loading'
-  secondaryColor="#4fa94d"
+  secondaryColor="grey"
   strokeWidth={2}
   strokeWidthSecondary={2}
 

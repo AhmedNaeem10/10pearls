@@ -19,7 +19,47 @@ function Requests(props) {
   const [requests, setRequests] = useState([]);
   const [click, setClick] = useState(true);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(3);
+
+  const simplify_time = (date_time) => {
+
+    let time = date_time.split("T")
+
+    var time_ = new Date(time[0] + " " + time[1]);
+
+    let new_time = time_.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+
+    return String(new_time);
+
+}
+
+const simplify_date_time = (date_time) => {
+
+  try{
+
+      let date_ = date_time.split("T")
+
+      const date = new Date(date_[0]);
+
+      date.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+
+      let new_date = String(date);
+
+      let new_date_splitted = new_date.split("GMT")[0]
+
+      let parts = new_date_splitted.split(" ")
+
+      let date_time_string = parts[0] + ", " + parts[1] + " " + parts[2] + " " + parts[3] + ", " + simplify_time(date_time)
+
+      return date_time_string;
+
+  }catch(err){
+
+      return date_time;
+
+  }
+
+}
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -58,13 +98,12 @@ function Requests(props) {
     try {
       const response = await axios
         .get(
-          `https://home-services-backend.azurewebsites.net/getJobsDetailsByStatus/${props.option}`
+          `https://home-services-new.azurewebsites.net/getJobsDetailsByStatus/${props.option}`
         )
         .then((response) => {
           //   const allServices = response.data;
           console.log(response);
           setRequests(response.data.message);
-          // console.log(allRequests);
           // getRequests(allRequests.data);
           //   console.log(services);
         })
@@ -98,24 +137,27 @@ function Requests(props) {
           <TableHead>
             <TableRow>
               {/* <StyledTableCell style={{ width: "15%" }}>ID</StyledTableCell> */}
-              <StyledTableCell style={{ width: "25%", textAlign: "center" }}>
-                Customer Name
-              </StyledTableCell>
-              <StyledTableCell style={{ width: "25%", textAlign: "center" }}>
-                Worker Name
-              </StyledTableCell>
-              <StyledTableCell style={{ width: "25%", textAlign: "center" }}>
-                Service Name
+              <StyledTableCell style={{ width: "15%", textAlign: "center" }}>
+                Customer
               </StyledTableCell>
               <StyledTableCell style={{ width: "15%", textAlign: "center" }}>
-                DATE/TIME
+                Worker 
               </StyledTableCell>
-              <StyledTableCell style={{ width: "15%", textAlign: "center" }}>
-                ADDRESS
+              <StyledTableCell style={{ width: "10%", textAlign: "center" }}>
+                Service 
+              </StyledTableCell>
+              <StyledTableCell style={{ width: "27%", textAlign: "center" }}>
+                Date & time of request
+              </StyledTableCell>
+              <StyledTableCell style={{ width: "27%", textAlign: "center" }}>
+                Date & time of service
+              </StyledTableCell>
+              <StyledTableCell style={{ width: "25%", textAlign: "center" }}>
+                Address
               </StyledTableCell>
               {props.option == "pending" && (
                 <StyledTableCell style={{ width: "25%", textAlign: "center" }}>
-                  OPTION
+                  Actions
                 </StyledTableCell>
               )}
             </TableRow>
@@ -146,10 +188,11 @@ function Requests(props) {
               />
             ) : (
               <>
-                {requests
+              
+                {requests.reverse()
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((requests) => {
-                  const {JOB_ID, CUSTOMER_NAME, WORKER_NAME, SERVICE_NAME, DATE_TIME, ADDRESS,JOB_STATUS,} = requests;
+                  const {JOB_ID, CUSTOMER_NAME, WORKER_NAME, SERVICE_NAME, DATE_TIME, DATE_TIME_REQUEST, ADDRESS,JOB_STATUS} = requests;
                   const acceptRequest = async (e) => {
                     // console.log(id);
 
@@ -185,7 +228,7 @@ function Requests(props) {
                         <StyledTableCell
                           component="th"
                           scope="row"
-                          style={{ width: "25%", textAlign: "center" }}
+                          style={{ width: "15%", textAlign: "center" }}
                         >
                           <Link
                             style={{ textDecoration: "none" }}
@@ -197,7 +240,7 @@ function Requests(props) {
                         <StyledTableCell
                           component="th"
                           scope="row"
-                          style={{ width: "25%", textAlign: "center" }}
+                          style={{ width: "15%", textAlign: "center" }}
                         >
                           <Link
                             style={{ textDecoration: "none" }}
@@ -206,15 +249,19 @@ function Requests(props) {
                             {WORKER_NAME}
                           </Link>
                         </StyledTableCell>
-                        <StyledTableCell style={{ width: "15%", textAlign: "center" }}>
+                        <StyledTableCell style={{ width: "10%", textAlign: "center" }}>
                           {" "}
                           {SERVICE_NAME}{" "}
                         </StyledTableCell>
-                        <StyledTableCell style={{ width: "25%", textAlign: "center" }}>
+                        <StyledTableCell style={{ width: "27%", textAlign: "center" }}>
                           {" "}
-                          {DATE_TIME}{" "}
+                          {simplify_date_time(DATE_TIME_REQUEST)}{" "}
                         </StyledTableCell>
-                        <StyledTableCell style={{ width: "15%", textAlign: "center" }}>
+                        <StyledTableCell style={{ width: "27%", textAlign: "center" }}>
+                          {" "}
+                          {simplify_date_time(DATE_TIME)}{" "}
+                        </StyledTableCell>
+                        <StyledTableCell style={{ width: "25%", textAlign: "center" }}>
                           {" "}
                           {ADDRESS}{" "}
                         </StyledTableCell>
@@ -248,7 +295,7 @@ function Requests(props) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25, 50]}
+        rowsPerPageOptions={[3, 5, 10, 25, 50]}
         component="div"
         style={{ width: "75%" }}
         count={requests.length}

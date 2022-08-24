@@ -51,7 +51,7 @@ export default function Navbar() {
                     <Link to="/login" class="btn btn-primary mx-2">Login</Link></>
                 }
                 {Object.keys(userId).length != 0 && <><Link to="/viewrequests" class="btn btn-primary mx-2">Requests</Link>
-                <Link to="/" onClick={signout} class="btn btn-primary mx-2">Sign out</Link>
+                <Link to="/" onClick={signout} class="btn btn-primary mx-2">Signout</Link>
                 </>
                 }
 
