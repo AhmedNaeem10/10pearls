@@ -48,7 +48,7 @@ function UserSignUp() {
     } else if (values.username.length > 15) {
       errors.username = "Username cannot exceed 15 characters";
     } else {
-      axios.get("http://localhost:19720/getUsernames").then((res) => {
+      axios.get("https://home-services-new.azurewebsites.net/getUsernames").then((res) => {
         console.log(res.data.message);
         var results = res.data.message;
         Object.values(results).forEach((val) => {
@@ -67,7 +67,7 @@ function UserSignUp() {
     } else if (!emailFormat.test(values.email)) {
       errors.email = "This is not a valid email format!";
     } else {
-      axios.get("http://localhost:19720/getEmails").then((res) => {
+      axios.get("https://home-services-new.azurewebsites.net/getEmails").then((res) => {
         console.log(res.data.message);
         var results = res.data.message;
         Object.values(results).forEach((val) => {
@@ -120,92 +120,208 @@ function UserSignUp() {
 
   const handleFirebase = () => {
     if (Object.keys(formErrors).length === 0) {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(formValues.email, formValues.password)
-        .then((userCredential) => {
-          // Signed in to the created account
-          var user = userCredential.user;
-          console.log("User created on firebase");
-          console.log(user);
 
-          // reauthenticate into account with the same credentials
-          var credential = firebase.auth.EmailAuthProvider.credential(
-            formValues.email,
-            formValues.password
-          );
-          user
-            .reauthenticateWithCredential(credential)
-            .then(() => {
-              // User re-authenticated.
-              console.log("User reauthenticated");
-              const enterDetails = async () => {
-                let response = await axios.post(
-                  "http://localhost:19720/userRegister",
-                  {
-                    USERNAME: formValues.username,
-                    EMAIL: formValues.email,
-                    FIRST_NAME: formValues.first_name,
-                    LAST_NAME: formValues.last_name,
-                    PHONE: formValues.phone,
-                    CNIC: formValues.cnic,
-                    DOB: formValues.dob,
-                    ADDRESS: formValues.address
-                  },
-                  { headers: { Authorization: "Bearer " + token, role: "user" } }
-                );
-                if (response.data.status == 200) {
-                  alert("User registered successfully!");
-                  navigate("/");
-                } else {
-                  alert(response.data.message);
-                  alert("Couldn't register user!");
-                }
-
-              }
-              enterDetails();
-
-
-            })
-            .catch((error) => {
-              // An error occurred
-              console.log("Error reauthenticating");
-              console.log(error);
-            });
-
-          // set email on which email has to be sent
-          user
-            .updateEmail(formValues.email)
-            .then(() => {
-              // Update successful
-              console.log("Email set to ", formValues.email);
-            })
-            .catch((error) => {
-              // An error occurred
-              console.log(error);
-              console.log("Couldn't update email to ", formValues.email);
-            });
-
-          // send email verification
+      const enterDetails = async () => {
+        let response = await axios.post(
+          "https://home-services-new.azurewebsites.net/userRegister",
+          {
+            USERNAME: formValues.username,
+            EMAIL: formValues.email,
+            PASSWORD: formValues.password,
+            FIRST_NAME: formValues.first_name,
+            LAST_NAME: formValues.last_name,
+            PHONE: formValues.phone,
+            CNIC: formValues.cnic,
+            DOB: formValues.dob,
+            ADDRESS: formValues.address
+          },
+          { headers: { Authorization: "Bearer " + token, role: "user" } }
+        );
+        if (response.data.status == 200) {
           firebase
             .auth()
-            .currentUser.sendEmailVerification()
-            .then(() => {
+            .createUserWithEmailAndPassword(formValues.email, formValues.password)
+            .then((userCredential) => {
+              // Signed in to the created account
+              var user = userCredential.user;
+              console.log("User created on firebase");
               console.log(user);
-              console.log("Verification email sent!");
-              // Email verification sent!
-              // ...
+
+              // reauthenticate into account with the same credentials
+              var credential = firebase.auth.EmailAuthProvider.credential(
+                formValues.email,
+                formValues.password
+              );
+              user
+                .reauthenticateWithCredential(credential)
+                .then(() => {
+                  // User re-authenticated.
+                  console.log("User reauthenticated");
+                  // const enterDetails = async() =>{
+                  //   let response = await axios.post(
+                  //     "https://home-services-new.azurewebsites.net/userRegister",
+                  //     {
+                  //       USERNAME: formValues.username,
+                  //       EMAIL: formValues.email,
+                  //       FIRST_NAME: formValues.first_name,
+                  //       LAST_NAME: formValues.last_name,
+                  //       PHONE: formValues.phone,
+                  //       CNIC: formValues.cnic,
+                  //       DOB: formValues.dob,
+                  //       ADDRESS: formValues.address
+                  //     },
+                  //     { headers: { Authorization: "Bearer " + token, role: "user" } }
+                  //   );
+                  //   if (response.data.status == 200) {
+
+
+                  //     alert("User registered successfully!");
+                  //     navigate("/");
+                  //   } else {
+                  //     alert(response.data.message);
+                  //     alert("Couldn't register user!");
+                  //   }
+
+                  // }
+                  // enterDetails();
+
+
+                })
+                .catch((error) => {
+                  // An error occurred
+                  console.log("Error reauthenticating");
+                  console.log(error);
+                });
+
+              // set email on which email has to be sent
+              user
+                .updateEmail(formValues.email)
+                .then(() => {
+                  // Update successful
+                  console.log("Email set to ", formValues.email);
+                })
+                .catch((error) => {
+                  // An error occurred
+                  console.log(error);
+                  console.log("Couldn't update email to ", formValues.email);
+                });
+
+              // send email verification
+              firebase
+                .auth()
+                .currentUser.sendEmailVerification()
+                .then(() => {
+                  console.log(user);
+                  console.log("Verification email sent!");
+                  // Email verification sent!
+                  // ...
+                });
+            })
+            .catch((error) => {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // ..
+              console.log(error);
+              alert(error.message);
             });
-        })
-        .catch((error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // ..
-          console.log(error);
-          alert(error.message);
-        });
 
 
+          alert("User registered successfully!");
+          navigate("/");
+        } else {
+          alert(response.data.message);
+          alert("Couldn't register user!");
+        }
+
+      }
+      // firebase
+      //   .auth()
+      //   .createUserWithEmailAndPassword(formValues.email, formValues.password)
+      //   .then((userCredential) => {
+      //     // Signed in to the created account
+      //     var user = userCredential.user;
+      //     console.log("User created on firebase");
+      //     console.log(user);
+
+      //     // reauthenticate into account with the same credentials
+      //     var credential = firebase.auth.EmailAuthProvider.credential(
+      //       formValues.email,
+      //       formValues.password
+      //     );
+      //     user
+      //       .reauthenticateWithCredential(credential)
+      //       .then(() => {
+      //         // User re-authenticated.
+      //         console.log("User reauthenticated");
+      //         // const enterDetails = async() =>{
+      //         //   let response = await axios.post(
+      //         //     "https://home-services-new.azurewebsites.net/userRegister",
+      //         //     {
+      //         //       USERNAME: formValues.username,
+      //         //       EMAIL: formValues.email,
+      //         //       FIRST_NAME: formValues.first_name,
+      //         //       LAST_NAME: formValues.last_name,
+      //         //       PHONE: formValues.phone,
+      //         //       CNIC: formValues.cnic,
+      //         //       DOB: formValues.dob,
+      //         //       ADDRESS: formValues.address
+      //         //     },
+      //         //     { headers: { Authorization: "Bearer " + token, role: "user" } }
+      //         //   );
+      //         //   if (response.data.status == 200) {
+
+
+      //         //     alert("User registered successfully!");
+      //         //     navigate("/");
+      //         //   } else {
+      //         //     alert(response.data.message);
+      //         //     alert("Couldn't register user!");
+      //         //   }
+
+      //         // }
+      //         // enterDetails();
+
+
+      //       })
+      //       .catch((error) => {
+      //         // An error occurred
+      //         console.log("Error reauthenticating");
+      //         console.log(error);
+      //       });
+
+      //     // set email on which email has to be sent
+      //     user
+      //       .updateEmail(formValues.email)
+      //       .then(() => {
+      //         // Update successful
+      //         console.log("Email set to ", formValues.email);
+      //       })
+      //       .catch((error) => {
+      //         // An error occurred
+      //         console.log(error);
+      //         console.log("Couldn't update email to ", formValues.email);
+      //       });
+
+      //     // send email verification
+      //     firebase
+      //       .auth()
+      //       .currentUser.sendEmailVerification()
+      //       .then(() => {
+      //         console.log(user);
+      //         console.log("Verification email sent!");
+      //         // Email verification sent!
+      //         // ...
+      //       });
+      //   })
+      //   .catch((error) => {
+      //     var errorCode = error.code;
+      //     var errorMessage = error.message;
+      //     // ..
+      //     console.log(error);
+      //     alert(error.message);
+      //   });
+
+      enterDetails();
     }
   }
 
@@ -232,7 +348,7 @@ function UserSignUp() {
         if (Object.keys(formErrors).length === 0) {
           handleFirebase();
           // let response = await axios.post(
-          //   "http://localhost:19720/userRegister",
+          //   "https://home-services-new.azurewebsites.net/userRegister",
           //   {
           //     username: formValues.username,
           //     email: formValues.email,

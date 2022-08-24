@@ -1,7 +1,7 @@
 import React from "react";
 import './App.css';
 import AdminLogin from "./components/AdminLogin";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import UserLogin from "./components/UserLogin";
 import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
@@ -22,9 +22,11 @@ import NewWorkerForm from "./pages/newWorkerForm";
 
 
 function AdminRoutes() {
+    const location = useLocation();
+    console.log(location.pathname);
     return (
         <>
-            <Sidebar />
+            {location.pathname != "/admin" && <Sidebar />}
             <Routes>
                 <Route path="/" element={<AdminLogin />} />
                 <Route path="/adminpanel" element={<AdminPanel />} />

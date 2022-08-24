@@ -33,7 +33,7 @@ export default function Navbar() {
                 {Object.keys(userId).length === 0 && <><Link to="/signup" class="btn btn-primary mx-2">SignUp</Link>
                     <Link to="/login" class="btn btn-primary mx-2">Login</Link></>
                 }
-                {Object.keys(userId).length != 0 && <><Link to="" class="btn btn-primary mx-2">My Requests</Link>
+                {Object.keys(userId).length != 0 && <><Link to="/viewrequests" class="btn btn-primary mx-2">Requests</Link>
                 </>
                 }
 

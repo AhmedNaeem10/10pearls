@@ -6,11 +6,11 @@ import HailIcon from '@mui/icons-material/Hail';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 export const SidebarData = [
-    {
-        title: "Home",
-        icon: <HomeIcon />,
-        link: "/admin/adminpanel"
-    },
+    // {
+    //     title: "Home",
+    //     icon: <HomeIcon />,
+    //     link: "/admin/adminpanel"
+    // },
 
     {
         title: "Services",
@@ -30,11 +30,11 @@ export const SidebarData = [
         link: "/admin/viewstaff"
     },
 
-    {
-        title: "Settings",
-        icon: <SettingsIcon />,
-        link: "/signup"
-    }
+    // {
+    //     title: "Settings",
+    //     icon: <SettingsIcon />,
+    //     link: "/signup"
+    // }
 
 
 

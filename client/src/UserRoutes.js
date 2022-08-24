@@ -7,6 +7,7 @@ import { Route, Routes } from 'react-router-dom';
 import Workers from './components/Workers';
 import Worker from './components/Worker';
 import UserServicesDashboard from './pages/userServicesDashboard';
+import UserRequests from './components/UserRequests';
 
 
 function UserRoutes() {
@@ -20,6 +21,7 @@ function UserRoutes() {
                 {/* <Route path="/dashboard" element={<Dashboard />} /> */}
                 <Route path="/services/:serviceId" element={<Workers />} />
                 <Route path="/services/:serviceId/:workerId" element={<Worker />} />
+                <Route path="/viewrequests" element={<UserRequests />} />
 
             </Routes>
         </>

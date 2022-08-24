@@ -13,7 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 
-function Requests(props) {
+function UserRequests(props) {
+    const userId = useSelector((state) => state.user.userId)
     const [requests, setRequests] = useState([]);
     const [click, setClick] = useState(true);
 
@@ -44,7 +45,7 @@ function Requests(props) {
     const getAllRequests = async () => {
         setRequests("")
         try {
-            const response = await axios.get(`https://home-services-new.azurewebsites.net/getJobsDetailsByStatus/${props.option}`)
+            const response = await axios.get(`https://home-services-new.azurewebsites.net/getJobsForCustomer/${userId}`)
                 .then((response) => {
                     //   const allServices = response.data;
                     console.log(response)
@@ -67,9 +68,10 @@ function Requests(props) {
     // SERVICE_DETAIL_ID: 5
     useEffect(() => {
         getAllRequests();
-    }, [props.option, click]);
+    }, []);
 
     return (
+        // <>hi</>
         <div>
             <h1>Requests</h1>
             <br></br>
@@ -79,14 +81,12 @@ function Requests(props) {
                     <TableHead>
                         <TableRow>
                             {/* <StyledTableCell style={{ width: "15%" }}>ID</StyledTableCell> */}
-                            <StyledTableCell style={{ width: "35%" }}>Customer Name</StyledTableCell>
                             <StyledTableCell style={{ width: "25%" }}>Worker Name</StyledTableCell>
                             <StyledTableCell style={{ width: "25%" }}>Service Name</StyledTableCell>
                             <StyledTableCell style={{ width: "15%" }} >DATE/TIME</StyledTableCell>
                             <StyledTableCell style={{ width: "15%" }} >ADDRESS</StyledTableCell>
-                            {props.option == "pending" &&
-                                <StyledTableCell style={{ width: "25%" }}>OPTION</StyledTableCell>
-                            }
+                            <StyledTableCell style={{ width: "15%" }} >STATUS</StyledTableCell>
+
 
 
 
@@ -105,64 +105,23 @@ function Requests(props) {
                                         DATE_TIME,
                                         ADDRESS,
                                         JOB_STATUS } = requests
-                                    const acceptRequest = async (e) => {
-                                        // console.log(id);
 
-                                        try {
-
-
-                                            let response = await axios.put(`https://home-services-backend.azurewebsites.net/updateJobStatus/${JOB_ID}/accepted`)
-
-                                            // alert(response.data.message)
-                                            setClick(!click)
-
-                                        } catch (err) {
-
-                                            console.log(err)
-
-                                        }
-
-                                    }
-                                    const rejectRequest = async (e) => {
-
-                                        try {
-
-                                            //   let job_id = requests[index].id;
-
-                                            let response = await axios.put(`https://home-services-backend.azurewebsites.net/updateJobStatus/${JOB_ID}/rejected`)
-
-                                            // alert(response.data.message)
-                                            setClick(!click)
-
-                                        } catch (err) {
-
-                                            console.log(err)
-
-                                        }
-
-                                    }
 
                                     return (
                                         <>
 
                                             <StyledTableRow >
-                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}><Link style={{ "textDecoration": "none" }} to={`/admin/workerdetails/${JOB_ID}`}>
+                                                {/* <StyledTableCell component="th" scope="row" style={{ width: "25%" }}>
                                                     {CUSTOMER_NAME}
-                                                </Link></StyledTableCell>
-                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}><Link style={{ "textDecoration": "none" }} to={`/admin/workerdetails/${JOB_ID}`}>
+                                                </StyledTableCell> */}
+                                                <StyledTableCell component="th" scope="row" style={{ width: "25%" }}>
                                                     {WORKER_NAME}
-                                                </Link></StyledTableCell>
+                                                </StyledTableCell>
                                                 <StyledTableCell style={{ width: "15%" }} > {SERVICE_NAME}  </StyledTableCell>
                                                 <StyledTableCell style={{ width: "25%" }} > {DATE_TIME}  </StyledTableCell>
                                                 <StyledTableCell style={{ width: "15%" }}>  {ADDRESS}  </StyledTableCell>
-                                                {props.option == "pending" && <StyledTableCell style={{ width: "25%" }}>
-                                                    <Button onClick={acceptRequest} style={{ margin: "3px" }} variant="contained" color="success">
-                                                        ACCEPT
-                                                    </Button>
-                                                    <Button onClick={rejectRequest} style={{ margin: "3px" }} variant="outlined" color="error">
-                                                        REJECT
-                                                    </Button>
-                                                </StyledTableCell>}
+                                                <StyledTableCell style={{ width: "15%" }}>  {JOB_STATUS}  </StyledTableCell>
+
 
                                             </StyledTableRow>
 
@@ -185,4 +144,4 @@ function Requests(props) {
     )
 }
 
-export default Requests 
+export default UserRequests 
