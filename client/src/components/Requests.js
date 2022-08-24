@@ -198,7 +198,7 @@ const simplify_date_time = (date_time) => {
 
                     try {
                       let response = await axios.put(
-                        `https://home-services-backend.azurewebsites.net/updateJobStatus/${JOB_ID}/accepted`
+                        `https://home-services-new.azurewebsites.net/updateJobStatus/${JOB_ID}/accepted`
                       );
 
                       // alert(response.data.message)
@@ -212,7 +212,7 @@ const simplify_date_time = (date_time) => {
                       //   let job_id = requests[index].id;
 
                       let response = await axios.put(
-                        `https://home-services-backend.azurewebsites.net/updateJobStatus/${JOB_ID}/rejected`
+                        `https://home-services-new.azurewebsites.net/updateJobStatus/${JOB_ID}/rejected`
                       );
 
                       // alert(response.data.message)

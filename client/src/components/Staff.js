@@ -55,7 +55,7 @@ function Staff() {
   const getAllWorkers = async () => {
     try {
       const response = await axios
-        .get("https://home-services-backend.azurewebsites.net/workers")
+        .get("https://home-services-new.azurewebsites.net/workers")
         .then((response) => {
           console.log(response);
           setWorkers(response.data.message);
@@ -160,7 +160,7 @@ function Staff() {
                       //   let job_id = requests[index].id;
 
                       let response = await axios.delete(
-                        `https://home-services-backend.azurewebsites.net/deleteService/${item.id}`
+                        `https://home-services-new.azurewebsites.net/deleteService/${item.id}`
                       );
 
                       // alert(response.data.message)

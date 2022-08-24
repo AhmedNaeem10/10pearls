@@ -55,7 +55,7 @@ function Services() {
   const getAllServices = async () => {
     try {
       const response = await axios
-        .get("https://home-services-backend.azurewebsites.net/getServices")
+        .get("https://home-services-new.azurewebsites.net/getServices")
         .then((response) => {
           console.log(response);
           setServices(response.data);
@@ -143,7 +143,7 @@ function Services() {
                       //   let job_id = requests[index].id;
 
                       let response = await axios.delete(
-                        `https://home-services-backend.azurewebsites.net/deleteService/${item.id}`
+                        `https://home-services-new.azurewebsites.net/deleteService/${item.id}`
                       );
 
                       // alert(response.data.message)

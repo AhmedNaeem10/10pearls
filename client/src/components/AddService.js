@@ -23,7 +23,7 @@ export default function AddService() {
         console.log(serviceDetails);
         // if (Object.keys(formErrors).length === 0) {
         let response = await axios.post(
-            "https://home-services-backend.azurewebsites.net/addService",
+            "https://home-services-new.azurewebsites.net/addService",
 
             {
                 SERVICE_TITLE: serviceDetails.serviceName,
