@@ -42,7 +42,7 @@ export default function RequestWorker() {
 
     const fetchWorkers = async () => {
         const response = await axios
-            .get(`https://home-services-backend.azurewebsites.net/worker/${workerId}`)
+            .get(`https://home-services-new.azurewebsites.net/worker/${workerId}`)
             .catch((err) => {
                 console.log("Err: ", err);
             });
@@ -70,7 +70,7 @@ export default function RequestWorker() {
         console.log(serviceDetails);
         // if (Object.keys(formErrors).length === 0) {
         let response = await axios.post(
-            "https://home-services-backend.azurewebsites.net/request",
+            "https://home-services-new.azurewebsites.net/request",
 
             {
                 CUSTOMER_ID: userId,

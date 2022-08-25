@@ -8,7 +8,7 @@ function AdminPanel() {
     return (
         <>
             <div className='AdminPanel'>
-                <h3> HEKLOOOOOOOOOOOOOOOOOPKKKKKKOO</h3>
+                <h3> Admin Panel</h3>
 
             </div>
 

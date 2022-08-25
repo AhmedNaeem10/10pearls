@@ -47,7 +47,7 @@ export default function Workers() {
   const fetchWorkers = async () => {
     const response = await axios
       .get(
-        `https://home-services-backend.azurewebsites.net/workersBasicDetailsBySkill/${serviceId}`
+        `https://home-services-new.azurewebsites.net/workersBasicDetailsBySkill/${serviceId}`
       )
       .catch((err) => {
         console.log("Err: ", err);
