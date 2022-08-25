@@ -1,0 +1,67 @@
+.AdminPanel {
+    /* width: 100vw; */
+    height: 100%;
+
+}
+
+.Sidebar {
+    float: left;
+    height: 100vh;
+    width: 250px;
+    background-color: #2F4050;
+    position: fixed;
+
+}
+
+.SidebarList {
+    height: auto;
+    padding: 0;
+    width: 250px;
+
+}
+
+.SidebarList .row {
+    height: 60px;
+    width: 250px;
+    list-style-type: none;
+    margin: 0%;
+    margin-right: 0%;
+    display: flex;
+    flex-direction: row;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.SidebarList .row:hover {
+    cursor: pointer;
+    background-color: #293846;
+}
+
+.SidebarList #active {
+    background-color: #293846;
+}
+
+.row #icon {
+    flex: 30%;
+    display: grid;
+    place-items: center;
+}
+
+.row #title {
+    flex: 70%;
+}
+
+.Dashboard {
+    color: white;
+    font-size: 27px;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.content {
+    float: left;
+}
