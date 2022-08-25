@@ -126,7 +126,7 @@ const simplify_date_time = (date_time) => {
       <br></br>
      {/* <Paper> */}
       <TableContainer
-        style={{ width: "75%" , marginLeft: "300px" }}
+        style={{ width: "78%" , marginLeft: "270px" }}
         component={Paper}
       >
         <Table
@@ -146,10 +146,10 @@ const simplify_date_time = (date_time) => {
               <StyledTableCell style={{ width: "10%", textAlign: "center" }}>
                 Service 
               </StyledTableCell>
-              <StyledTableCell style={{ width: "27%", textAlign: "center" }}>
+              <StyledTableCell style={{ width: "25%", textAlign: "center" }}>
                 Date & time of request
               </StyledTableCell>
-              <StyledTableCell style={{ width: "27%", textAlign: "center" }}>
+              <StyledTableCell style={{ width: "25%", textAlign: "center" }}>
                 Date & time of service
               </StyledTableCell>
               <StyledTableCell style={{ width: "25%", textAlign: "center" }}>
@@ -253,11 +253,11 @@ const simplify_date_time = (date_time) => {
                           {" "}
                           {SERVICE_NAME}{" "}
                         </StyledTableCell>
-                        <StyledTableCell style={{ width: "27%", textAlign: "center" }}>
+                        <StyledTableCell style={{ width: "17%", textAlign: "center" }}>
                           {" "}
                           {simplify_date_time(DATE_TIME_REQUEST)}{" "}
                         </StyledTableCell>
-                        <StyledTableCell style={{ width: "27%", textAlign: "center" }}>
+                        <StyledTableCell style={{ width: "17%", textAlign: "center" }}>
                           {" "}
                           {simplify_date_time(DATE_TIME)}{" "}
                         </StyledTableCell>

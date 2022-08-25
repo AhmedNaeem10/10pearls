@@ -7,19 +7,11 @@ import "firebase/auth";
 import axios from "axios";
 import "./UserLogin.css";
 import { setUser } from "../redux/actions/userActions";
-
-import {
-    multiFactor,
-    PhoneAuthProvider,
-    PhoneMultiFactorGenerator,
-    RecaptchaVerifier,
-} from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
+
 function UserLogin() {
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user)
-    // const [email, setEmail] = useState("");
-    // const [password, setPassword] = useState("");
     const initialValues = { email: "", password: "" };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});

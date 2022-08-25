@@ -72,8 +72,8 @@ function Staff() {
   return (
     <>
       <div>
-        <h3 style={{ paddingTop: "15px", marginLeft: "300px" }}>WORKERS</h3>
-        <Button variant="outlined" style={{  marginLeft: "300px" }}>
+        <h3 style={{ paddingTop: "15px", marginLeft: "270px" }}>WORKERS</h3>
+        <Button variant="outlined" style={{  marginLeft: "270px" }}>
           <Link style={{ textDecoration: "none" }} to={`/admin/addstaff`}>
             ADD A NEW WORKER
           </Link>
@@ -90,7 +90,7 @@ function Staff() {
       );
     })} */}
         <TableContainer
-          style={{ width: "75%", marginLeft: "300px", textAlign: "center", justifyContent: 'center', alignItems: 'center' }}
+          style={{ width: "75%", marginLeft: "270px", textAlign: "center", justifyContent: 'center', alignItems: 'center' }}
           component={Paper}
         >
           <Table sx={{ minWidth: 100 }} aria-label="customized table">

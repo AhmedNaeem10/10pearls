@@ -26,15 +26,14 @@ const options = {
 	definition: {
 		openapi: "3.0.0",
 		info: {
-			title: "Home Services API",
+			title: "Home Services APIs",
 			version: "1.0.0",
 			description: "A simple Express Home Services API",
 		},
     basePath: '/',
 		servers: [
 			{
-				 url: "http://localhost:19720", 
-				//  url: "https://home-services-backend.azurewebsites.net/"
+				 url: "https://home-services-new.azurewebsites.net"
 			},
 		],
 	},

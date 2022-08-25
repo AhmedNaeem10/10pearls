@@ -12,8 +12,8 @@ export default function ServiceTabs(props) {
     };
 
     return (
-        <Box sx={{ width: '100%', marginLeft: "300px", paddingTop: "15px"}}>
-            <h3>REQUESTS</h3>
+        <Box sx={{ width: '100%', marginLeft: "270px", paddingTop: "15px"}}>
+            <h3 style={{marginLeft: "15px"}}>REQUESTS</h3>
             
             <Tabs
                 value={value}

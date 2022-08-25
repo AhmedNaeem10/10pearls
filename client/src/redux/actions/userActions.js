@@ -5,3 +5,9 @@ export const setUser = (user) => {
         payload: user,
     };
 };
+
+// export const removeUser = () => {
+//     return {
+//         type: ActionTypes.REMOVE_USER
+//     }
+// }

@@ -72,9 +72,9 @@ function Services() {
   return (
     <>
       <div className="servicecontent">
-        <h3 style={{ paddingTop: "15px", marginLeft: "300px" }}>SERVICES</h3>
+        <h3 style={{ paddingTop: "15px", marginLeft: "270px" }}>SERVICES</h3>
         <br></br>
-        <Button variant="outlined" style={{  marginLeft: "300px" }}>
+        <Button variant="outlined" style={{  marginLeft: "270px" }}>
           <Link style={{ textDecoration: "none" }} to={`/admin/addservice`}>
             ADD A NEW SERVICE
           </Link>
@@ -92,7 +92,7 @@ function Services() {
     })} */}
         <TableContainer
           className="servicetable"
-          style={{ width: "75%", marginLeft: "300px" }}
+          style={{ width: "75%", marginLeft: "270px" }}
           component={Paper}
         >
           <Table sx={{ minWidth: 100 }} aria-label="customized table">

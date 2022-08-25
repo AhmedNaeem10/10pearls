@@ -10,7 +10,7 @@ export default function AdminLogin() {
     let response = await axios.post("https://home-services-new.azurewebsites.net/adminLogin", { username, password });
     if (response.data.status === 200) {
       // alert("Logged in successfully!");
-      navigate("../admin/viewservices", { replace: true });
+      navigate("../viewservices", { replace: true });
     } else {
       alert(response.data.message);
     }
@@ -40,7 +40,7 @@ export default function AdminLogin() {
           type="text"
           className="login__textBox"
           value={username} onChange={(e) => setUsername(e.target.value)}
-          placeholder="E-mail Address"
+          placeholder="Username"
         />
         <input
           type="password"
