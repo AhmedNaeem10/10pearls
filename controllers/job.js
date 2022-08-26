@@ -38,7 +38,12 @@ exports.request = async(req, res) => {
         let id = response.id;
         job.SERVICE_DETAIL_ID = id;
         job.PAYMENT_METHOD = "COD";
-        job.DATE_TIME = "2022-1-10 " + job.DATE_TIME;
+        var currentdate = new Date();
+        var datetime = currentdate.getFullYear() + "-" + String(parseInt(currentdate.getMonth()) + 1)
+        + "-" + currentdate.getDay() + " "
+        + currentdate.getHours() + ":" 
+        + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+        job.DATE_TIME_REQUEST = datetime;
         job.JOB_STATUS = "pending";
         await JOB.create(job);
         res.json({
@@ -109,7 +114,7 @@ get_details = async(response) => {
     const SERVICE_DETAIL = require('../model/service_detail')(db.sequelize, db.Sequelize);
     const SERVICE = require('../model/service')(db.sequelize, db.Sequelize);
 
-    let customer_name = await CUSTOMER.findOne({attributes: ['id', 'FIRST_NAME', 'LAST_NAME']}, {where: {CUSTOMER_ID: customer_id}});
+    let customer_name = await CUSTOMER.findOne({where: {CUSTOMER_ID: customer_id}})
     let CUSTOMER_NAME = customer_name.FIRST_NAME + " " + customer_name.LAST_NAME;
 
     let service_detail = await SERVICE_DETAIL.findAll({where: {SERVICE_DETAIL_ID: service_detail_id}});
